@@ -149,8 +149,20 @@ static const u8 sBerryDescriptionPart1_Chilan[] = _("It can be made into a whist
 static const u8 sBerryDescriptionPart2_Chilan[] = _("produces an indescribable sound.");
 static const u8 sBerryDescriptionPart1_Roseli[] = _("In nature, they grow in wide rings");
 static const u8 sBerryDescriptionPart2_Roseli[] = _("for reasons that are still unknown.");
+static const u8 sBerryDescriptionPart1_Micle[] = _("This berry has a dry flavor. It has");
+static const u8 sBerryDescriptionPart2_Micle[] = _("the effect of making other food sweet.");
+static const u8 sBerryDescriptionPart1_Custap[] = _("The flesh underneath the Custap Berry's");
+static const u8 sBerryDescriptionPart2_Custap[] = _("tough skin is sweet and creamy soft.");
+static const u8 sBerryDescriptionPart1_Jaboca[] = _("The drupelets that make up this berry pop");
+static const u8 sBerryDescriptionPart2_Jaboca[] = _("rhythmically it's is handled roughly.");
+static const u8 sBerryDescriptionPart1_Rowap[] = _("In days of old, people worked the top");
+static const u8 sBerryDescriptionPart2_Rowap[] = _("shaped pieces of this Berry out as toys.");
+static const u8 sBerryDescriptionPart1_Kee[] = _("This type of berry is thought to be a");
+static const u8 sBerryDescriptionPart2_Kee[] = _("mutation of Liechi and Ganlon berries.");
+static const u8 sBerryDescriptionPart1_Maranga[] = _("This type of berry is thought to be a");
+static const u8 sBerryDescriptionPart2_Maranga[] = _("mutation of Salac and Petaya berries.");
 
-const struct Berry gBerries[] =
+const struct Berry gBerries[LAST_BERRY_INDEX - FIRST_BERRY_INDEX + 1] =
 {
     [ITEM_CHERI_BERRY - FIRST_BERRY_INDEX] =
     {
@@ -1247,6 +1259,114 @@ const struct Berry gBerries[] =
         .sweet = 0,
         .bitter = 0,
         .sour = 40,
+        .smoothness = 70,
+    },
+
+    [ITEM_MICLE_BERRY - FIRST_BERRY_INDEX] =
+    {
+        .name = _("MICLE"),
+        .firmness = BERRY_FIRMNESS_SOFT,
+        .size = 35,
+        .maxYield = 5,
+        .minYield = 1,
+        .description1 = sBerryDescriptionPart1_Micle,
+        .description2 = sBerryDescriptionPart2_Micle,
+        .stageDuration = 3,
+        .spicy = 0,
+        .dry = 30,
+        .sweet = 10,
+        .bitter = 0,
+        .sour = 0,
+        .smoothness = 70,
+    },
+
+    [ITEM_CUSTAP_BERRY - FIRST_BERRY_INDEX] =
+    {
+        .name = _("CUSTAP"),
+        .firmness = BERRY_FIRMNESS_HARD,
+        .size = 35,
+        .maxYield = 5,
+        .minYield = 1,
+        .description1 = sBerryDescriptionPart1_Custap,
+        .description2 = sBerryDescriptionPart2_Custap,
+        .stageDuration = 3,
+        .spicy = 10,
+        .dry = 0,
+        .sweet = 30,
+        .bitter = 0,
+        .sour = 0,
+        .smoothness = 70,
+    },
+
+    [ITEM_JABOCA_BERRY - FIRST_BERRY_INDEX] =
+    {
+        .name = _("JABOCA"),
+        .firmness = BERRY_FIRMNESS_SOFT,
+        .size = 35,
+        .maxYield = 5,
+        .minYield = 1,
+        .description1 = sBerryDescriptionPart1_Jaboca,
+        .description2 = sBerryDescriptionPart2_Jaboca,
+        .stageDuration = 3,
+        .spicy = 20,
+        .dry = 0,
+        .sweet = 10,
+        .bitter = 0,
+        .sour = 10,
+        .smoothness = 70,
+    },
+
+    [ITEM_ROWAP_BERRY - FIRST_BERRY_INDEX] =
+    {
+        .name = _("ROWAP"),
+        .firmness = BERRY_FIRMNESS_SUPER_HARD,
+        .size = 35,
+        .maxYield = 5,
+        .minYield = 1,
+        .description1 = sBerryDescriptionPart1_Rowap,
+        .description2 = sBerryDescriptionPart2_Rowap,
+        .stageDuration = 3,
+        .spicy = 0,
+        .dry = 0,
+        .sweet = 0,
+        .bitter = 30,
+        .sour = 10,
+        .smoothness = 70,
+    },
+
+    [ITEM_KEE_BERRY - FIRST_BERRY_INDEX] =
+    {
+        .name = _("KEE"),
+        .firmness = BERRY_FIRMNESS_VERY_HARD,
+        .size = 35,
+        .maxYield = 5,
+        .minYield = 1,
+        .description1 = sBerryDescriptionPart1_Kee,
+        .description2 = sBerryDescriptionPart2_Kee,
+        .stageDuration = 3,
+        .spicy = 10,
+        .dry = 10,
+        .sweet = 10,
+        .bitter = 10,
+        .sour = 0,
+        .smoothness = 70,
+    },
+
+    [ITEM_MARANGA_BERRY - FIRST_BERRY_INDEX] =
+    {
+        .name = _("MARANGA"),
+        .firmness = BERRY_FIRMNESS_VERY_HARD,
+        .size = 35,
+        .maxYield = 5,
+        .minYield = 1,
+        .description1 = sBerryDescriptionPart1_Maranga,
+        .description2 = sBerryDescriptionPart2_Maranga,
+        .stageDuration = 3,
+        .spicy = 10,
+        .dry = 0,
+        .sweet = 10,
+        .bitter = 10,
+        .sour = 10,
         .smoothness = 70,
     },
 };

@@ -638,12 +638,12 @@ const struct SpriteFrameImage *const gBerryTreePicTablePointers[] = {
     [ITEM_BABIRI_BERRY - FIRST_BERRY_INDEX] = gObjectEventPicTable_LiechiBerryTree,
     [ITEM_CHILAN_BERRY - FIRST_BERRY_INDEX] = gObjectEventPicTable_GrepaBerryTree,
     [ITEM_ROSELI_BERRY - FIRST_BERRY_INDEX] = gObjectEventPicTable_RoseliBerryTree,
-    [ITEM_MICLE_BERRY - FIRST_BERRY_INDEX] = NULL,
-    [ITEM_CUSTAP_BERRY - FIRST_BERRY_INDEX] = NULL,
-    [ITEM_JABOCA_BERRY - FIRST_BERRY_INDEX] = NULL,
-    [ITEM_ROWAP_BERRY - FIRST_BERRY_INDEX] = NULL,
-    [ITEM_KEE_BERRY - FIRST_BERRY_INDEX] = NULL,
-    [ITEM_MARANGA_BERRY - FIRST_BERRY_INDEX] = NULL,
+    [ITEM_MICLE_BERRY - FIRST_BERRY_INDEX] = gObjectEventPicTable_DurinBerryTree,
+    [ITEM_CUSTAP_BERRY - FIRST_BERRY_INDEX] = gObjectEventPicTable_DurinBerryTree,
+    [ITEM_JABOCA_BERRY - FIRST_BERRY_INDEX] = gObjectEventPicTable_DurinBerryTree,
+    [ITEM_ROWAP_BERRY - FIRST_BERRY_INDEX] = gObjectEventPicTable_DurinBerryTree,
+    [ITEM_KEE_BERRY - FIRST_BERRY_INDEX] = gObjectEventPicTable_DurinBerryTree,
+    [ITEM_MARANGA_BERRY - FIRST_BERRY_INDEX] = gObjectEventPicTable_DurinBerryTree,
 };
 
 const u8 *const gBerryTreePaletteSlotTablePointers[] = {
@@ -708,12 +708,12 @@ const u8 *const gBerryTreePaletteSlotTablePointers[] = {
     [ITEM_BABIRI_BERRY - FIRST_BERRY_INDEX] = gBerryTreePaletteSlotTable_Liechi,
     [ITEM_CHILAN_BERRY - FIRST_BERRY_INDEX] = gBerryTreePaletteSlotTable_Grepa,
     [ITEM_ROSELI_BERRY - FIRST_BERRY_INDEX] = gBerryTreePaletteSlotTable_Roseli,
-    [ITEM_MICLE_BERRY - FIRST_BERRY_INDEX] = NULL,
-    [ITEM_CUSTAP_BERRY - FIRST_BERRY_INDEX] = NULL,
-    [ITEM_JABOCA_BERRY - FIRST_BERRY_INDEX] = NULL,
-    [ITEM_ROWAP_BERRY - FIRST_BERRY_INDEX] = NULL,
-    [ITEM_KEE_BERRY - FIRST_BERRY_INDEX] = NULL,
-    [ITEM_MARANGA_BERRY - FIRST_BERRY_INDEX] = NULL,
+    [ITEM_MICLE_BERRY - FIRST_BERRY_INDEX] = gBerryTreePaletteSlotTable_Durin,
+    [ITEM_CUSTAP_BERRY - FIRST_BERRY_INDEX] = gBerryTreePaletteSlotTable_Durin,
+    [ITEM_JABOCA_BERRY - FIRST_BERRY_INDEX] = gBerryTreePaletteSlotTable_Durin,
+    [ITEM_ROWAP_BERRY - FIRST_BERRY_INDEX] = gBerryTreePaletteSlotTable_Durin,
+    [ITEM_KEE_BERRY - FIRST_BERRY_INDEX] = gBerryTreePaletteSlotTable_Durin,
+    [ITEM_MARANGA_BERRY - FIRST_BERRY_INDEX] = gBerryTreePaletteSlotTable_Durin,
 };
 
 const u8 *const gBerryTreeObjectEventGraphicsIdTablePointers[] = {

@@ -107,7 +107,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .bg = 1,
         .tilemapLeft = 11,
         .tilemapTop = 4,
-        .width = 8,
+        .width = 9,
         .height = 2,
         .paletteNum = 15,
         .baseBlock = 69,
@@ -119,7 +119,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .width = 18,
         .height = 4,
         .paletteNum = 15,
-        .baseBlock = 85,
+        .baseBlock = 87,
     },
     { // WIN_DESC
         .bg = 1,
@@ -128,7 +128,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .width = 25,
         .height = 4,
         .paletteNum = 15,
-        .baseBlock = 157,
+        .baseBlock = 159,
     },
     { // WIN_BERRY_TAG
         .bg = 0,
@@ -137,7 +137,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .width = 8,
         .height = 2,
         .paletteNum = 15,
-        .baseBlock = 257,
+        .baseBlock = 259,
     },
     DUMMY_WIN_TEMPLATE
 };
