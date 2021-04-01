@@ -38,6 +38,12 @@
 #include "constants/songs.h"
 #include "constants/species.h"
 
+// =================================
+// GLOBAL ON/OFF FOR DEBUGGING
+// =================================
+EWRAM_DATA int gDebugSystemEnabled = 0;
+// =================================
+
 // *******************************
 // Enums
 enum { // Main

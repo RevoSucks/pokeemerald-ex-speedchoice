@@ -23,6 +23,7 @@
 #include "intro.h"
 #include "main.h"
 #include "trainer_hill.h"
+#include "debug.h"
 
 static void VBlankIntr(void);
 static void HBlankIntr(void);
@@ -111,6 +112,8 @@ void AgbMain()
     InitHeap(gHeap, HEAP_SIZE);
 
     gSoftResetDisabled = FALSE;
+
+    gDebugSystemEnabled = DEBUGGING;
 
     if (gFlashMemoryPresent != TRUE)
         SetMainCallback2(NULL);

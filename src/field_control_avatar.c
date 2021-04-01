@@ -217,14 +217,14 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
     if (input->pressedSelectButton && UseRegisteredKeyItemOnField() == TRUE)
         return TRUE;
 
-#if DEBUGGING
-    if (input->input_field_1_2)
-    {
-        PlaySE(SE_WIN_OPEN);
-        Debug_ShowMainMenu();
-        return TRUE;
+    if (gDebugSystemEnabled == TRUE) {
+        if (input->input_field_1_2)
+        {
+            PlaySE(SE_WIN_OPEN);
+            Debug_ShowMainMenu();
+            return TRUE;
+        }
     }
-#endif
 
     return FALSE;
 }
@@ -705,6 +705,9 @@ void RestartWildEncounterImmunitySteps(void)
 
 static bool8 CheckStandardWildEncounter(u16 metatileBehavior)
 {
+    if ((gDebugSystemEnabled == TRUE) && FlagGet(FLAG_SYS_NO_ENCOUNTER)) //DEBUG
+        return FALSE;//
+
     if (sWildEncounterImmunitySteps < 4)
     {
         sWildEncounterImmunitySteps++;
