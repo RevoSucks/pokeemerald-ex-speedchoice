@@ -4427,7 +4427,7 @@ static void Cmd_playanimation(void)
         } else {
             // front pic
             LoadBattleMonGfxAndAnimate(gActiveBattler, TRUE, gBattlerSpriteIds[gActiveBattler]);
-            BattleLoadOpponentMonSpriteGfx(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], gActiveBattler);
+            BattleLoadOpponentMonSpriteGfx(&gEnemyParty[gBattlerPartyIndexes[gActiveBattler]], gActiveBattler);
         }
         paletteOffset = 0x100 + gActiveBattler * 16;
         lzPaletteData = (u32 *)GetMonSpritePalFromSpeciesAndPersonality(megaSpecies, otId, personality);
