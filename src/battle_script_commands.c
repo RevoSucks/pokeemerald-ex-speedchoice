@@ -55,6 +55,7 @@
 #include "constants/rgb.h"
 #include "data.h"
 #include "constants/party_menu.h"
+#include "decompress.h"
 
 extern struct MusicPlayerInfo gMPlayInfo_BGM;
 
@@ -4406,7 +4407,37 @@ static void Cmd_playanimation(void)
     gActiveBattler = GetBattlerForBattleScript(gBattlescriptCurrInstr[1]);
     argumentPtr = T2_READ_PTR(gBattlescriptCurrInstr + 3);
 
-    if (gBattlescriptCurrInstr[2] == B_ANIM_STATS_CHANGE
+    if ((gHitMarker & HITMARKER_NO_ANIMATIONS) && gBattlescriptCurrInstr[2] == B_ANIM_MEGA_EVOLUTION)
+    {
+        // specifically handle Mega evos. First, load the mon.
+        u16 species = gBattleMons[gActiveBattler].species;
+        // get the mega species.
+        u16 megaSpecies = GetMegaEvolutionSpecies(gBattleStruct->mega.evolvedSpecies[gActiveBattler], gBattleMons[gActiveBattler].item);
+        u32 position = GetBattlerPosition(gActiveBattler);
+        u32 personality = gBattleMons[gActiveBattler].personality;
+        u32 otId = gBattleMons[gActiveBattler].otId;
+        u32 paletteOffset;
+        u32 *lzPaletteData;
+        
+        // Specially load the mega species sprite for it.
+        if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) {
+            // back pic
+            LoadBattleMonGfxAndAnimate(gActiveBattler, TRUE, gBattlerSpriteIds[gActiveBattler]);
+            BattleLoadPlayerMonSpriteGfx(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], gActiveBattler);
+        } else {
+            // front pic
+            LoadBattleMonGfxAndAnimate(gActiveBattler, TRUE, gBattlerSpriteIds[gActiveBattler]);
+            BattleLoadOpponentMonSpriteGfx(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], gActiveBattler);
+        }
+        paletteOffset = 0x100 + gActiveBattler * 16;
+        lzPaletteData = (u32 *)GetMonSpritePalFromSpeciesAndPersonality(megaSpecies, otId, personality);
+        LZDecompressWram(lzPaletteData, gDecompressionBuffer);
+        LoadPalette(gDecompressionBuffer, paletteOffset, 0x20);
+        LoadPalette(gDecompressionBuffer, 0x80 + gActiveBattler * 16, 0x20);
+        BattleScriptPush(gBattlescriptCurrInstr + 7);
+        gBattlescriptCurrInstr = BattleScript_Pausex20;
+    }
+    else if (gBattlescriptCurrInstr[2] == B_ANIM_STATS_CHANGE
         || gBattlescriptCurrInstr[2] == B_ANIM_SNATCH_MOVE
         || gBattlescriptCurrInstr[2] == B_ANIM_MEGA_EVOLUTION
         || gBattlescriptCurrInstr[2] == B_ANIM_ILLUSION_OFF
