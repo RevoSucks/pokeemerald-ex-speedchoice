@@ -140,6 +140,8 @@ struct ProtectStruct
     u32 usedGravityPreventedMove:1;
     u32 powderSelfDmg:1;
     u32 usedThroatChopPreventedMove:1;
+    u32 micle:1;
+    u32 custap:1;    // also quick claw
     u32 physicalDmg;
     u32 specialDmg;
     u8 physicalBattlerId;
@@ -427,6 +429,25 @@ struct Illusion
     struct Pokemon *mon;
 };
 
+struct ZMoveData
+{
+    u8 viable:1;    // current move can become a z move
+    u8 viewing:1;  // if player is viewing the z move name instead of regular moves
+    u8 active:1;   // is z move being used this turn
+    u8 zStatusActive:1;
+    u8 healReplacement:1;
+    u8 activeSplit:2;  // active z move split
+    u8 zUnused:1;
+    u8 triggerSpriteId;
+    u8 possibleZMoves[MAX_BATTLERS_COUNT];
+    u16 chosenZMove;  // z move of move cursor is on
+    u8 effect;
+    u8 used[MAX_BATTLERS_COUNT];   //one per bank for multi-battles
+    u16 toBeUsed[MAX_BATTLERS_COUNT];  // z moves per battler to be used
+    u16 baseMoves[MAX_BATTLERS_COUNT];
+    u8 splits[MAX_BATTLERS_COUNT];
+};
+
 struct BattleStruct
 {
     u8 turnEffectsTracker;
@@ -503,6 +524,7 @@ struct BattleStruct
     u8 wishPerishSongState;
     u8 wishPerishSongBattlerId;
     bool8 overworldWeatherDone;
+    bool8 terrainDone;
     u8 atkCancellerTracker;
     struct BattleTvMovePoints tvMovePoints;
     struct BattleTv tv;
@@ -523,6 +545,7 @@ struct BattleStruct
     u8 abilityPopUpSpriteIds[MAX_BATTLERS_COUNT][2];    // two per battler
     bool8 throwingPokeBall;
     struct MegaEvolutionData mega;
+    struct ZMoveData zmove;
     const u8 *trainerSlideMsg;
     bool8 trainerSlideLowHpMsgDone;
     u8 introState;
@@ -542,6 +565,7 @@ struct BattleStruct
     u8 sameMoveTurns[MAX_BATTLERS_COUNT]; // For Metronome, number of times the same moves has been SUCCESFULLY used.
     u16 moveEffect2; // For Knock Off
     u16 changedSpecies[PARTY_SIZE]; // For Zygarde or future forms when multiple mons can change into the same pokemon.
+    u8 quickClawBattlerId;
 };
 
 #define GET_MOVE_TYPE(move, typeArg)                        \
@@ -613,6 +637,7 @@ struct BattleScripting
     u16 multihitMoveEffect;
     u8 illusionNickHack; // To properly display nick in STRINGID_ENEMYABOUTTOSWITCHPKMN.
     bool8 fixedPopup;   // force ability popup to stick until manually called back
+    u16 abilityPopupOverwrite;
 };
 
 // rom_80A5C6C
@@ -737,7 +762,7 @@ extern u16 gBattle_WIN1V;
 extern u8 gDisplayedStringBattle[400];
 extern u8 gBattleTextBuff1[TEXT_BUFF_ARRAY_COUNT];
 extern u8 gBattleTextBuff2[TEXT_BUFF_ARRAY_COUNT];
-extern u8 gBattleTextBuff3[TEXT_BUFF_ARRAY_COUNT];
+extern u8 gBattleTextBuff3[30]; //to handle stupidly large z move names
 extern u32 gBattleTypeFlags;
 extern u8 gBattleTerrain;
 extern u32 gUnknown_02022FF4;
