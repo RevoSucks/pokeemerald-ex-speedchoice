@@ -331,6 +331,7 @@ SECTIONS {
         src/battle_transition_frontier.o(.text);
         src/international_string_util.o(.text);
         src/debug.o(.text);
+        src/day_night.o(.text);
     } =0
 
     script_data :
@@ -692,6 +693,7 @@ SECTIONS {
         src/mystery_event_msg.o(.rodata);
         data/mystery_event.o(.rodata);
         src/debug.o(.rodata);
+        src/day_night.o(.rodata);
         src/m4a_tables.o(.rodata);
         data/sound_data.o(.rodata);
     } =0
