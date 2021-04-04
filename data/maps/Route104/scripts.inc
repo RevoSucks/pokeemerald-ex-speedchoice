@@ -343,6 +343,7 @@ Route104_EventScript_Boy2:: @ 81ED057
 	lock
 	faceplayer
 	goto_if_set FLAG_RECEIVED_TM09, Route104_EventScript_ReceivedBulletSeed
+gTMText_6::
 	msgbox Route104_Text_LikeFillingMouthWithSeedsTakeThis, MSGBOX_DEFAULT
 	giveitem ITEM_TM09
 	compare VAR_RESULT, FALSE

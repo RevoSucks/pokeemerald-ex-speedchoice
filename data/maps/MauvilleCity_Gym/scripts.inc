@@ -118,6 +118,7 @@ MauvilleCity_Gym_EventScript_GiveShockWave2:: @ 820DF8D
 	giveitem ITEM_TM34
 	compare VAR_RESULT, FALSE
 	goto_if_eq Common_EventScript_ShowBagIsFull
+gTMText_9::
 	msgbox MauvilleCity_Gym_Text_ExplainShockWave, MSGBOX_DEFAULT
 	setflag FLAG_RECEIVED_TM34
 	release

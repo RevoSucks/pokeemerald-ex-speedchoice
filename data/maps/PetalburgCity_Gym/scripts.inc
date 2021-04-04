@@ -445,6 +445,7 @@ PetalburgCity_Gym_EventScript_GiveFacade:: @ 8204ED2
 	compare VAR_RESULT, FALSE
 	goto_if_eq Common_EventScript_BagIsFull
 	setflag FLAG_RECEIVED_TM42
+gTMText_13::
 	msgbox PetalburgCity_Gym_Text_ExplainFacade, MSGBOX_DEFAULT
 	return
 

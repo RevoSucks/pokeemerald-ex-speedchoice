@@ -10,6 +10,7 @@ SootopolisCity_House1_EventScript_BrickBreakBlackBelt:: @ 822694D
 	compare VAR_RESULT, FALSE
 	goto_if_eq Common_EventScript_ShowBagIsFull
 	setflag FLAG_RECEIVED_TM31
+gTMText_8::
 	msgbox SootopolisCity_House1_Text_ExplainBrickBreak, MSGBOX_DEFAULT
 	release
 	end

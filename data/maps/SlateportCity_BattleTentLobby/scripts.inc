@@ -207,6 +207,7 @@ SlateportCity_BattleTentLobby_EventScript_TormentGiver:: @ 8208A3D
 	compare VAR_RESULT, FALSE
 	goto_if_eq Common_EventScript_ShowBagIsFull
 	setflag FLAG_RECEIVED_TM41
+gTMText_12::
 	msgbox SlateportCity_BattleTentLobby_Text_ExplainTorment, MSGBOX_DEFAULT
 	release
 	end

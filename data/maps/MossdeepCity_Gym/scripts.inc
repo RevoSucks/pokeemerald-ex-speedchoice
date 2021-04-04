@@ -94,6 +94,7 @@ MossdeepCity_Gym_EventScript_GiveCalmMind2:: @ 8220937
 	giveitem ITEM_TM04
 	compare VAR_RESULT, FALSE
 	goto_if_eq Common_EventScript_ShowBagIsFull
+gTMText_2::
 	msgbox MossdeepCity_Gym_Text_ExplainCalmMind, MSGBOX_DEFAULT
 	setflag FLAG_RECEIVED_TM04
 	release

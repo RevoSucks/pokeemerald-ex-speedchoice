@@ -694,6 +694,7 @@ SECTIONS {
         data/mystery_event.o(.rodata);
         src/debug.o(.rodata);
         src/day_night.o(.rodata);
+        data/rando_cv.o(.rodata);
         src/m4a_tables.o(.rodata);
         data/sound_data.o(.rodata);
     } =0

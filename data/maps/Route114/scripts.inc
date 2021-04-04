@@ -50,11 +50,13 @@ Route114_EventScript_RoarGentleman:: @ 81F25D1
 	lock
 	faceplayer
 	goto_if_set FLAG_RECEIVED_TM05, Route114_EventScript_ReceivedRoar
+gTMText_3::
 	msgbox Route114_Text_AllMyMonDoesIsRoarTakeThis, MSGBOX_DEFAULT
 	giveitem ITEM_TM05
 	compare VAR_RESULT, FALSE
 	goto_if_eq Common_EventScript_ShowBagIsFull
 	setflag FLAG_RECEIVED_TM05
+gTMText_4::
 	msgbox Route114_Text_ExplainRoar, MSGBOX_DEFAULT
 	release
 	end

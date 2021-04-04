@@ -123,6 +123,7 @@ SootopolisCity_Gym_1F_EventScript_GiveWaterPulse:: @ 8224FD4
 	giveitem ITEM_TM03
 	compare VAR_RESULT, FALSE
 	goto_if_eq Common_EventScript_BagIsFull
+gTMText_1::
 	msgbox SootopolisCity_Gym_1F_Text_ExplainWaterPulse, MSGBOX_DEFAULT
 	setflag FLAG_RECEIVED_TM03
 	return

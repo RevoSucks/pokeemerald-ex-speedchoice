@@ -1,0 +1,3 @@
+To run:
+
+    python inigen ELF-FILE OUTPUT-FILE --code GAME_CODE --name GAME_NAME

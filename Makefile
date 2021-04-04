@@ -31,8 +31,8 @@ else
 EXE :=
 endif
 
-TITLE       := POKEMON EMER
-GAME_CODE   := BPEE
+TITLE       := POKEEMER EX
+GAME_CODE   := SPDX
 MAKER_CODE  := 01
 REVISION    := 0
 MODERN      ?= 0
@@ -41,6 +41,8 @@ SHELL := /bin/bash -o pipefail
 
 ELF = $(ROM:.gba=.elf)
 MAP = $(ROM:.gba=.map)
+INI = $(ROM:.gba=.ini)
+PATCH := $(ROM:.gba=.xdelta)
 
 C_SUBDIR = src
 GFLIB_SUBDIR = gflib
@@ -94,6 +96,8 @@ RAMSCRGEN := tools/ramscrgen/ramscrgen$(EXE)
 FIX := tools/gbafix/gbafix$(EXE)
 MAPJSON := tools/mapjson/mapjson$(EXE)
 JSONPROC := tools/jsonproc/jsonproc$(EXE)
+INIGEN := tools/inigen/inigen$(EXE)
+XDELTA := xdelta3
 
 TOOLDIRS := $(filter-out tools/agbcc tools/binutils,$(wildcard tools/*))
 TOOLBASE = $(TOOLDIRS:tools/%=%)
@@ -117,7 +121,7 @@ infoshell = $(foreach line, $(shell $1 | sed "s/ /__SPACE__/g"), $(info $(subst 
 
 # Build tools when building the rom
 # Disable dependency scanning for clean/tidy/tools
-ifeq (,$(filter-out all rom compare modern berry_fix libagbsyscall,$(MAKECMDGOALS)))
+ifeq (,$(filter-out all rom compare modern berry_fix libagbsyscall release,$(MAKECMDGOALS)))
 $(call infoshell, $(MAKE) tools)
 else
 NODEP := 1
@@ -168,6 +172,12 @@ rom: $(ROM)
 ifeq ($(COMPARE),1)
 	@$(SHA1) rom.sha1
 endif
+
+release: ini patch
+
+ini: $(INI)
+
+patch: $(PATCH)
 
 # For contributors to make sure a change didn't affect the contents of the ROM.
 compare: ; @$(MAKE) COMPARE=1
@@ -347,3 +357,12 @@ berry_fix:
 
 libagbsyscall:
 	@$(MAKE) -C libagbsyscall TOOLCHAIN=$(TOOLCHAIN)
+
+$(INI): $(ROM)
+	$(INIGEN) $(ELF) $@ --name "Emerald EX (U)" --code $(GAME_CODE)
+	echo "MD5Hash="$(shell md5sum $< | cut -d' ' -f1) >> $@
+
+$(PATCH): $(ROM)
+	$(XDELTA) -f -e -s baserom.gba $< $@
+
+print-% : ; $(info $* is a $(flavor $*) variable set to [$($*)]) @true

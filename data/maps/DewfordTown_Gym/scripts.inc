@@ -184,6 +184,7 @@ DewfordTown_Gym_EventScript_GiveBulkUp:: @ 81FC855
 	giveitem ITEM_TM08
 	compare VAR_RESULT, 0
 	goto_if_eq Common_EventScript_BagIsFull
+gTMText_5::
 	msgbox DewfordTown_Gym_Text_ExplainBulkUp, MSGBOX_DEFAULT
 	setflag FLAG_RECEIVED_TM08
 	return

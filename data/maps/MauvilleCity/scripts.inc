@@ -441,6 +441,7 @@ MauvilleCity_EventScript_BegunNewMauville:: @ 81DF77A
 	end
 
 MauvilleCity_EventScript_CompletedNewMauville:: @ 81DF784
+gTMText_7::
 	msgbox MauvilleCity_Text_WattsonThanksTakeTM, MSGBOX_DEFAULT
 	giveitem ITEM_TM24
 	compare VAR_RESULT, FALSE

@@ -32,6 +32,7 @@ RustboroCity_Gym_EventScript_GiveRockTomb:: @ 8212FA4
 	compare VAR_RESULT, FALSE
 	goto_if_eq Common_EventScript_ShowBagIsFull
 	setflag FLAG_RECEIVED_TM39
+gTMText_10::
 	msgbox RustboroCity_Gym_Text_ExplainRockTomb, MSGBOX_DEFAULT
 	release
 	end
