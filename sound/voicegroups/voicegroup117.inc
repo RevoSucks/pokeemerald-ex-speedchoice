@@ -1,7 +1,7 @@
 	.align 2
 voicegroup117:: @ 869A454
 	voice_keysplit_all voicegroup001  @ 869A454
-	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0  @ 869A460
+	voice_keysplit voicegroup005, KeySplitTable1  @ 869AC7C
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0  @ 869A46C
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0  @ 869A478
 	voice_square_2 60, 0, 2, 0, 1, 1, 1  @ 869A484
@@ -17,7 +17,7 @@ voicegroup117:: @ 869A454
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0  @ 869A4FC
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0  @ 869A508
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0  @ 869A514
-	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0  @ 869A520
+	voice_directsound 60, 0, DirectSoundWaveData_sc88pro_organ2, 255, 0, 255, 127  @ 869AD3C
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0  @ 869A52C
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0  @ 869A538
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0  @ 869A544
@@ -73,7 +73,7 @@ voicegroup117:: @ 869A454
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0  @ 869A79C
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0  @ 869A7A8
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0  @ 869A7B4
-	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0  @ 869A7C0
+	voice_directsound 60, 0, DirectSoundWaveData_sc88pro_flute, 255, 127, 231, 127  @ 8677E94
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0  @ 869A7CC
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0  @ 869A7D8
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0  @ 869A7E4
@@ -82,4 +82,3 @@ voicegroup117:: @ 869A454
 	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0  @ 869A808
 	voice_square_2 60, 0, 3, 0, 1, 7, 1  @ 869A814
 	voice_programmable_wave_alt 60, 0, ProgrammableWaveData_86B4850, 0, 7, 15, 2  @ 869A820
-

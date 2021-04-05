@@ -7059,8 +7059,12 @@ u16 GetBattleBGM(void)
             return MUS_VS_TRAINER;
         }
     }
-    else
-        return MUS_VS_WILD;
+    else {
+        if (GetCurrentTimeOfDay() == TIME_NIGHT)
+            return MUS_VS_WILD_NIGHT;
+        else
+            return MUS_VS_WILD;
+    }
 }
 
 void PlayBattleBGM(void)
