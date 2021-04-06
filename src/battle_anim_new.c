@@ -369,7 +369,7 @@ const struct SpriteTemplate gQuickGuardArmImpactTemplate =
     .tileTag = ANIM_TAG_QUICK_GUARD_HAND,
     .paletteTag = ANIM_TAG_QUICK_GUARD_HAND,
     .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gAnims_HandOrFoot,
+    .anims = gAnims_HandsAndFeet,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = AnimBasicFistOrFoot
@@ -437,7 +437,7 @@ const struct SpriteTemplate gQuashArmHitTemplate =
     .tileTag = ANIM_TAG_ASSURANCE_HAND,
     .paletteTag = ANIM_TAG_ASSURANCE_HAND,
     .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gAnims_HandOrFoot,
+    .anims = gAnims_HandsAndFeet,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = AnimStompFoot
@@ -550,7 +550,7 @@ const struct SpriteTemplate gHeartStampSpinningHeartTemplate =
     .tileTag = ANIM_TAG_HEART_STAMP,
     .paletteTag = ANIM_TAG_HEART_STAMP,
     .oam = &gOamData_AffineDouble_ObjNormal_32x32,
-    .anims = gAnims_HandOrFoot,
+    .anims = gAnims_HandsAndFeet,
     .images = NULL,
     .affineAnims = gAffineAnims_SpinningHandOrFoot,
     .callback = AnimSpinningKickOrPunch
@@ -736,7 +736,7 @@ const struct SpriteTemplate gSearingShotEruptionImpactTemplate =
     .tileTag = ANIM_TAG_WARM_ROCK,
     .paletteTag = ANIM_TAG_WARM_ROCK,
     .oam = &gOamData_AffineDouble_ObjNormal_32x32,
-    .anims = gAnims_HandOrFoot,
+    .anims = gAnims_HandsAndFeet,
     .images = NULL,
     .affineAnims = sSpriteAffineAnimTable_SearingShotRock,
     .callback = SpriteCB_SearingShotRock
@@ -2182,7 +2182,7 @@ const struct SpriteTemplate gIceHammerPunchStompTemplate =
     .tileTag = ANIM_TAG_HORSESHOE_SIDE_FIST,
     .paletteTag = ANIM_TAG_HORSESHOE_SIDE_FIST,
     .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gAnims_HandOrFoot,
+    .anims = gAnims_HandsAndFeet,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = AnimStompFoot
@@ -2250,7 +2250,7 @@ const struct SpriteTemplate gHighHorsepowerHorseshoeTemplate =
     .tileTag = ANIM_TAG_HORSESHOE_SIDE_FIST,
     .paletteTag = ANIM_TAG_HORSESHOE_SIDE_FIST,
     .oam = &gOamData_AffineDouble_ObjNormal_32x32,
-    .anims = gAnims_HandOrFoot,
+    .anims = gAnims_HandsAndFeet,
     .images = NULL,
     .affineAnims = gAffineAnims_MegaPunchKick,
     .callback = AnimSpinningKickOrPunch
@@ -2819,7 +2819,7 @@ const struct SpriteTemplate gTropKickGreenFootTemplate =
     .tileTag = ANIM_TAG_HANDS_AND_FEET,
     .paletteTag = ANIM_TAG_HANDS_AND_FEET,
     .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gAnims_HandOrFoot,
+    .anims = gAnims_HandsAndFeet,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = AnimJumpKick
@@ -3743,7 +3743,7 @@ const struct SpriteTemplate gClangorousSoulRedFistTemplate =
     .tileTag = ANIM_TAG_HORSESHOE_SIDE_FIST,
     .paletteTag = ANIM_TAG_VERTICAL_HEX,
     .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gAnims_HandOrFoot,
+    .anims = gAnims_HandsAndFeet,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = AnimJumpKick
@@ -4143,7 +4143,7 @@ const struct SpriteTemplate gAllOutPummelingOnslaughtSpriteTemplate =
     .tileTag = ANIM_TAG_HANDS_AND_FEET,
     .paletteTag = ANIM_TAG_IMPACT,
     .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gAnims_HandOrFoot,
+    .anims = gAnims_HandsAndFeet,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = AnimJumpKick
@@ -4182,6 +4182,38 @@ const struct SpriteTemplate gAcidDownpourReversalSpriteTemplate =
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = AnimReversalOrb
 };
+
+static void SpriteCB_CentredSpiderWeb(struct Sprite* sprite)
+{
+    u8 battler;
+
+    if (gBattleAnimArgs[0] == 0)
+    {
+        sprite->pos1.x = GetBattlerSpriteCoord(gBattleAnimAttacker, 2);
+        sprite->pos1.y = GetBattlerSpriteCoord(gBattleAnimAttacker, 3);
+        battler = gBattleAnimTarget;
+        sprite->oam.priority = GetBattlerSpriteBGPriority(gBattleAnimAttacker);
+    }
+    else
+    {
+        battler = gBattleAnimAttacker;
+        sprite->oam.priority = GetBattlerSpriteBGPriority(gBattleAnimTarget);
+    }
+
+    if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_OPPONENT)
+        StartSpriteAffineAnim(sprite, 1);
+
+    sprite->data[0] = 16;
+    sprite->data[1] = sprite->pos1.x;
+    sprite->data[2] = GetBattlerSpriteCoord(battler, 2);
+    sprite->data[3] = sprite->pos1.y;
+    sprite->data[4] = GetBattlerSpriteCoord(battler, 3);
+
+    InitAnimLinearTranslation(sprite);
+    StoreSpriteCallbackInData6(sprite, DestroyAnimSprite);
+    sprite->callback = AnimTranslateLinear_WaitEnd;
+}
+
 const struct SpriteTemplate gAcidDownpourAuraSpriteTemplate = 
 {
     .tileTag = ANIM_TAG_POISON_BUBBLE,
@@ -5042,7 +5074,7 @@ const struct SpriteTemplate gTargetTwinkleSpriteTemplate =
     .tileTag = ANIM_TAG_SPARKLE_4,
     .paletteTag = ANIM_TAG_SPARKLE_4,
     .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gSpriteAnimTable_853EE80,
+    .anims = sAnims_SpinningSparkle,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCB_TwinkleOnBattler
@@ -5098,7 +5130,7 @@ const struct SpriteTemplate gTwinkleTackleTwinkleSpriteTemplate =
     .tileTag = ANIM_TAG_SPARKLE_4,
     .paletteTag = ANIM_TAG_SPARKLE_4,
     .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gSpriteAnimTable_853EE80,
+    .anims = sAnims_SpinningSparkle,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCB_TwinkleOnBattler
@@ -5488,7 +5520,7 @@ const struct SpriteTemplate gPulverizingPancakeRedDetectSpriteTemplate =
     .tileTag = ANIM_TAG_SPARKLE_4,
     .paletteTag = ANIM_TAG_VERTICAL_HEX,
     .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gSpriteAnimTable_853EE80,
+    .anims = sAnims_SpinningSparkle,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = AnimSpinningSparkle
@@ -6052,7 +6084,7 @@ const struct SpriteTemplate gSnuggleForeverEyesSpriteTemplate =
     .tileTag = ANIM_TAG_SPARKLE_4,
     .paletteTag = ANIM_TAG_VERTICAL_HEX,
     .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gSpriteAnimTable_853EE80,
+    .anims = sAnims_SpinningSparkle,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = AnimSpinningSparkle
@@ -6428,7 +6460,7 @@ const struct SpriteTemplate gSoulStealBlueFistSpriteTemplate =
     .tileTag = ANIM_TAG_HANDS_AND_FEET,
     .paletteTag = ANIM_TAG_ICE_CRYSTALS,
     .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gAnims_HandOrFoot,
+    .anims = gAnims_HandsAndFeet,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = AnimJumpKick
@@ -6845,9 +6877,10 @@ static void SpriteCB_GrowingSuperpower(struct Sprite *sprite)
 
     InitAnimLinearTranslation(sprite);
     StoreSpriteCallbackInData6(sprite, DestroyAnimSprite);
-    sprite->callback = sub_80A6F98;
+    sprite->callback = AnimTranslateLinear_WaitEnd;
 }
 
+/*
 static void SpriteCB_CentredSpiderWeb(struct Sprite* sprite)
 {
     if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
@@ -6857,6 +6890,7 @@ static void SpriteCB_CentredSpiderWeb(struct Sprite* sprite)
 
     sprite->callback = AnimSpiderWeb;
 }
+*/
 
 static void SpriteCB_CoreEnforcerHits(struct Sprite* sprite)
 {
