@@ -45,6 +45,9 @@
 #include "constants/songs.h"
 #include "union_room.h"
 #include "constants/rgb.h"
+#include "window.h"
+#include "constants/day_night.h"
+#include "day_night.h"
 
 // Menu actions
 enum
@@ -137,6 +140,7 @@ static void Task_WaitForBattleTowerLinkSave(u8 taskId);
 static bool8 FieldCB_ReturnToFieldStartMenu(void);
 
 static const struct WindowTemplate sSafariBallsWindowTemplate = {0, 1, 1, 9, 4, 0xF, 8};
+static const struct WindowTemplate sStartMenuTimeWindowTemplate = {0, 1, 1, 9, 4, 0xF, 8};
 
 static const u8* const sPyramidFloorNames[] =
 {
@@ -374,6 +378,38 @@ static void ShowSafariBallsWindow(void)
     CopyWindowToVram(sSafariBallsWindowId, 2);
 }
 
+EWRAM_DATA u8 sStartMenuTimeWindowId = 0;
+
+const u8 gText_TimeDisplay[] = _("TIME OF DAY:\n{STR_VAR_1}");
+const u8 gText_TimeOfDay_Morning[] = _("MORNING");
+const u8 gText_TimeOfDay_Day[] = _("DAY");
+const u8 gText_TimeOfDay_Night[] = _("NIGHT");
+
+static void ShowTimeWindow(void)
+{
+    sStartMenuTimeWindowId = AddWindow(&sSafariBallsWindowTemplate);
+    PutWindowTilemap(sStartMenuTimeWindowId);
+    DrawStdWindowFrame(sStartMenuTimeWindowId, FALSE);
+    // Buffer time period into gStringVar1.
+    switch(GetCurrentTimeOfDay()) {
+        case TIME_MORNING:
+        default:
+            StringCopy(gStringVar1, gText_TimeOfDay_Morning);
+            break;
+        case TIME_DAY:
+            StringCopy(gStringVar1, gText_TimeOfDay_Day);
+            break;
+        case TIME_NIGHT:
+            StringCopy(gStringVar1, gText_TimeOfDay_Night);
+            break;
+    }
+    // Buffer the string and its placeholders.
+    StringExpandPlaceholders(gStringVar4, gText_TimeDisplay);
+    // Load string into window.
+    AddTextPrinterParameterized(sStartMenuTimeWindowId, 1, gStringVar4, 0, 1, 0xFF, NULL);
+    CopyWindowToVram(sStartMenuTimeWindowId, 2);
+}
+
 static void ShowPyramidFloorWindow(void)
 {
     if (gSaveBlock2Ptr->frontier.curChallengeBattleNum == 7)
@@ -396,6 +432,9 @@ static void RemoveExtraStartMenuWindows(void)
         ClearStdWindowAndFrameToTransparent(sSafariBallsWindowId, FALSE);
         CopyWindowToVram(sSafariBallsWindowId, 2);
         RemoveWindow(sSafariBallsWindowId);
+        ClearStdWindowAndFrameToTransparent(sStartMenuTimeWindowId, FALSE);
+        CopyWindowToVram(sStartMenuTimeWindowId, 2);        
+        RemoveWindow(sStartMenuTimeWindowId);
     }
     if (InBattlePyramid())
     {
@@ -435,6 +474,8 @@ static bool32 PrintStartMenuActions(s8 *pIndex, u32 count)
     return FALSE;
 }
 
+extern u8 GetStartMenuTimeWindowId(void);
+
 static bool32 InitStartMenuStep(void)
 {
     s8 state = sInitStartMenuData[0];
@@ -451,6 +492,7 @@ static bool32 InitStartMenuStep(void)
     case 2:
         LoadMessageBoxAndBorderGfx();
         DrawStdWindowFrame(sub_81979C4(sNumStartMenuActions), FALSE);
+        ShowTimeWindow();
         sInitStartMenuData[1] = 0;
         sInitStartMenuData[0]++;
         break;
@@ -468,6 +510,7 @@ static bool32 InitStartMenuStep(void)
     case 5:
         sStartMenuCursorPos = sub_81983AC(GetStartMenuWindowId(), 1, 0, 9, 16, sNumStartMenuActions, sStartMenuCursorPos);
         CopyWindowToVram(GetStartMenuWindowId(), TRUE);
+        CopyWindowToVram(GetStartMenuTimeWindowId(), TRUE);
         return TRUE;
     }
 
@@ -933,9 +976,12 @@ static bool8 SaveErrorTimer(void)
     return FALSE;
 }
 
+extern u8 GetStartMenuTimeWindowId(void);
+
 static u8 SaveConfirmSaveCallback(void)
 {
     ClearStdWindowAndFrame(GetStartMenuWindowId(), FALSE);
+    ClearStdWindowAndFrame(GetStartMenuTimeWindowId(), FALSE);
     RemoveStartMenuWindow();
     ShowSaveInfoWindow();
 
@@ -1124,6 +1170,7 @@ static void InitBattlePyramidRetire(void)
 static u8 BattlePyramidConfirmRetireCallback(void)
 {
     ClearStdWindowAndFrame(GetStartMenuWindowId(), FALSE);
+    ClearStdWindowAndFrame(GetStartMenuTimeWindowId(), FALSE);
     RemoveStartMenuWindow();
     ShowSaveMessage(gText_BattlePyramidConfirmRetire, BattlePyramidRetireYesNoCallback);
 
@@ -1379,6 +1426,7 @@ void SaveForBattleTowerLink(void)
 static void HideStartMenuWindow(void)
 {
     ClearStdWindowAndFrame(GetStartMenuWindowId(), TRUE);
+    ClearStdWindowAndFrame(GetStartMenuTimeWindowId(), FALSE);
     RemoveStartMenuWindow();
     ScriptUnfreezeObjectEvents();
     ScriptContext2_Disable();

@@ -497,9 +497,16 @@ u8 sub_81979C4(u8 a1)
     return sStartMenuWindowId;
 }
 
+extern u8 sStartMenuTimeWindowId;
+
 u8 GetStartMenuWindowId(void)
 {
     return sStartMenuWindowId;
+}
+
+u8 GetStartMenuTimeWindowId(void)
+{
+    return sStartMenuTimeWindowId;
 }
 
 void RemoveStartMenuWindow(void)
@@ -508,6 +515,11 @@ void RemoveStartMenuWindow(void)
     {
         RemoveWindow(sStartMenuWindowId);
         sStartMenuWindowId = 0xFF;
+    }
+    if (sStartMenuTimeWindowId != 0xFF)
+    {
+        RemoveWindow(sStartMenuTimeWindowId);
+        sStartMenuTimeWindowId = 0xFF;
     }
 }
 
