@@ -431,6 +431,8 @@ static const u8 sText_ExclamationMark4[] = _("!");
 static const u8 sText_ExclamationMark5[] = _("!");
 static const u8 sText_Accuracy[] = _("accuracy");
 static const u8 sText_Evasiveness[] = _("evasiveness");
+static const u8 sText_PkmnTookTargetHigh[] = _("{B_ATK_NAME_WITH_PREFIX} took {B_DEF_NAME_WITH_PREFIX}\ninto the air!");
+static const u8 sText_TargetTooHeavy[] = _("But the target\nwas too heavy!");
 
 const u8 * const gStatNamesTable[NUM_BATTLE_STATS] =
 {
@@ -1270,6 +1272,8 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_COMATOSEENTERS - 12] = sText_ComatoseActivates,
     [STRINGID_SCREENCLEANERENTERS - 12] = sText_ScreenCleanerActivates,
     [STRINGID_TERRAINREMOVED - 12] = sText_TerrainReturnedToNormal,
+    [STRINGID_PKMNTOOKTARGETHIGH - 12] = sText_PkmnTookTargetHigh,
+    [STRINGID_TARGETTOOHEAVY - 12] = sText_TargetTooHeavy,
 };
 
 const u16 gZEffectStringIds[] = 
@@ -1438,6 +1442,7 @@ const u16 gFirstTurnOfTwoStringIds[] =
     STRINGID_VANISHEDINSTANTLY,         // MOVE_PHANTOM_FORCE
     STRINGID_PKNMABSORBINGPOWER,        // MOVE_GEOMANCY
     STRINGID_CLOAKEDINAFREEZINGLIGHT,   // MOVE_FREEZE_SHOCK
+    STRINGID_PKMNTOOKTARGETHIGH,        // MOVE_SKY_DROP
 };
 
 // Index copied from move's index in gTrappingMoves

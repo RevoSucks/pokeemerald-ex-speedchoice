@@ -24,8 +24,8 @@
 #include "constants/songs.h"
 
 #define VERSION_BANNER_RIGHT_TILEOFFSET 64
-#define VERSION_BANNER_LEFT_X 94 // SPEEDCHOICE CHANGE: Version gfx edit, left 4 pixels
-#define VERSION_BANNER_RIGHT_X 158 // same here
+#define VERSION_BANNER_LEFT_X 88 // SPEEDCHOICE CHANGE: Version gfx edit, left 4 pixels
+#define VERSION_BANNER_RIGHT_X 152 // same here
 #define VERSION_BANNER_Y 2
 #define VERSION_BANNER_Y_GOAL 68 // SPEEDCHOICE CHANGE: down 2 pixels
 #define START_BANNER_X 128

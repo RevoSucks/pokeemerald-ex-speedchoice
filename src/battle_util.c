@@ -1199,6 +1199,20 @@ void CancelMultiTurnMoves(u8 battler)
 
     gStatuses3[battler] &= ~(STATUS3_SEMI_INVULNERABLE);
 
+    // Check to see if this Pokemon was in the middle of Sky Drop. If so, release the target.
+    if (gBattleStruct->skyDropTargets[0] - 4 == battler)
+    {
+        gStatuses3[gBattleStruct->skyDropTargets[1]] &= ~STATUS3_SKY_DROPPED;
+        gBattleMons[gBattleStruct->skyDropTargets[1]].status2 &= ~STATUS2_ESCAPE_PREVENTION;
+        gBattleStruct->skyDropTargets[0] = 0;
+    }
+    else if (gBattleStruct->skyDropTargets[2] - 4 == battler)
+    {
+        gStatuses3[gBattleStruct->skyDropTargets[3]] &= ~STATUS3_SKY_DROPPED;
+        gBattleMons[gBattleStruct->skyDropTargets[3]].status2 &= ~STATUS2_ESCAPE_PREVENTION;
+        gBattleStruct->skyDropTargets[2] = 0;
+    }
+
     gDisableStructs[battler].rolloutTimer = 0;
     gDisableStructs[battler].furyCutterCounter = 0;
 }
@@ -2874,6 +2888,7 @@ static bool32 IsThawingMove(u8 battlerId, u16 move)
 enum
 {
     CANCELLER_FLAGS,
+    CANCELLER_SKY_DROP,
     CANCELLER_ASLEEP,
     CANCELLER_FROZEN,
     CANCELLER_TRUANT,
@@ -2909,6 +2924,16 @@ u8 AtkCanceller_UnableToUseMove(void)
         case CANCELLER_FLAGS: // flags clear
             gBattleMons[gBattlerAttacker].status2 &= ~(STATUS2_DESTINY_BOND);
             gStatuses3[gBattlerAttacker] &= ~(STATUS3_GRUDGE);
+            gBattleStruct->atkCancellerTracker++;
+            break;
+        case CANCELLER_SKY_DROP:
+            // If Pokemon has STATUS3_SKY_DROPPED
+            if ((gStatuses3[gBattlerAttacker] & STATUS3_ON_AIR) && (gStatuses3[gBattlerAttacker] & STATUS3_UNDERGROUND))
+            {
+                gBattlescriptCurrInstr = BattleScript_MoveEnd;
+                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                effect = 1;
+            }
             gBattleStruct->atkCancellerTracker++;
             break;
         case CANCELLER_ASLEEP: // check being asleep
@@ -4484,7 +4509,9 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u16 ability, u8 special, u16 move
              && (gMultiHitCounter == 0 || gMultiHitCounter == 1)
              && !(GetBattlerAbility(gBattlerAttacker) == ABILITY_SHEER_FORCE && gBattleMoves[gCurrentMove].flags & FLAG_SHEER_FORCE_BOOST)
              && (CanBattlerSwitch(battler) || !(gBattleTypeFlags & BATTLE_TYPE_TRAINER))
-             && !(gBattleTypeFlags & BATTLE_TYPE_ARENA))
+             && !(gBattleTypeFlags & BATTLE_TYPE_ARENA)
+             // Not currently held by Sky Drop
+             && !(gStatuses3[battler] & STATUS3_ON_AIR && gStatuses3[battler] & STATUS3_UNDERGROUND))
             {
                 gBattleResources->flags->flags[battler] |= RESOURCE_FLAG_EMERGENCY_EXIT;
                 effect++;
@@ -7909,7 +7936,11 @@ static u16 CalcTypeEffectivenessMultiplierInternal(u16 move, u8 moveType, u8 bat
 
     if (moveType == TYPE_GROUND && !IsBattlerGrounded(battlerDef))
     {
-        modifier = UQ_4_12(0.0);
+        if (move == MOVE_THOUSAND_ARROWS)
+            modifier = UQ_4_12(1.0);
+        else
+            modifier = UQ_4_12(0.0);
+
         if (recordAbilities && GetBattlerAbility(battlerDef) == ABILITY_LEVITATE)
         {
             gLastUsedAbility = ABILITY_LEVITATE;

@@ -367,6 +367,37 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectSleepHit
 	.4byte BattleScript_EffectExtremeEvoboost
 	.4byte BattleScript_EffectTerrainHit
+    .4byte BattleScript_EffectSkyDrop
+
+BattleScript_EffectSkyDrop:
+	jumpifstatus2 BS_ATTACKER, STATUS2_MULTIPLETURNS, BattleScript_SkyDropTurn2
+	attackcanceler
+	ppreduce
+	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
+	jumpifsubstituteblocks BattleScript_ButItFailed
+	jumpifunder200 BS_TARGET, BattleScript_SkyDropWork
+	attackstring
+	printstring STRINGID_TARGETTOOHEAVY
+	waitmessage 0x40
+	goto BattleScript_MoveEnd
+
+BattleScript_SkyDropWork:
+	setskydrop
+	setbyte sTWOTURN_STRINGID, 11
+	setsemiinvulnerablebit
+	call BattleScriptFirstChargingTurn
+	goto BattleScript_MoveEnd
+BattleScript_SkyDropTurn2:
+	attackcanceler
+	setmoveeffect MOVE_EFFECT_CHARGING
+	setbyte sB_ANIM_TURN, 0x1
+	clearstatusfromeffect BS_ATTACKER
+	orword gHitMarker, HITMARKER_NO_PPDEDUCT
+	argumenttomoveeffect
+	clearsemiinvulnerablebit
+	clearskydrop
+	attackstring
+	goto BattleScript_HitFromCritCalc
 
 BattleScript_EffectSleepHit:
 	setmoveeffect MOVE_EFFECT_SLEEP

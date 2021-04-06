@@ -171,6 +171,9 @@
 #define VARIOUS_TOTEM_BOOST                     103
 #define VARIOUS_TRY_ACTIVATE_GRIM_NEIGH         104
 #define VARIOUS_SET_Z_EFFECT                    105
+#define VARIOUS_JUMP_IF_UNDER_200               106
+#define VARIOUS_SET_SKY_DROP                    107
+#define VARIOUS_CLEAR_SKY_DROP                  108
 
 // Cmd_manipulatedamage
 #define DMG_CHANGE_SIGN            0
