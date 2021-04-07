@@ -400,6 +400,14 @@
 #define MAP_TERRA_CAVE_END                           (105 | (24 << 8))
 #define MAP_ALTERING_CAVE                            (106 | (24 << 8))
 #define MAP_METEOR_FALLS_STEVENS_CAVE                (107 | (24 << 8))
+#define MAP_ALTERING_CAVE_SUB_CAVE1                  (108 | (24 << 8))
+#define MAP_ALTERING_CAVE_SUB_CAVE2                  (109 | (24 << 8))
+#define MAP_ALTERING_CAVE_SUB_CAVE3                  (110 | (24 << 8))
+#define MAP_ALTERING_CAVE_SUB_CAVE4                  (111 | (24 << 8))
+#define MAP_ALTERING_CAVE_SUB_CAVE5                  (112 | (24 << 8))
+#define MAP_ALTERING_CAVE_SUB_CAVE6                  (113 | (24 << 8))
+#define MAP_ALTERING_CAVE_SUB_CAVE7                  (114 | (24 << 8))
+#define MAP_ALTERING_CAVE_SUB_CAVE8                  (115 | (24 << 8))
 
 // Map Group 25
 #define MAP_SECRET_BASE_RED_CAVE1    (0 | (25 << 8))
