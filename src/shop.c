@@ -39,6 +39,7 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 #include "constants/tv.h"
+#include "done_button.h"
 
 #define TAG_SCROLL_ARROW   2100
 #define TAG_ITEM_ICON_BASE 2110
@@ -1088,6 +1089,7 @@ static void BuyMenuSubtractMoney(u8 taskId)
 {
     IncrementGameStat(GAME_STAT_SHOPPED);
     RemoveMoney(&gSaveBlock1Ptr->money, sShopData->totalCost);
+    TryAddButtonStatBy(DB_MONEY_SPENT, sShopData->totalCost);
     PlaySE(SE_SHOP);
     PrintMoneyAmountInMoneyBox(0, GetMoney(&gSaveBlock1Ptr->money), 0);
 
@@ -1200,6 +1202,7 @@ static void RecordItemPurchase(u8 taskId)
         gMartPurchaseHistory[sPurchaseHistoryId].quantity = tItemCount;
         sPurchaseHistoryId++;
     }
+    TryAddButtonStatBy(DB_ITEMS_BOUGHT, tItemCount);
 }
 
 #undef tItemCount

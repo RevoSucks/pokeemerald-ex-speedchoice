@@ -2,7 +2,7 @@ RustboroCity_Gym_MapScripts:: @ 8212F30
 	.byte 0
 
 RustboroCity_Gym_EventScript_Roxanne:: @ 8212F31
-	trainerbattle_single TRAINER_ROXANNE_1, RustboroCity_Gym_Text_RoxanneIntro, RustboroCity_Gym_Text_RoxanneDefeat, RustboroCity_Gym_EventScript_RoxanneDefeated, NO_MUSIC
+	trainerbattle_single TRAINER_ROXANNE_NERFED, RustboroCity_Gym_Text_RoxanneIntro, RustboroCity_Gym_Text_RoxanneDefeat, RustboroCity_Gym_EventScript_RoxanneDefeated, NO_MUSIC
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	compare VAR_RESULT, TRUE
 	goto_if_eq RustboroCity_Gym_EventScript_RoxanneRematch
@@ -28,6 +28,41 @@ RustboroCity_Gym_EventScript_RoxanneDefeated:: @ 8212F66
 	end
 
 RustboroCity_Gym_EventScript_GiveRockTomb:: @ 8212FA4
+	checkspeedchoice PLOTLESS, PLOT_KEEP
+	goto_if TRUE, RoxanneNoAqualess
+	checkspeedchoice PLOTLESS, PLOT_SEMI
+	goto_if TRUE, RoxanneNoAqualess
+	giveitem ITEM_LETTER
+	@ give pokenav
+	message RustboroCity_DevonCorp_3F_Text_ReceivedPokenav
+	waitfanfare
+	setflag FLAG_SYS_POKENAV_GET
+	setflag FLAG_RECEIVED_POKENAV
+	setflag FLAG_HIDE_RUSTBORO_CITY_POKEMON_SCHOOL_SCOTT
+	setflag FLAG_HAS_MATCH_CALL
+	setflag FLAG_ADDED_MATCH_CALL_TO_POKENAV
+	@ complete the pokenav tutorial
+	setflag FLAG_HIDE_RUSTBORO_CITY_SCIENTIST
+	setvar VAR_RUSTBORO_CITY_STATE, 7
+	@ move plot events up to the museum
+	setflag FLAG_RETURNED_DEVON_GOODS
+	setflag FLAG_HIDE_RUSTBORO_CITY_DEVON_EMPLOYEE_1
+	setvar VAR_RUSTBORO_CITY_STATE, 5 @ i forget why I initially set it to 7 then to 5...
+	setflag 2050 @ get rid of first roxanne rematch
+	setflag FLAG_RECEIVED_POKENAV
+	clearflag FLAG_DEVON_GOODS_STOLEN
+	setflag FLAG_RECOVERED_DEVON_GOODS
+	setvar VAR_BRINEY_HOUSE_STATE, 1
+	setflag FLAG_HIDE_ROUTE_116_WANDAS_BOYFRIEND
+	clearflag FLAG_HIDE_RUSTURF_TUNNEL_WANDAS_BOYFRIEND
+	clearflag FLAG_HIDE_RUSTURF_TUNNEL_WANDA
+	clearflag FLAG_HIDE_BRINEYS_HOUSE_MR_BRINEY	
+	clearflag FLAG_HIDE_BRINEYS_HOUSE_PEEKO
+	setvar VAR_BRINEY_LOCATION, 1
+	clearflag FLAG_HIDE_RUSTBORO_CITY_RIVAL
+	setvar VAR_DEVON_CORP_3F_STATE, 1
+
+RoxanneNoAqualess::
 	giveitem ITEM_TM39
 	compare VAR_RESULT, FALSE
 	goto_if_eq Common_EventScript_ShowBagIsFull

@@ -81,6 +81,22 @@ MtChimney_EventScript_Maxie:: @ 822EE0B
 	clearflag FLAG_HIDE_FALLARBOR_HOUSE_PROF_COZMO
 	setflag FLAG_HIDE_METEOR_FALLS_1F_1R_COZMO
 	clearflag FLAG_HIDE_MT_CHIMNEY_LAVA_COOKIE_LADY
+	@ we only need to do this for Semi, since the player can do gym 5 on Early Surf, and thus use the Weather Institute early.
+	checkspeedchoice PLOTLESS, PLOT_SEMI
+	goto_if FALSE, AfterChimney
+	setvar VAR_WEATHER_INSTITUTE_STATE, 2
+	setflag FLAG_HIDE_ROUTE_119_TEAM_AQUA
+	clearflag FLAG_HIDE_WEATHER_INSTITUTE_1F_WORKERS
+	setflag FLAG_HIDE_WEATHER_INSTITUTE_2F_WORKERS
+    @ magma chamber fix
+    setvar VAR_JAGGED_PASS_STATE, 2
+    setflag FLAG_HIDE_MAGMA_HIDEOUT_GRUNTS
+    setflag FLAG_HIDE_MAGMA_HIDEOUT_4F_GROUDON_1
+    setflag FLAG_HIDE_MAGMA_HIDEOUT_4F_GROUDON_2
+    setflag FLAG_HIDE_JAGGED_PASS_MAGMA_GUARD
+    @ make old man disappear for sootopolis
+    setflag FLAG_HIDE_CAVE_OF_ORIGIN_B1F_WALLACE @ also hides the expert as a hack
+AfterChimney::
 	releaseall
 	end
 

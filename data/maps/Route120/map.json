@@ -412,7 +412,7 @@
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "Route120_EventScript_BridgeKecleon",
+      "script": "0",
       "flag": "FLAG_HIDE_ROUTE_120_KECLEON_BRIDGE"
     },
     {
@@ -596,6 +596,19 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "Route120_EventScript_ItemRevive",
       "flag": "FLAG_ITEM_ROUTE_120_REVIVE"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_KECLEON",
+      "x": 12,
+      "y": 15,
+      "elevation": 4,
+      "movement_type": "MOVEMENT_TYPE_INVISIBLE",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "NULL",
+      "flag": "FLAG_HIDE_ROUTE_120_KECLEON_BRIDGE"
     }
   ],
   "warp_events": [

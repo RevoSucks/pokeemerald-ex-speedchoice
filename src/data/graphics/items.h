@@ -1630,3 +1630,5 @@ const u32 gItemIconPalette_TapuniumZ[] = INCBIN_U32("graphics/items/icon_palette
 const u32 gItemIcon_UltranecroziumZ[] = INCBIN_U32("graphics/items/icons/ultranecrozium_z.4bpp.lz");
 const u32 gItemIconPalette_UltranecroziumZ[] = INCBIN_U32("graphics/items/icon_palettes/ultranecrozium_z.gbapal.lz");
 
+const u32 gItemIcon_DoneButton[] = INCBIN_U32("graphics/items/icons/done_button.4bpp.lz");
+const u32 gItemIconPalette_DoneButton[] = INCBIN_U32("graphics/items/icon_palettes/done_button.gbapal.lz");

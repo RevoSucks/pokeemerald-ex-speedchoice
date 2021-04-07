@@ -25,6 +25,7 @@
 #include "trainer_hill.h"
 #include "debug.h"
 #include "constants/rgb.h"
+#include "done_button.h"
 
 static void VBlankIntr(void);
 static void HBlankIntr(void);
@@ -82,6 +83,7 @@ static void ReadKeys(void);
 void InitIntrHandlers(void);
 static void WaitForVBlank(void);
 void EnableVCountIntrAtLine150(void);
+void DoFrameTimers(void);
 
 #define B_START_SELECT (B_BUTTON | START_BUTTON | SELECT_BUTTON)
 
@@ -157,8 +159,28 @@ void AgbMain()
         }
 
         PlayTimeCounter_Update();
+        DoFrameTimers();
         MapMusicMain();
         WaitForVBlank();
+    }
+}
+
+void DoFrameTimers(void)
+{
+    if(gFrameTimers.frameCount != 0xFFFFFFFF)
+        gFrameTimers.frameCount++;
+    if(sInField && gFrameTimers.owFrameCount != 0xFFFFFFFF)
+        gFrameTimers.owFrameCount++;
+    else if(sInBattle && gFrameTimers.battleFrameCount != 0xFFFFFFFF)
+        gFrameTimers.battleFrameCount++;
+    else if(sInIntro && gFrameTimers.introsFrameCount != 0xFFFFFFFF)
+        gFrameTimers.introsFrameCount++;
+    else if(sInSubMenu && gFrameTimers.menuFrameCount != 0xFFFFFFFF)
+        gFrameTimers.menuFrameCount++;
+    else if(!sInField && !sInBattle && !sInIntro && !sInSubMenu) // no category detected, we consider this a menu frame. (between menu transitions?)
+    {
+        if (gFrameTimers.menuFrameCount != 0xFFFFFFFF)
+            gFrameTimers.menuFrameCount++;
     }
 }
 

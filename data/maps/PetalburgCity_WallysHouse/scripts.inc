@@ -21,8 +21,15 @@ PetalburgCity_WallysHouse_OnFrame: @ 8204247
 PetalburgCity_WallysHouse_EventScript_GiveHM03Surf:: @ 8204251
 	lockall
 	msgbox PetalburgCity_WallysHouse_Text_PleaseExcuseUs, MSGBOX_DEFAULT
+	checkspeedchoice EARLYSURF, SURF_ON
+	goto_if TRUE, Speedchoice_EarlySurf
 	giveitem ITEM_HM03
 	setflag FLAG_RECEIVED_HM03
+	goto AfterEarlySurf
+Speedchoice_EarlySurf::
+	giveitem ITEM_HM04
+	setflag FLAG_RECEIVED_HM04
+AfterEarlySurf::
 	msgbox PetalburgCity_WallysHouse_Text_SurfGoAllSortsOfPlaces, MSGBOX_DEFAULT
 	setvar VAR_PETALBURG_CITY_STATE, 5
 	releaseall

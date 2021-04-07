@@ -68,8 +68,15 @@ RusturfTunnel_EventScript_ClearTunnelScene:: @ 822CEAE
 	call_if_eq RusturfTunnel_EventScript_WandasBoyfriendApproachPlayer
 	compare VAR_TEMP_1, 3
 	call_if_eq RusturfTunnel_EventScript_WandasBoyfriendApproachPlayer
+	checkspeedchoice EARLYSURF, SURF_ON
+	goto_if TRUE, Speedchoice_EarlySurf2
 	giveitem ITEM_HM04
 	setflag FLAG_RECEIVED_HM04
+	goto AfterEarlySurf2
+Speedchoice_EarlySurf2::
+	giveitem ITEM_HM03
+	setflag FLAG_RECEIVED_HM03
+AfterEarlySurf2::
 	msgbox RusturfTunnel_Text_ExplainStrength, MSGBOX_DEFAULT
 	closemessage
 	compare VAR_TEMP_1, 1

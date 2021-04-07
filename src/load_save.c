@@ -13,6 +13,7 @@
 #include "gba/flash_internal.h"
 #include "decoration_inventory.h"
 #include "agb_flash.h"
+#include "done_button.h"
 
 static void ApplyNewEncryptionKeyToAllEncryptedData(u32 encryptionKey);
 
@@ -201,12 +202,33 @@ void SaveSerializedGame(void)
 {
     SavePlayerParty();
     SaveObjectEvents();
+    
+    // ---------------------
+    // SPEEDCHOICE CHANGE
+    // ---------------------
+    // Save the timers here.
+    gSaveBlock1Ptr->doneButtonStats.frameCount = gFrameTimers.frameCount;
+    gSaveBlock1Ptr->doneButtonStats.owFrameCount = gFrameTimers.owFrameCount;
+    gSaveBlock1Ptr->doneButtonStats.battleFrameCount = gFrameTimers.battleFrameCount;
+    gSaveBlock1Ptr->doneButtonStats.menuFrameCount = gFrameTimers.menuFrameCount;
+    gSaveBlock1Ptr->doneButtonStats.introsFrameCount = gFrameTimers.introsFrameCount;
 }
 
 void LoadSerializedGame(void)
 {
     LoadPlayerParty();
     LoadObjectEvents();
+
+    // ---------------------
+    // SPEEDCHOICE CHANGE
+    // ---------------------
+    // Load the timers here. Note we don't overwrite them: we add the counts to the total
+    // timers since we want to include the intro counts it took to reach the load.
+    gFrameTimers.frameCount += gSaveBlock1Ptr->doneButtonStats.frameCount;
+    gFrameTimers.owFrameCount += gSaveBlock1Ptr->doneButtonStats.owFrameCount;
+    gFrameTimers.battleFrameCount += gSaveBlock1Ptr->doneButtonStats.battleFrameCount;
+    gFrameTimers.menuFrameCount += gSaveBlock1Ptr->doneButtonStats.menuFrameCount;
+    gFrameTimers.introsFrameCount += gSaveBlock1Ptr->doneButtonStats.introsFrameCount;
 }
 
 void LoadPlayerBag(void)

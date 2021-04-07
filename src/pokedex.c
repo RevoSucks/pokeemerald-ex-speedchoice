@@ -3453,36 +3453,43 @@ static void Task_ExitInfoScreen(u8 taskId)
     }
 }
 
+extern bool32 IsWildMonInCurrentMap(u16 species);
+
 static void Task_LoadAreaScreen(u8 taskId)
 {
     switch (gMain.state)
     {
-    case 0:
-    default:
-        if (!gPaletteFade.active)
+        case 0:
+        default:
+            if (!gPaletteFade.active)
+            {
+                sPokedexView->currentPage = PAGE_AREA;
+                gPokedexVBlankCB = gMain.vblankCallback;
+                SetVBlankCallback(NULL);
+                ResetOtherVideoRegisters(DISPCNT_BG1_ON);
+                sPokedexView->selectedScreen = AREA_SCREEN;
+                gMain.state = 1;
+            }
+            break;
+        case 1:
+            LoadScreenSelectBarSubmenu(0xD);
+            HighlightSubmenuScreenSelectBarItem(0, 0xD);
+            LoadPokedexBgPalette(sPokedexView->isSearchResults);
+            SetGpuReg(REG_OFFSET_BG1CNT, BGCNT_PRIORITY(0) | BGCNT_CHARBASE(0) | BGCNT_SCREENBASE(13) | BGCNT_16COLOR | BGCNT_TXT256x256);
+            gMain.state++;
+            break;
+        case 2:
         {
-            sPokedexView->currentPage = PAGE_AREA;
-            gPokedexVBlankCB = gMain.vblankCallback;
-            SetVBlankCallback(NULL);
-            ResetOtherVideoRegisters(DISPCNT_BG1_ON);
-            sPokedexView->selectedScreen = AREA_SCREEN;
-            gMain.state = 1;
+            u16 species = NationalPokedexNumToSpecies(sPokedexListItem->dexNum);
+            if(IsWildMonInCurrentMap(species))
+                PlaySE(SE_CONTEST_MONS_TURN);
+            ShowPokedexAreaScreen(NationalPokedexNumToSpecies(sPokedexListItem->dexNum), &sPokedexView->screenSwitchState);
+            SetVBlankCallback(gPokedexVBlankCB);
+            sPokedexView->screenSwitchState = 0;
+            gMain.state = 0;
+            gTasks[taskId].func = Task_WaitForAreaScreenInput;
+            break;
         }
-        break;
-    case 1:
-        LoadScreenSelectBarSubmenu(0xD);
-        HighlightSubmenuScreenSelectBarItem(0, 0xD);
-        LoadPokedexBgPalette(sPokedexView->isSearchResults);
-        SetGpuReg(REG_OFFSET_BG1CNT, BGCNT_PRIORITY(0) | BGCNT_CHARBASE(0) | BGCNT_SCREENBASE(13) | BGCNT_16COLOR | BGCNT_TXT256x256);
-        gMain.state++;
-        break;
-    case 2:
-        ShowPokedexAreaScreen(NationalPokedexNumToSpecies(sPokedexListItem->dexNum), &sPokedexView->screenSwitchState);
-        SetVBlankCallback(gPokedexVBlankCB);
-        sPokedexView->screenSwitchState = 0;
-        gMain.state = 0;
-        gTasks[taskId].func = Task_WaitForAreaScreenInput;
-        break;
     }
 }
 

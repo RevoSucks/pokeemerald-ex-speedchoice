@@ -63,6 +63,8 @@
 #include "constants/trainers.h"
 #include "cable_club.h"
 #include "debug.h"
+#include "done_button.h"
+#include "speedchoice.h"
 
 extern struct MusicPlayerInfo gMPlayInfo_SE1;
 extern struct MusicPlayerInfo gMPlayInfo_SE2;
@@ -446,6 +448,9 @@ void CB2_InitBattle(void)
     AllocateBattleSpritesData();
     AllocateMonSpritesGfx();
     RecordedBattle_ClearFrontierPassFlag();
+    sInSubMenu = FALSE;
+    sInField = FALSE;
+    sInBattle = TRUE;
 
     if (gBattleTypeFlags & BATTLE_TYPE_MULTI)
     {
@@ -2482,7 +2487,7 @@ static void SpriteCb_MoveWildMonToRight(struct Sprite *sprite)
 {
     if ((gIntroSlideFlags & 1) == 0)
     {
-        sprite->pos2.x += 2;
+        sprite->pos2.x += 3; // x1.5x SPEEDCHOICE
         if (sprite->pos2.x == 0)
         {
             sprite->callback = SpriteCb_WildMonShowHealthbox;
@@ -2814,12 +2819,30 @@ void BeginBattleIntro(void)
     gBattleMainFunc = DoBattleIntro;
 }
 
+#define BATTLE_SPEED 3
+extern void OpponentHandleHealthBarUpdate(void); // opponent HP Bar (battle_7)
+extern void PlayerHandleHealthBarUpdate(void); // player HP bar
+extern void CompleteOnHealthbarDone(void);
+extern void CompleteOnHealthbarDone2(void);
+
 static void BattleMainCB1(void)
 {
+    u8 i;
     gBattleMainFunc();
 
     for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
-        gBattlerControllerFuncs[gActiveBattler]();
+	{
+		if(gBattlerControllerFuncs[gActiveBattler] == OpponentHandleHealthBarUpdate ||
+		gBattlerControllerFuncs[gActiveBattler] == PlayerHandleHealthBarUpdate || 
+		gBattlerControllerFuncs[gActiveBattler] == CompleteOnHealthbarDone || 
+		gBattlerControllerFuncs[gActiveBattler] == CompleteOnHealthbarDone2)
+		{
+			for(i = 0; i < BATTLE_SPEED; i++)
+				gBattlerControllerFuncs[gActiveBattler]();
+		}
+		else
+			gBattlerControllerFuncs[gActiveBattler]();
+	}
 }
 
 static void BattleStartClearSetData(void)
@@ -4914,6 +4937,7 @@ static void FreeResetData_ReturnToOvOrDoEvolutions(void)
 static void TryEvolvePokemon(void)
 {
     s32 i;
+    bool8 canStopEvo = TRUE;
 
     while (gLeveledUpInBattle != 0)
     {
@@ -4928,11 +4952,18 @@ static void TryEvolvePokemon(void)
                 gLeveledUpInBattle = levelUpBits;
 
                 species = GetEvolutionTargetSpecies(&gPlayerParty[i], EVO_MODE_NORMAL, levelUpBits, SPECIES_NONE);
+
+                // handle forcing evo for speedchoice.
+                if(CheckSpeedchoiceOption(EVO_EVERY_LEVEL, EVO_EV_OFF) == FALSE)
+                    canStopEvo = FALSE;
+                else
+                    canStopEvo = TRUE;
+
                 if (species != SPECIES_NONE)
                 {
                     FreeAllWindowBuffers();
                     gBattleMainFunc = WaitForEvoSceneToFinish;
-                    EvolutionScene(&gPlayerParty[i], species, TRUE, i);
+                    EvolutionScene(&gPlayerParty[i], species, canStopEvo, i);
                     return;
                 }
             }

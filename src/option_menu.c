@@ -79,7 +79,7 @@ static void DrawBgWindowFrames(void);
 
 EWRAM_DATA static bool8 sArrowPressed = FALSE;
 
-static const u16 sOptionMenuText_Pal[] = INCBIN_U16("graphics/misc/option_menu_text.gbapal");
+const u16 sOptionMenuText_Pal[] = INCBIN_U16("graphics/misc/option_menu_text.gbapal");
 // note: this is only used in the Japanese release
 static const u8 sEqualSignGfx[] = INCBIN_U8("graphics/misc/option_menu_equals_sign.4bpp");
 
@@ -139,7 +139,7 @@ static const struct BgTemplate sOptionMenuBgTemplates[] =
    }
 };
 
-static const u16 sOptionMenuBg_Pal[] = {RGB(17, 18, 31)};
+const u16 sOptionMenuBg_Pal[] = {RGB(17, 18, 31)};
 
 // code
 static void MainCB2(void)

@@ -473,6 +473,93 @@ struct RankingHall2P
     u8 language;
 };
 
+struct SpeedchoiceSaveOptions
+{
+    u8 expsystem:2;
+    u8 plotless:2;
+    //u8 instantText:1;
+    u8 spinners:2;
+    u8 maxVision:2;
+    //u8 nerfRoxanne:1;
+    //u8 superbike:1;
+    //u8 newwildencounters:1;
+    u8 earlyfly:1;
+    //u8 runEverywhere:1;
+    //u8 memeIsland:1;
+    //u8 betterMarts:1;
+    u8 goodEarlyWilds:2;
+    u8 earlysurf:1;
+    u8 niceMenuOrder:1;
+    u8 easyFalseSwipe:2;
+    u8 fastCatch:1;
+    //u8 earlyBike:1;
+    //u8 fastEggHatch:1;
+    u8 gen7XItems:1;
+    u8 evoEveryLevel:1;
+};
+
+// The struct has to be split in two because neither chunk of block 1 and 2 has enough room left for the full struct.
+struct DoneButtonStats1
+{
+    u32 frameCount;
+    u32 owFrameCount;
+    u32 battleFrameCount;
+    u32 menuFrameCount;
+    u32 introsFrameCount;
+    u16 saveCount;
+    u16 reloadCount;
+    u16 clockResetCount;
+    u32 stepCount;
+    u32 stepCountWalk;
+    u32 stepCountSurf;
+    u32 stepCountBike;
+    u32 stepCountRun; // Gen 3 exclusive
+    u16 bonks;
+    u32 totalDamageDealt;
+    u32 actualDamageDealt;
+    u32 totalDamageTaken;
+    u32 actualDamageTaken;
+    u16 ownMovesHit;
+    u16 ownMovesMissed;
+    u16 enemyMovesHit;
+    u16 enemyMovesMissed;
+};
+
+struct DoneButtonStats2
+{
+    u16 ownMovesSE;
+    u16 ownMovesNVE;
+    u16 enemyMovesSE;
+    u16 enemyMovesNVE;
+    u16 critsDealt;
+    u16 OHKOsDealt;
+    u16 critsTaken;
+    u16 OHKOsTaken;
+    u32 playerHPHealed;
+    u32 enemyHPHealed;
+    u16 playerPokemonFainted;
+    u16 enemyPokemonFainted;
+    u32 expGained;
+    u16 switchouts;
+    u16 battles;
+    u16 trainerBattles;
+    u16 wildBattles;
+    u16 battlesFled;
+    u16 failedRuns;
+    u32 moneyMade;
+    u32 moneySpent;
+    u32 moneyLost;
+    u16 itemsPickedUp;
+    u16 itemsBought;
+    u16 itemsSold;
+    u16 movesLearnt;
+    u16 ballsThrown;
+    u16 pokemonCaughtInBalls;
+    u32 evosAttempted;
+    u32 evosCompleted;
+    u32 evosCancelled;
+};
+
 struct SaveBlock2
 {
     /*0x00*/ u8 playerName[PLAYER_NAME_LENGTH + 1];
@@ -505,6 +592,8 @@ struct SaveBlock2
     /*0x57C*/ struct RankingHall2P hallRecords2P[2][3]; // From record mixing.
     /*0x624*/ u16 contestLinkResults[CONTEST_CATEGORIES_COUNT][CONTESTANT_COUNT];
     /*0x64C*/ struct BattleFrontier frontier;
+    struct SpeedchoiceSaveOptions speedchoiceConfig;
+    struct DoneButtonStats2 doneButtonStats;
 }; // sizeof=0xF2C
 
 extern struct SaveBlock2 *gSaveBlock2Ptr;
@@ -1055,7 +1144,7 @@ struct SaveBlock1
     /*0x3???*/ u8 registeredTexts[UNION_ROOM_KB_ROW_COUNT][21];
     /*0x3???*/ struct SaveTrainerHill trainerHill;
     /*0x3???*/ struct WaldaPhrase waldaPhrase;
-    // sizeof: 0x3???
+    struct DoneButtonStats1 doneButtonStats;
 };
 
 extern struct SaveBlock1* gSaveBlock1Ptr;

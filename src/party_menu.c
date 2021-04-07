@@ -76,6 +76,8 @@
 #include "constants/songs.h"
 #include "constants/abilities.h"
 #include "constants/hold_effects.h"
+#include "speedchoice.h"
+#include "done_button.h"
 
 #define PARTY_PAL_SELECTED     (1 << 0)
 #define PARTY_PAL_FAINTED      (1 << 1)
@@ -1997,6 +1999,8 @@ static u16 GetTutorMove(u8 tutor)
 
 static bool8 CanLearnTutorMove(u16 species, u8 tutor)
 {
+    if(tutor == 69) // SPEEDCHOICE easy false swipe
+        return TRUE;
     if (sTutorLearnsets[species] & (1 << tutor))
         return TRUE;
     else
@@ -2539,9 +2543,13 @@ static void SetPartyMonSelectionActions(struct Pokemon *mons, u8 slotId, u8 acti
 static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
 {
     u8 i, j;
+    bool8 summaryFirst = CheckSpeedchoiceOption(NICE_MENU_ORDER, NICE_MENU_ORDER_OFF);
 
     sPartyMenuInternal->numActions = 0;
-    AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_SUMMARY);
+    if(summaryFirst == TRUE)
+    {
+        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_SUMMARY);
+    }
 
     // Add field moves to action list
     for (i = 0; i < MAX_MON_MOVES; i++)
@@ -2554,6 +2562,10 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
                 break;
             }
         }
+    }
+    if(summaryFirst == FALSE)
+    {
+        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_SUMMARY);
     }
 
     if (!InBattlePike())
@@ -3655,7 +3667,11 @@ static void CursorCb_FieldMove(u8 taskId)
     else
     {
         // All field moves before WATERFALL are HMs.
-        if (fieldMove <= FIELD_MOVE_WATERFALL && FlagGet(FLAG_BADGE01_GET + fieldMove) != TRUE)
+        if (fieldMove <= FIELD_MOVE_WATERFALL && FlagGet(FLAG_BADGE01_GET + fieldMove) != TRUE
+         && !(fieldMove == FIELD_MOVE_SURF && CheckSpeedchoiceOption(EARLYSURF, SURF_ON) == TRUE && FlagGet(FLAG_BADGE03_GET))
+         && !(fieldMove == FIELD_MOVE_FLY && CheckSpeedchoiceOption(EARLYFLY, FLY_YES) == TRUE)
+         && !(fieldMove == FIELD_MOVE_DIVE && CheckSpeedchoiceOption(PLOTLESS, PLOT_KEEP) == FALSE)
+           )
         {
             DisplayPartyMenuMessage(gText_CantUseUntilNewBadge, TRUE);
             gTasks[taskId].func = Task_ReturnToChooseMonAfterText;
@@ -3755,6 +3771,7 @@ bool8 FieldCallback_PrepareFadeInFromMenu(void)
 
 static void Task_FieldMoveWaitForFade(u8 taskId)
 {
+    sInSubMenu = FALSE;
     if (IsWeatherNotFadingIn() == TRUE)
     {
         gFieldEffectArguments[0] = GetFieldMoveMonSpecies();
@@ -4716,6 +4733,9 @@ void ItemUseCB_PPUp(u8 taskId, TaskFunc task)
 u16 ItemIdToBattleMoveId(u16 item)
 {
     u16 tmNumber = item - ITEM_TM01;
+    if(item == ITEM_HM05_FLASH && CheckSpeedchoiceOption(EASY_FALSE_SWIPE, EASY_FALSE_SWIPE_HM05) == TRUE)
+      return MOVE_FALSE_SWIPE; // SPEEDCHOICE
+
     return sTMHMMoves[tmNumber];
 }
 
@@ -4808,6 +4828,7 @@ static void Task_LearnedMove(u8 taskId)
     }
     GetMonNickname(mon, gStringVar1);
     StringCopy(gStringVar2, gMoveNames[move[0]]);
+    TryIncrementButtonStat(DB_MOVES_LEARNT);
     StringExpandPlaceholders(gStringVar4, gText_PkmnLearnedMove3);
     DisplayPartyMenuMessage(gStringVar4, TRUE);
     ScheduleBgCopyTilemapToVram(2);
@@ -4902,6 +4923,7 @@ static void DisplayPartyMenuForgotMoveMessage(u8 taskId)
     GetMonNickname(mon, gStringVar1);
     StringCopy(gStringVar2, gMoveNames[move]);
     DisplayLearnMoveMessage(gText_12PoofForgotMove);
+    TryIncrementButtonStat(DB_MOVES_LEARNT);
     gTasks[taskId].func = Task_PartyMenuReplaceMove;
 }
 
@@ -5151,6 +5173,7 @@ static void DisplayMonLearnedMove(u8 taskId, u16 move)
 {
     GetMonNickname(&gPlayerParty[gPartyMenu.slotId], gStringVar1);
     StringCopy(gStringVar2, gMoveNames[move]);
+    TryIncrementButtonStat(DB_MOVES_LEARNT);
     StringExpandPlaceholders(gStringVar4, gText_PkmnLearnedMove3);
     DisplayPartyMenuMessage(gStringVar4, TRUE);
     ScheduleBgCopyTilemapToVram(2);

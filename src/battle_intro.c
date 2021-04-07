@@ -16,10 +16,10 @@ static EWRAM_DATA u16 sBgCnt = 0;
 extern const u8 gBattleAnimBgCntSet[];
 extern const u8 gBattleAnimBgCntGet[];
 
-static void BattleIntroSlide1(u8);
-static void BattleIntroSlide2(u8);
-static void BattleIntroSlide3(u8);
-static void BattleIntroSlideLink(u8);
+void BattleIntroSlide1(u8);
+void BattleIntroSlide2(u8);
+void BattleIntroSlide3(u8);
+void BattleIntroSlideLink(u8);
 static void BattleIntroSlidePartner(u8);
 
 static const TaskFunc sBattleIntroSlideFuncs[] =
@@ -151,7 +151,7 @@ static void BattleIntroSlideEnd(u8 taskId)
     SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR | WINOUT_WINOBJ_BG_ALL | WINOUT_WINOBJ_OBJ | WINOUT_WINOBJ_CLR);
 }
 
-static void BattleIntroSlide1(u8 taskId)
+void BattleIntroSlide1(u8 taskId)
 {
     int i;
 
@@ -236,7 +236,7 @@ static void BattleIntroSlide1(u8 taskId)
     }
 }
 
-static void BattleIntroSlide2(u8 taskId)
+void BattleIntroSlide2(u8 taskId)
 {
     int i;
 
@@ -348,7 +348,7 @@ static void BattleIntroSlide2(u8 taskId)
         SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(gTasks[taskId].data[4], 0));
 }
 
-static void BattleIntroSlide3(u8 taskId)
+void BattleIntroSlide3(u8 taskId)
 {
     int i;
 
@@ -436,7 +436,7 @@ static void BattleIntroSlide3(u8 taskId)
         SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(gTasks[taskId].data[4], 0));
 }
 
-static void BattleIntroSlideLink(u8 taskId)
+void BattleIntroSlideLink(u8 taskId)
 {
     int i;
 

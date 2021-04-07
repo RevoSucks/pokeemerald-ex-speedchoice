@@ -36,6 +36,7 @@
 #include "title_screen.h"
 #include "window.h"
 #include "mystery_gift.h"
+#include "done_button.h"
 
 /*
  * Main menu state machine
@@ -182,7 +183,7 @@ static void Task_MainMenuCheckSaveFile(u8);
 static void Task_MainMenuCheckBattery(u8);
 static void Task_WaitForSaveFileErrorWindow(u8);
 static void CreateMainMenuErrorWindow(const u8*);
-static void ClearMainMenuWindowTilemap(const struct WindowTemplate*);
+void ClearMainMenuWindowTilemap(const struct WindowTemplate*);
 static void Task_DisplayMainMenu(u8);
 static void Task_WaitForBatteryDryErrorWindow(u8);
 static void MainMenu_FormatSavegameText(void);
@@ -190,7 +191,7 @@ static void HighlightSelectedMainMenuItem(u8, u8, s16);
 static void Task_HandleMainMenuInput(u8);
 static void Task_HandleMainMenuAPressed(u8);
 static void Task_HandleMainMenuBPressed(u8);
-static void Task_NewGameBirchSpeech_Init(u8);
+void Task_NewGameBirchSpeech_Init(u8);
 static void Task_DisplayMainMenuInvalidActionError(u8);
 static void AddBirchSpeechObjects(u8);
 static void Task_NewGameBirchSpeech_WaitToShowBirch(u8);
@@ -212,7 +213,7 @@ static void Task_NewGameBirchSpeech_StartPlayerFadeIn(u8);
 static void Task_NewGameBirchSpeech_WaitForPlayerFadeIn(u8);
 static void Task_NewGameBirchSpeech_BoyOrGirl(u8);
 static void LoadMainMenuWindowFrameTiles(u8, u16);
-static void DrawMainMenuWindowBorder(const struct WindowTemplate*, u16);
+void DrawMainMenuWindowBorder(const struct WindowTemplate*, u16);
 static void Task_HighlightSelectedMainMenuItem(u8);
 static void Task_NewGameBirchSpeech_WaitToShowGenderMenu(u8);
 static void Task_NewGameBirchSpeech_ChooseGender(u8);
@@ -407,12 +408,12 @@ static const struct WindowTemplate gNewGameBirchSpeechTextWindows[] =
 };
 
 static const u16 sMainMenuBgPal[] = INCBIN_U16("graphics/misc/main_menu_bg.gbapal");
-static const u16 sMainMenuTextPal[] = INCBIN_U16("graphics/misc/main_menu_text.gbapal");
+const u16 sMainMenuTextPal[] = INCBIN_U16("graphics/misc/main_menu_text.gbapal");
 
 static const u8 sTextColor_Headers[] = {TEXT_DYNAMIC_COLOR_1, TEXT_DYNAMIC_COLOR_2, TEXT_DYNAMIC_COLOR_3};
 static const u8 sTextColor_MenuInfo[] = {TEXT_DYNAMIC_COLOR_1, TEXT_COLOR_WHITE, TEXT_DYNAMIC_COLOR_3};
 
-static const struct BgTemplate sMainMenuBgTemplates[] = {
+const struct BgTemplate sMainMenuBgTemplates[] = {
     {
         .bg = 0,
         .charBaseIndex = 2,
@@ -456,8 +457,8 @@ static const union AffineAnimCmd *const sSpriteAffineAnimTable_PlayerShrink[] =
 };
 
 static const struct MenuAction sMenuActions_Gender[] = {
-    {gText_BirchBoy, NULL},
-    {gText_BirchGirl, NULL}
+    {gText_BirchGirl, NULL},
+    {gText_BirchBoy, NULL}
 };
 
 static const u8 *const gMalePresetNames[] = {
@@ -483,7 +484,7 @@ static const u8 *const gMalePresetNames[] = {
     gText_DefaultNameQuincy
 };
 
-static const u8 *const gFemalePresetNames[] = {
+const u8 *const gFemalePresetNames[] = {
     gText_DefaultNameKimmy,
     gText_DefaultNameTiara,
     gText_DefaultNameBella,
@@ -933,6 +934,8 @@ static void Task_HandleMainMenuInput(u8 taskId)
         gTasks[taskId].func = Task_HighlightSelectedMainMenuItem;
 }
 
+extern void Task_InitSpeedchoiceMenu(u8);
+
 static void Task_HandleMainMenuAPressed(u8 taskId)
 {
     bool8 wirelessAdapterConnected;
@@ -1059,12 +1062,13 @@ static void Task_HandleMainMenuAPressed(u8 taskId)
             default:
                 gPlttBufferUnfaded[0] = RGB_BLACK;
                 gPlttBufferFaded[0] = RGB_BLACK;
-                gTasks[taskId].func = Task_NewGameBirchSpeech_Init;
+                gTasks[taskId].func = Task_InitSpeedchoiceMenu;
                 break;
             case ACTION_CONTINUE:
                 gPlttBufferUnfaded[0] = RGB_BLACK;
                 gPlttBufferFaded[0] = RGB_BLACK;
                 SetMainCallback2(CB2_ContinueSavedGame);
+                TryIncrementButtonStat(DB_RELOAD_COUNT);
                 DestroyTask(taskId);
                 break;
             case ACTION_OPTION:
@@ -1262,7 +1266,7 @@ static void HighlightSelectedMainMenuItem(u8 menuType, u8 selectedMenuItem, s16 
 #define tBrendanSpriteId data[10]
 #define tMaySpriteId data[11]
 
-static void Task_NewGameBirchSpeech_Init(u8 taskId)
+void Task_NewGameBirchSpeech_Init(u8 taskId)
 {
     SetGpuReg(REG_OFFSET_DISPCNT, 0);
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
@@ -1462,7 +1466,7 @@ static void Task_NewGameBirchSpeech_StartPlayerFadeIn(u8 taskId)
         }
         else
         {
-            u8 spriteId = gTasks[taskId].tBrendanSpriteId;
+            u8 spriteId = gTasks[taskId].tMaySpriteId;
 
             gSprites[spriteId].pos1.x = 180;
             gSprites[spriteId].pos1.y = 60;
@@ -1510,17 +1514,21 @@ static void Task_NewGameBirchSpeech_ChooseGender(u8 taskId)
 
     switch (gender)
     {
-        case MALE:
+        case 0: // FEMALE
             PlaySE(SE_SELECT);
-            gSaveBlock2Ptr->playerGender = gender;
+            gSaveBlock2Ptr->playerGender = FEMALE;
             NewGameBirchSpeech_ClearGenderWindow(1, 1);
-            gTasks[taskId].func = Task_NewGameBirchSpeech_WhatsYourName;
+            // SPEEDCHOICE: Skip name
+            gTasks[taskId].func = Task_NewGameBirchSpeech_ReturnFromNamingScreenShowTextbox;
+            //gTasks[taskId].func = Task_NewGameBirchSpeech_WhatsYourName;
             break;
-        case FEMALE:
+        case 1: // MALE
             PlaySE(SE_SELECT);
-            gSaveBlock2Ptr->playerGender = gender;
+            gSaveBlock2Ptr->playerGender = MALE;
             NewGameBirchSpeech_ClearGenderWindow(1, 1);
-            gTasks[taskId].func = Task_NewGameBirchSpeech_WhatsYourName;
+            // SPEEDCHOICE: Skip name
+            gTasks[taskId].func = Task_NewGameBirchSpeech_ReturnFromNamingScreenShowTextbox;
+            //gTasks[taskId].func = Task_NewGameBirchSpeech_WhatsYourName;
             break;
     }
     gender2 = Menu_GetCursorPos();
@@ -1543,10 +1551,10 @@ static void Task_NewGameBirchSpeech_SlideOutOldGenderSprite(u8 taskId)
     else
     {
         gSprites[spriteId].invisible = TRUE;
-        if (gTasks[taskId].tPlayerGender != MALE)
-            spriteId = gTasks[taskId].tMaySpriteId;
-        else
+        if (gTasks[taskId].tPlayerGender != 0)
             spriteId = gTasks[taskId].tBrendanSpriteId;
+        else
+            spriteId = gTasks[taskId].tMaySpriteId;
         gSprites[spriteId].pos1.x = 240;
         gSprites[spriteId].pos1.y = 60;
         gSprites[spriteId].invisible = FALSE;
@@ -2202,7 +2210,7 @@ static void LoadMainMenuWindowFrameTiles(u8 bgId, u16 tileOffset)
     LoadPalette(GetWindowFrameTilesPal(gSaveBlock2Ptr->optionsWindowFrameType)->pal, 32, 32);
 }
 
-static void DrawMainMenuWindowBorder(const struct WindowTemplate *template, u16 baseTileNum)
+void DrawMainMenuWindowBorder(const struct WindowTemplate *template, u16 baseTileNum)
 {
     u16 r9 = 1 + baseTileNum;
     u16 r10 = 2 + baseTileNum;
@@ -2223,7 +2231,7 @@ static void DrawMainMenuWindowBorder(const struct WindowTemplate *template, u16 
     CopyBgTilemapBufferToVram(template->bg);
 }
 
-static void ClearMainMenuWindowTilemap(const struct WindowTemplate *template)
+void ClearMainMenuWindowTilemap(const struct WindowTemplate *template)
 {
     FillBgTilemapBufferRect(template->bg, 0, template->tilemapLeft - 1, template->tilemapTop - 1, template->tilemapLeft + template->width + 1, template->tilemapTop + template->height + 1, 2);
     CopyBgTilemapBufferToVram(template->bg);

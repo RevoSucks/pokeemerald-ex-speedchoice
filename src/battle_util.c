@@ -45,6 +45,7 @@
 #include "constants/trainers.h"
 #include "constants/weather.h"
 #include "debug.h"
+#include "done_button.h"
 
 /*
 NOTE: The data and functions in this file up until (but not including) sSoundMovesTable
@@ -508,6 +509,7 @@ bool8 TryRunFromBattle(u8 battler)
     {
         gCurrentTurnActionNumber = gBattlersCount;
         gBattleOutcome = B_OUTCOME_RAN;
+        TryIncrementButtonStat(DB_BATTLES_FLED);
     }
 
     return effect;
@@ -1271,6 +1273,20 @@ void PrepareStringBattle(u16 stringId, u8 battler)
     gActiveBattler = battler;
     BtlController_EmitPrintString(0, stringId);
     MarkBattlerForControllerExec(gActiveBattler);
+    if(stringId == STRINGID_ATTACKMISSED)
+    {
+        switch(GetBattlerSide(gBattlerAttacker))
+        {
+            case B_SIDE_PLAYER:
+                TryIncrementButtonStat(DB_OWN_MOVES_MISSED);
+                break;
+            case B_SIDE_OPPONENT:
+                TryIncrementButtonStat(DB_ENEMY_MOVES_MISSED);
+                break;
+        }
+    }
+    if(stringId == STRINGID_CANTESCAPE2 || stringId == STRINGID_CANTESCAPE)
+        TryIncrementButtonStat(DB_FAILED_RUNS);
 }
 
 void ResetSentPokesToOpponentValue(void)
@@ -6483,10 +6499,17 @@ static bool32 IsMonEventLegal(u8 battlerId)
 {
     if (GetBattlerSide(battlerId) == B_SIDE_OPPONENT)
         return TRUE;
+    // ----------------------------------
+    // SPEEDCHOICE CHANGE
+    // ----------------------------------
+    // Do not do Obedience crap for Mew or Deoxys.
+    return TRUE;
+/*
     if (GetMonData(&gPlayerParty[gBattlerPartyIndexes[battlerId]], MON_DATA_SPECIES, NULL) != SPECIES_DEOXYS
         && GetMonData(&gPlayerParty[gBattlerPartyIndexes[battlerId]], MON_DATA_SPECIES, NULL) != SPECIES_MEW)
             return TRUE;
     return GetMonData(&gPlayerParty[gBattlerPartyIndexes[battlerId]], MON_DATA_EVENT_LEGAL, NULL);
+*/
 }
 
 u8 IsMonDisobedient(void)

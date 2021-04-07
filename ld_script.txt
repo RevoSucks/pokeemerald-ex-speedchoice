@@ -332,6 +332,8 @@ SECTIONS {
         src/international_string_util.o(.text);
         src/debug.o(.text);
         src/day_night.o(.text);
+        src/speedchoice.o(.text);
+        src/done_button.o(.text);
     } =0
 
     script_data :
@@ -693,6 +695,8 @@ SECTIONS {
         data/mystery_event.o(.rodata);
         src/debug.o(.rodata);
         src/day_night.o(.rodata);
+        src/speedchoice.o(.rodata);
+        src/done_button.o(.rodata);
         data/rando_cv.o(.rodata);
         src/m4a_tables.o(.rodata);
         data/sound_data.o(.rodata);

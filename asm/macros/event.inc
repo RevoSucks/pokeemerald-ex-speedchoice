@@ -1633,6 +1633,13 @@
 	.2byte \quantity
 	.endm
 
+    @ speedchoice option checking command for checking if a specific
+    @ setting on a specific option is set.
+    .macro checkspeedchoice option:req, setting:req
+    .byte 0xe3
+    .byte \option
+    .byte \setting
+    .endm
 
 @ Supplementary
 

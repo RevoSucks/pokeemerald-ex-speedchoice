@@ -7594,4 +7594,18 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
         .secondaryId = 255  //signature z move
     },
+
+    [ITEM_DONE_BUTTON] =
+    {
+        .name = _("DONE BUTTON"),
+        .itemId = ITEM_DONE_BUTTON,
+        .price = 0,
+        .description = sDoneButton,
+        .importance = 1,
+        .unk19 = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = 4,
+        .fieldUseFunc = ItemUseOutOfBattle_DoneButton,
+        .secondaryId = 0,
+    },
 };

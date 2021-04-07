@@ -99,6 +99,22 @@ PetalburgCity_Gym_EventScript_ReturnFromWallyTutorial:: @ 82049A4
 	waitmovement 0
 	msgbox PetalburgCity_Gym_Text_DadGoCollectBadges, MSGBOX_DEFAULT
 	setvar VAR_PETALBURG_GYM_STATE, 2
+	checkspeedchoice PLOTLESS, PLOT_KEEP
+	goto_if TRUE, EndOfWallyTutorial
+	checkspeedchoice PLOTLESS, PLOT_SEMI
+	goto_if TRUE, EndOfWallyTutorial
+	setvar VAR_PETALBURG_WOODS_STATE, 1
+	setflag FLAG_HIDE_PETALBURG_WOODS_DEVON_EMPLOYEE
+	setflag FLAG_HIDE_PETALBURG_WOODS_AQUA_GRUNT
+    @ magma chamber fix
+    setvar VAR_JAGGED_PASS_STATE, 2
+    setflag FLAG_HIDE_MAGMA_HIDEOUT_GRUNTS
+    setflag FLAG_HIDE_MAGMA_HIDEOUT_4F_GROUDON_1
+    setflag FLAG_HIDE_MAGMA_HIDEOUT_4F_GROUDON_2
+    setflag FLAG_HIDE_JAGGED_PASS_MAGMA_GUARD
+    @ make old man disappear for sootopolis
+    setflag FLAG_HIDE_CAVE_OF_ORIGIN_B1F_WALLACE @ also hides the expert as a hack
+EndOfWallyTutorial::
 	releaseall
 	end
 
@@ -410,6 +426,13 @@ PetalburgCity_Gym_EventScript_GiveEnigmaBerry:: @ 8204E1D
 PetalburgCity_Gym_EventScript_NormanBattle:: @ 8204E3B
 	msgbox PetalburgCity_Gym_Text_NormanIntro, MSGBOX_DEFAULT
 	trainerbattle_no_intro TRAINER_NORMAN_1, PetalburgCity_Gym_Text_NormanDefeat
+	checkspeedchoice PLOTLESS, PLOT_KEEP
+	goto_if TRUE, AfterNorman
+	setvar VAR_WEATHER_INSTITUTE_STATE, 2
+	setflag FLAG_HIDE_ROUTE_119_TEAM_AQUA
+	clearflag FLAG_HIDE_WEATHER_INSTITUTE_1F_WORKERS
+	setflag FLAG_HIDE_WEATHER_INSTITUTE_2F_WORKERS
+AfterNorman::
 	message PetalburgCity_Gym_Text_ReceivedBalanceBadge
 	waitmessage
 	call Common_EventScript_PlayGymBadgeFanfare
@@ -417,6 +440,7 @@ PetalburgCity_Gym_EventScript_NormanBattle:: @ 8204E3B
 	setflag FLAG_DEFEATED_PETALBURG_GYM
 	setvar VAR_PETALBURG_GYM_STATE, 7
 	setflag FLAG_BADGE05_GET
+    clearflag FLAG_HIDE_ROUTE_120_STEVEN @ SPEEDCHOICE (Steven object after Fortree)
 	special ResetHealLocationFromDewford
 	call EventScript_HideMrBriney
 	setflag FLAG_HIDE_MAUVILLE_GYM_WATTSON

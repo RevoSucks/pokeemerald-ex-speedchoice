@@ -45,6 +45,9 @@
 #include "berry_powder.h"
 #include "mevent.h"
 #include "union_room_chat.h"
+#include "speedchoice.h"
+#include "constants/items.h"
+#include "done_button.h"
 
 extern const u8 EventScript_ResetAllMapFlags[];
 
@@ -92,13 +95,25 @@ static void InitPlayerTrainerId(void)
 }
 
 // L=A isnt set here for some reason.
+
+/*
+OPTIONs should be
+- Text Speed INST
+- Battle Scene OFF
+- Battle Style OFF
+- Sound MONO
+- Button Mode L=A
+- Frame TYPE1
+by default
+*/
 static void SetDefaultOptions(void)
 {
-    gSaveBlock2Ptr->optionsTextSpeed = OPTIONS_TEXT_SPEED_MID;
+    gSaveBlock2Ptr->optionsTextSpeed = OPTIONS_TEXT_SPEED_INST;
     gSaveBlock2Ptr->optionsWindowFrameType = 0;
     gSaveBlock2Ptr->optionsSound = OPTIONS_SOUND_MONO;
-    gSaveBlock2Ptr->optionsBattleStyle = OPTIONS_BATTLE_STYLE_SHIFT;
-    gSaveBlock2Ptr->optionsBattleSceneOff = FALSE;
+    gSaveBlock2Ptr->optionsBattleStyle = OPTIONS_BATTLE_STYLE_SET;
+    gSaveBlock2Ptr->optionsBattleSceneOff = TRUE;
+    gSaveBlock2Ptr->optionsButtonMode = OPTIONS_BUTTON_MODE_L_EQUALS_A;
     gSaveBlock2Ptr->regionMapZoom = FALSE;
 }
 
@@ -130,6 +145,10 @@ static void WarpToTruck(void)
 {
     SetWarpDestination(MAP_GROUP(INSIDE_OF_TRUCK), MAP_NUM(INSIDE_OF_TRUCK), -1, -1, -1);
     WarpIntoMap();
+    sInIntro = FALSE;
+    sInSubMenu = FALSE;
+    sInBattle = FALSE;
+    sInField = TRUE;
 }
 
 void Sav2_ClearSetDefault(void)
@@ -206,6 +225,13 @@ void NewGameInitData(void)
     WipeTrainerNameRecords();
     ResetTrainerHillResults();
     ResetContestLinkResults();
+
+    // ADD DONE BUTTON
+    AddBagItem(ITEM_DONE_BUTTON, 1);
+    //if(CheckSpeedchoiceOption(EARLY_BIKE, EARLY_BIKE_YES) == TRUE) {
+        AddBagItem(ITEM_MACH_BIKE, 1);
+        FlagSet(FLAG_RECEIVED_BIKE); // put the flag here for making sure you got the bicycle
+    //}
 }
 
 static void ResetMiniGamesRecords(void)

@@ -30,6 +30,7 @@
 #include "constants/moves.h"
 #include "constants/songs.h"
 #include "constants/trainer_types.h"
+#include "done_button.h"
 
 static EWRAM_DATA u8 sSpinStartFacingDir = 0;
 EWRAM_DATA struct ObjectEvent gObjectEvents[OBJECT_EVENTS_COUNT] = {};
@@ -1077,6 +1078,7 @@ void PlayerAcroTurnJump(u8 direction)
 
 void PlayerWheelieInPlace(u8 direction)
 {
+    TryIncrementButtonStat(DB_BONKS);
     PlaySE(SE_WALL_HIT);
     PlayerSetAnimId(GetAcroWheelieInPlaceDirectionMovementAction(direction), 2);
 }
@@ -1110,6 +1112,7 @@ static void PlayCollisionSoundIfNotFacingWarp(u8 a)
             if (MetatileBehavior_IsWarpDoor(MapGridGetMetatileBehaviorAt(x, y)))
                 return;
         }
+        TryIncrementButtonStat(DB_BONKS);
         PlaySE(SE_WALL_HIT);
     }
 }
@@ -1833,16 +1836,16 @@ static bool8 Fishing_CheckForBite(struct Task *task)
             u16 ability = GetMonAbility(&gPlayerParty[0]);
             if (ability == ABILITY_SUCTION_CUPS || ability  == ABILITY_STICKY_HOLD)
             {
-                if (Random() % 100 > 14)
+                //if (Random() % 100 > 14)
                     bite = TRUE;
             }
         }
 
         if (!bite)
         {
-            if (Random() & 1)
-                task->tStep = FISHING_NO_BITE;
-            else
+            //if (Random() & 1)
+            //    task->tStep = FISHING_NO_BITE;
+            //else
                 bite = TRUE;
         }
 

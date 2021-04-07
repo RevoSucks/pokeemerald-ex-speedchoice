@@ -50,6 +50,8 @@
 #include "apprentice.h"
 #include "battle_pike.h"
 #include "constants/rgb.h"
+#include "speedchoice.h"
+#include "done_button.h"
 
 enum
 {
@@ -254,6 +256,13 @@ static const u8 sContextMenuItems_BerriesPocket[] = {
     ITEMMENUACTION_CHECK_TAG,   ITEMMENUACTION_DUMMY,
     ITEMMENUACTION_USE,         ITEMMENUACTION_GIVE,
     ITEMMENUACTION_TOSS,        ITEMMENUACTION_CANCEL
+};
+
+// SPEEDCHOICE Nice Menu berry menu order, swaps CHECK TAG and USE
+static const u8 sSpeedchoiceBerryMenu[] = {
+    ITEMMENUACTION_USE, ITEMMENUACTION_DUMMY, 
+    ITEMMENUACTION_CHECK_TAG, ITEMMENUACTION_GIVE, 
+    ITEMMENUACTION_TOSS, ITEMMENUACTION_CANCEL
 };
 
 static const u8 sContextMenuItems_BattleUse[] = {
@@ -1565,7 +1574,9 @@ void OpenContextMenu(u8 unused)
                         gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_TmHmPocket);
                         break;
                     case BERRIES_POCKET:
-                        gBagMenu->contextMenuItemsPtr = sContextMenuItems_BerriesPocket;
+                        gBagMenu->contextMenuItemsPtr = CheckSpeedchoiceOption(NICE_MENU_ORDER, NICE_MENU_ORDER_ON) == TRUE 
+                                           ? sSpeedchoiceBerryMenu
+                                           : sContextMenuItems_BerriesPocket;
                         gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_BerriesPocket);
                         break;
                 }
@@ -2093,8 +2104,10 @@ static void BagMenu_Sell_UpdateItemListAndMoney(u8 taskId)
 
     PlaySE(SE_SHOP);
     RemoveBagItem(gSpecialVar_ItemId, tItemCount);
+    TryAddButtonStatBy(DB_ITEMS_SOLD, tItemCount);
     AddMoney(&gSaveBlock1Ptr->money, (ItemId_GetPrice(gSpecialVar_ItemId) / 2) * tItemCount);
     DestroyListMenuTask(data[0], scrollPos, cursorPos);
+    TryAddButtonStatBy(DB_MONEY_MADE, (ItemId_GetPrice(gSpecialVar_ItemId) / 2) * tItemCount);
     UpdatePocketItemList(gBagPositionStruct.pocket);
     SetInitialScrollAndCursorPositions(gBagPositionStruct.pocket);
     LoadBagItemListBuffers(gBagPositionStruct.pocket);

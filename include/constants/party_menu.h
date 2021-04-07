@@ -42,6 +42,9 @@
 #define TUTOR_MOVE_FURY_CUTTER     29
 #define TUTOR_MOVE_COUNT           30
 
+// SPEEDCHOICE
+#define TUTOR_MOVE_FALSE_SWIPE     69
+
 #define PARTY_LAYOUT_SINGLE          0
 #define PARTY_LAYOUT_DOUBLE          1
 #define PARTY_LAYOUT_MULTI           2

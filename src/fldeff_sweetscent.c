@@ -66,7 +66,7 @@ static void TrySweetScentEncounter(u8 taskId)
     {
         ClearMirageTowerPulseBlendEffect();
         BlendPalettes(0x00000040, 8, RGB_RED);
-        if (gTasks[taskId].data[0] == 64)
+        if (gTasks[taskId].data[0] == 1) // SPEEDCHOICE (fast sweet scent)
         {
             gTasks[taskId].data[0] = 0;
             if (SweetScentWildEncounter() == TRUE)

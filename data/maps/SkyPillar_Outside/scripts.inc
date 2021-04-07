@@ -35,6 +35,8 @@ SkyPillar_Outside_OnFrame: @ 82392FA
 	.2byte 0
 
 SkyPillar_Outside_EventScript_WallaceScene:: @ 8239304
+	checkspeedchoice PLOTLESS, PLOT_KEEP
+	goto_if FALSE, AfterSkyPillar1
 	lockall
 	applymovement LOCALID_WALLACE, SkyPillar_Outside_Movement_WallaceApproachPlayer
 	waitmovement 0
@@ -89,6 +91,7 @@ SkyPillar_Outside_EventScript_WallaceScene:: @ 8239304
 	clearflag FLAG_HIDE_SOOTOPOLIS_CITY_WALLACE
 	fadescreenswapbuffers FADE_FROM_BLACK
 	releaseall
+AfterSkyPillar1::
 	end
 
 SkyPillar_Outside_Movement_WallaceApproachPlayer: @ 82393D3

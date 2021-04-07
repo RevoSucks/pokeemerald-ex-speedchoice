@@ -378,6 +378,7 @@ void SpriteCB_TrainerSlideIn(struct Sprite *sprite)
     if (!(gIntroSlideFlags & 1))
     {
         sprite->pos2.x += sprite->sSpeedX;
+        sprite->pos2.x += sprite->sSpeedX / 2; // x1.5x SPEEDCHOICE
         if (sprite->pos2.x == 0)
         {
             if (sprite->pos2.y != 0)

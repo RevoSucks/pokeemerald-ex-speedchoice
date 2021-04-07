@@ -48,6 +48,8 @@
 #include "window.h"
 #include "constants/day_night.h"
 #include "day_night.h"
+#include "speedchoice.h"
+#include "done_button.h"
 
 // Menu actions
 enum
@@ -64,7 +66,8 @@ enum
     MENU_ACTION_PLAYER_LINK,
     MENU_ACTION_REST_FRONTIER,
     MENU_ACTION_RETIRE_FRONTIER,
-    MENU_ACTION_PYRAMID_BAG
+    MENU_ACTION_PYRAMID_BAG,
+    MENU_ACTION_ESCAPE
 };
 
 // Save status
@@ -85,6 +88,7 @@ EWRAM_DATA static u8 sBattlePyramidFloorWindowId = 0;
 EWRAM_DATA static u8 sStartMenuCursorPos = 0;
 EWRAM_DATA static u8 sNumStartMenuActions = 0;
 EWRAM_DATA static u8 sCurrentStartMenuActions[9] = {0};
+EWRAM_DATA bool32 sUsedEscapeOption = FALSE;
 EWRAM_DATA static u8 sInitStartMenuData[2] = {0};
 
 EWRAM_DATA static u8 (*sSaveDialogCallback)(void) = NULL;
@@ -157,6 +161,14 @@ static const u8* const sPyramidFloorNames[] =
 static const struct WindowTemplate sPyramidFloorWindowTemplate_2 = {0, 1, 1, 0xA, 4, 0xF, 8};
 static const struct WindowTemplate sPyramidFloorWindowTemplate_1 = {0, 1, 1, 0xC, 4, 0xF, 8};
 
+extern const u8 gText_MenuEscape[];
+extern void(*sItemUseOnFieldCB)(u8 taskId);
+
+bool8 StartMenu_EscapeCallback(void);
+extern struct MapObjectTimerBackup gMapObjectTimerBackup[MAX_SPRITES];
+extern void ItemUseOnFieldCB_EscapeRope(u8 taskId);
+extern void SetUpItemUseOnFieldCallback(u8 taskId);
+
 static const struct MenuAction sStartMenuItems[] =
 {
     {gText_MenuPokedex, {.u8_void = StartMenuPokedexCallback}},
@@ -171,7 +183,8 @@ static const struct MenuAction sStartMenuItems[] =
     {gText_MenuPlayer, {.u8_void = StartMenuLinkModePlayerNameCallback}},
     {gText_MenuRest, {.u8_void = StartMenuSaveCallback}},
     {gText_MenuRetire, {.u8_void = StartMenuBattlePyramidRetireCallback}},
-    {gText_MenuBag, {.u8_void = StartMenuBattlePyramidBagCallback}}
+    {gText_MenuBag, {.u8_void = StartMenuBattlePyramidBagCallback}},
+    {gText_MenuEscape, {.u8_void = StartMenu_EscapeCallback}}
 };
 
 static const struct BgTemplate sBgTemplates_LinkBattleSave[] =
@@ -244,6 +257,59 @@ static void ShowSaveInfoWindow(void);
 static void RemoveSaveInfoWindow(void);
 static void HideStartMenuWindow(void);
 
+void DoMapObjectTimerBackup(void)
+{
+    u8 i;
+
+    for(i = 0; i < MAX_SPRITES; i++)
+    {
+        gMapObjectTimerBackup[i].backedUp = TRUE;
+        gMapObjectTimerBackup[i].spriteId = gSprites[i].data[0];
+        gMapObjectTimerBackup[i].timer = gSprites[i].data[3];
+    }
+}
+
+bool8 CanUseFly(void)
+{
+    if(Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType) == TRUE)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+void CloseMenuWithoutScriptContext(void)
+{
+    ClearStdWindowAndFrame(GetStartMenuWindowId(), 1);
+    RemoveStartMenuWindow();
+    ScriptUnfreezeObjectEvents();
+}
+
+static void ItemUseInEscape_EscapeRope(u8 taskId)
+{
+    sUsedEscapeOption = TRUE;
+    sItemUseOnFieldCB = ItemUseOnFieldCB_EscapeRope; // do escape rope attempt.
+    gTasks[taskId].data[3] = 1; // dont fade to black! Not in a submenu.
+    SetUpItemUseOnFieldCallback(taskId);
+}
+
+bool8 StartMenu_EscapeCallback(void)
+{
+	CloseMenuWithoutScriptContext();
+    CreateTask(ItemUseInEscape_EscapeRope, 0xFF);
+    return TRUE;
+}
+
+bool8 IsMapEscapeOption(void)
+{
+    u8 i;
+
+    for(i = 0; i < 16; i++)
+        if((gObjectEvents[i].trainerType == 1 || gObjectEvents[i].trainerType == 3) && CanUseFly() == FALSE)
+            return TRUE;
+
+    return FALSE;
+}
+
 void SetDexPokemonPokenavFlags(void) // unused
 {
     FlagSet(FLAG_SYS_POKEDEX_GET);
@@ -311,7 +377,10 @@ static void BuildNormalStartMenu(void)
     AddStartMenuAction(MENU_ACTION_PLAYER);
     AddStartMenuAction(MENU_ACTION_SAVE);
     AddStartMenuAction(MENU_ACTION_OPTION);
-    AddStartMenuAction(MENU_ACTION_EXIT);
+    if(IsMapEscapeOption() == TRUE)
+        AddStartMenuAction(MENU_ACTION_ESCAPE);
+    else
+        AddStartMenuAction(MENU_ACTION_EXIT);
 }
 
 static void BuildSafariZoneStartMenu(void)
@@ -553,6 +622,9 @@ static void CreateStartMenuTask(TaskFunc followupFunc)
 
     sInitStartMenuData[0] = 0;
     sInitStartMenuData[1] = 0;
+    
+    DoMapObjectTimerBackup();
+
     taskId = CreateTask(StartMenuTask, 0x50);
     SetTaskFuncWithFollowupFunc(taskId, StartMenuTask, followupFunc);
 }
@@ -605,10 +677,16 @@ void ShowStartMenu(void)
     }
     CreateStartMenuTask(Task_ShowStartMenu);
     ScriptContext2_Enable();
+    sInSubMenu = TRUE;
+    sInField = FALSE;
+    sInBattle = FALSE;
 }
 
 static bool8 HandleStartMenuInput(void)
 {
+    sInSubMenu = TRUE;
+    sInBattle = FALSE;
+    sInField = FALSE;
     if (JOY_NEW(DPAD_UP))
     {
         PlaySE(SE_SELECT);
@@ -848,6 +926,9 @@ static bool8 SaveCallback(void)
         ScriptUnfreezeObjectEvents();
         ScriptContext2_Disable();
         SoftResetInBattlePyramid();
+        sInSubMenu = FALSE;
+        sInField = TRUE;
+        sInBattle = FALSE;
         return TRUE;
     }
 
@@ -1085,6 +1166,7 @@ static u8 SaveOverwriteInputCallback(void)
     switch (Menu_ProcessInputNoWrapClearOnChoose())
     {
     case 0: // Yes
+        TryIncrementButtonStat(DB_SAVE_COUNT);
         sSaveDialogCallback = SaveSavingMessageCallback;
         return SAVE_IN_PROGRESS;
     case -1: // B Button
@@ -1452,6 +1534,9 @@ void HideStartMenu(void)
 {
     PlaySE(SE_SELECT);
     HideStartMenuWindow();
+    sInSubMenu = FALSE;
+    sInField = TRUE;
+    sInBattle = FALSE;
 }
 
 void AppendToList(u8 *list, u8 *pos, u8 newEntry)

@@ -272,5 +272,6 @@ EventScript_ResetAllMapFlags:: @ 82715DE
 	setflag FLAG_HIDE_EVER_GRANDE_POKEMON_CENTER_1F_SCOTT
 	setflag FLAG_HIDE_SKY_PILLAR_WALLACE
 	setflag FLAG_HIDE_RAYQUAZA_SKY_TOWER_SUMMIT
+    setflag FLAG_HIDE_ROUTE_120_STEVEN @ SPEEDCHOICE (Steven object after Fortree)
 	call EventScript_ResetAllBerries
 	end

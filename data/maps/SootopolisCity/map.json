@@ -25,7 +25,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "SootopolisCity_EventScript_CaveOfOriginExpert",
-      "flag": "0"
+      "flag": "FLAG_HIDE_SOOTOPOLIS_CITY_OLD_MAN_EXPERT"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_WOMAN_4",

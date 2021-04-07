@@ -1,6 +1,8 @@
 SlateportCity_PokemonFanClub_EventScript_SwaggerTutor:: @ 82C7F16
 	lock
 	faceplayer
+	checkspeedchoice EASY_FALSE_SWIPE, EASY_FALSE_SWIPE_TUTOR
+	goto_if TRUE, SpeedchoiceSlateportEasyFalseSwipe
 	goto_if_set FLAG_MOVE_TUTOR_TAUGHT_SWAGGER, MoveTutor_EventScript_SwaggerTaught
 gMoveTutorText_20::
 	msgbox MoveTutor_Text_SwaggerTeach, MSGBOX_YESNO
@@ -17,6 +19,19 @@ gMoveTutorText_21::
 	goto_if_eq MoveTutor_EventScript_SwaggerDeclined
 	setflag FLAG_MOVE_TUTOR_TAUGHT_SWAGGER
 	goto MoveTutor_EventScript_SwaggerTaught
+	end
+
+SpeedchoiceSlateportEasyFalseSwipe:: @ SPEEDCHOICE
+	msgbox SlateportCity_PokemonFanClub_Text_SPEEDCHOICE_FALSE_SWIPE, MSGBOX_YESNO
+	compare VAR_RESULT, 0
+	goto_if_eq MoveTutor_EventScript_SwaggerDeclined
+	msgbox SlateportCity_PokemonFanClub_Text_SPEEDCHOICE_FALSE_SWIPE2, MSGBOX_DEFAULT
+	setvar VAR_0x8005, TUTOR_MOVE_FALSE_SWIPE
+	call MoveTutor_EventScript_OpenPartyMenu
+	compare VAR_RESULT, 0
+	goto_if_eq MoveTutor_EventScript_SwaggerDeclined
+	msgbox SlateportCity_PokemonFanClub_Text_SPEEDCHOICE_FALSE_SWIPE3, MSGBOX_DEFAULT
+	release
 	end
 
 MoveTutor_EventScript_SwaggerDeclined:: @ 82C7F6A
@@ -320,3 +335,13 @@ MoveTutor_EventScript_OpenPartyMenu:: @ 82C8326
 MoveTutor_EventScript_CanOnlyBeLearnedOnce:: @ 82C832D
 	msgbox MoveTutor_Text_ThisMoveCanOnlyBeLearnedOnce, MSGBOX_YESNO
 	return
+
+SlateportCity_PokemonFanClub_Text_SPEEDCHOICE_FALSE_SWIPE: @ SPEEDCHOICE
+	.string "Want me to teach you FALSE SWIPE?$"
+
+SlateportCity_PokemonFanClub_Text_SPEEDCHOICE_FALSE_SWIPE2: @ SPEEDCHOICE
+	.string "All right, which POKéMON wants to\n"
+	.string "learn how to FALSE SWIPE?$"
+
+SlateportCity_PokemonFanClub_Text_SPEEDCHOICE_FALSE_SWIPE3: @ SPEECHOICE
+	.string "Time for some easy catching.$"

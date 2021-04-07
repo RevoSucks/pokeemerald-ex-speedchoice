@@ -46,6 +46,7 @@
 #include "constants/maps.h"
 #include "constants/trainers.h"
 #include "constants/trainer_hill.h"
+#include "done_button.h"
 
 enum
 {
@@ -413,6 +414,8 @@ static void DoStandardWildBattle(bool32 isDouble)
         gBattleTypeFlags |= BATTLE_TYPE_PYRAMID;
     }
     CreateBattleStartTask(GetWildBattleTransition(), 0);
+    TryIncrementButtonStat(DB_BATTLES);
+    TryIncrementButtonStat(DB_WILD_BATTLES);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
     IncrementDailyWildBattles();
@@ -427,6 +430,8 @@ void BattleSetup_StartRoamerBattle(void)
     gMain.savedCallback = CB2_EndWildBattle;
     gBattleTypeFlags = BATTLE_TYPE_ROAMER;
     CreateBattleStartTask(GetWildBattleTransition(), 0);
+    TryIncrementButtonStat(DB_BATTLES);
+    TryIncrementButtonStat(DB_WILD_BATTLES);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
     IncrementDailyWildBattles();
@@ -451,6 +456,8 @@ static void DoBattlePikeWildBattle(void)
     gMain.savedCallback = CB2_EndWildBattle;
     gBattleTypeFlags = BATTLE_TYPE_PIKE;
     CreateBattleStartTask(GetWildBattleTransition(), 0);
+    TryIncrementButtonStat(DB_BATTLES);
+    TryIncrementButtonStat(DB_WILD_BATTLES);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
     IncrementDailyWildBattles();
@@ -460,6 +467,8 @@ static void DoBattlePikeWildBattle(void)
 static void DoTrainerBattle(void)
 {
     CreateBattleStartTask(GetTrainerBattleTransition(), 0);
+    TryIncrementButtonStat(DB_BATTLES);
+    TryIncrementButtonStat(DB_TRAINER_BATTLES);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_TRAINER_BATTLES);
     TryUpdateGymLeaderRematchFromTrainer();
@@ -472,6 +481,8 @@ static void sub_80B0828(void)
     else
         CreateBattleStartTask(GetSpecialBattleTransition(11), 0);
 
+    TryIncrementButtonStat(DB_BATTLES);
+    TryIncrementButtonStat(DB_TRAINER_BATTLES);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_TRAINER_BATTLES);
     TryUpdateGymLeaderRematchFromTrainer();
@@ -493,6 +504,8 @@ void BattleSetup_StartScriptedWildBattle(void)
     gMain.savedCallback = CB2_EndScriptedWildBattle;
     gBattleTypeFlags = 0;
     CreateBattleStartTask(GetWildBattleTransition(), 0);
+    TryIncrementButtonStat(DB_BATTLES);
+    TryIncrementButtonStat(DB_WILD_BATTLES);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
     IncrementDailyWildBattles();
@@ -505,6 +518,8 @@ void BattleSetup_StartScriptedDoubleWildBattle(void)
     gMain.savedCallback = CB2_EndScriptedWildBattle;
     gBattleTypeFlags = BATTLE_TYPE_DOUBLE;
     CreateBattleStartTask(GetWildBattleTransition(), 0);
+    TryIncrementButtonStat(DB_BATTLES);
+    TryIncrementButtonStat(DB_WILD_BATTLES);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
     IncrementDailyWildBattles();
@@ -517,6 +532,8 @@ void BattleSetup_StartLatiBattle(void)
     gMain.savedCallback = CB2_EndScriptedWildBattle;
     gBattleTypeFlags = BATTLE_TYPE_LEGENDARY;
     CreateBattleStartTask(GetWildBattleTransition(), 0);
+    TryIncrementButtonStat(DB_BATTLES);
+    TryIncrementButtonStat(DB_WILD_BATTLES);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
     IncrementDailyWildBattles();
@@ -556,6 +573,8 @@ void BattleSetup_StartLegendaryBattle(void)
         break;
     }
 
+    TryIncrementButtonStat(DB_BATTLES);
+    TryIncrementButtonStat(DB_WILD_BATTLES);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
     IncrementDailyWildBattles();
@@ -573,6 +592,8 @@ void StartGroudonKyogreBattle(void)
     else
         CreateBattleStartTask(B_TRANSITION_RIPPLE, MUS_VS_KYOGRE_GROUDON); // KYOGRE
 
+    TryIncrementButtonStat(DB_BATTLES);
+    TryIncrementButtonStat(DB_WILD_BATTLES);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
     IncrementDailyWildBattles();
@@ -606,6 +627,8 @@ void StartRegiBattle(void)
     }
     CreateBattleStartTask(transitionId, MUS_VS_REGI);
 
+    TryIncrementButtonStat(DB_BATTLES);
+    TryIncrementButtonStat(DB_WILD_BATTLES);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
     IncrementDailyWildBattles();
@@ -616,6 +639,9 @@ static void CB2_EndWildBattle(void)
 {
     CpuFill16(0, (void*)(BG_PLTT), BG_PLTT_SIZE);
     ResetOamRange(0, 128);
+    sInSubMenu = FALSE;
+    sInBattle = FALSE;
+    sInField = TRUE;
 
     if (IsPlayerDefeated(gBattleOutcome) == TRUE && !InBattlePyramid() && !InBattlePike())
     {
@@ -632,6 +658,9 @@ static void CB2_EndScriptedWildBattle(void)
 {
     CpuFill16(0, (void*)(BG_PLTT), BG_PLTT_SIZE);
     ResetOamRange(0, 128);
+    sInSubMenu = FALSE;
+    sInBattle = FALSE;
+    sInField = TRUE;
 
     if (IsPlayerDefeated(gBattleOutcome) == TRUE)
     {
@@ -959,6 +988,8 @@ static void CB2_StartFirstBattle(void)
         SetMainCallback2(CB2_InitBattle);
         RestartWildEncounterImmunitySteps();
         ClearPoisonStepCounter();
+        TryIncrementButtonStat(DB_BATTLES);
+        TryIncrementButtonStat(DB_WILD_BATTLES);
         IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
         IncrementGameStat(GAME_STAT_WILD_BATTLES);
         IncrementDailyWildBattles();
@@ -970,6 +1001,9 @@ static void CB2_EndFirstBattle(void)
 {
     Overworld_ClearSavedMusic();
     SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
+    sInSubMenu = FALSE;
+    sInBattle = FALSE;
+    sInField = TRUE;
 }
 
 static void TryUpdateGymLeaderRematchFromWild(void)
@@ -1346,6 +1380,9 @@ void BattleSetup_StartTrainerBattle(void)
 
 static void CB2_EndTrainerBattle(void)
 {
+    sInSubMenu = FALSE;
+    sInBattle = FALSE;
+    sInField = TRUE;
     if (gTrainerBattleOpponent_A == TRAINER_SECRET_BASE)
     {
         SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
@@ -1370,6 +1407,9 @@ static void CB2_EndTrainerBattle(void)
 
 static void CB2_EndRematchBattle(void)
 {
+    sInSubMenu = FALSE;
+    sInBattle = FALSE;
+    sInField = TRUE;
     if (gTrainerBattleOpponent_A == TRAINER_SECRET_BASE)
     {
         SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);

@@ -3008,3 +3008,9 @@ static const u8 sUltranecroziumZDesc[] = _(
     "A crystal to turn\n"
     "fused Necrozma\n"
     "into a new form.");
+
+// SPEEDCHOICE
+static const u8 sDoneButton[] = _(
+    "Ends the current\n"
+    "race. No, you can't\n"
+    "throw it, Keiz.");

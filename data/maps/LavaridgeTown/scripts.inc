@@ -261,7 +261,7 @@ LavaridgeTown_EventScript_EggWoman:: @ 81EA744
 	playfanfare MUS_OBTAIN_ITEM
 	message LavaridgeTown_Text_ReceivedTheEgg
 	waitfanfare
-	giveegg SPECIES_WYNAUT
+	giveegg SPECIES_DITTO
 	release
 	end
 
