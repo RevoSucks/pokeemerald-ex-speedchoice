@@ -4613,6 +4613,8 @@ static void Cmd_playanimation(void)
             BattleLoadOpponentMonSpriteGfx(&gEnemyParty[gBattlerPartyIndexes[gActiveBattler]], gActiveBattler);
         }
         paletteOffset = 0x100 + gActiveBattler * 16;
+        // fix for Rayquaza, because GetMegaEvolutionSpecies doesn't work for Wish mega evos.
+        megaSpecies = (species == SPECIES_RAYQUAZA) ? SPECIES_RAYQUAZA_MEGA : megaSpecies;
         lzPaletteData = (u32 *)GetMonSpritePalFromSpeciesAndPersonality(megaSpecies, otId, personality);
         LZDecompressWram(lzPaletteData, gDecompressionBuffer);
         LoadPalette(gDecompressionBuffer, paletteOffset, 0x20);
