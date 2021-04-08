@@ -45,6 +45,11 @@ struct Window
     u8 *tileData;
 };
 
+// Mode parameter for funcs below
+#define COPYWIN_MAP  1
+#define COPYWIN_GFX  2
+#define COPYWIN_BOTH (COPYWIN_MAP | COPYWIN_GFX)
+
 bool16 InitWindows(const struct WindowTemplate *templates);
 u16 AddWindow(const struct WindowTemplate *template);
 int AddWindowWithoutTileMap(const struct WindowTemplate *template);

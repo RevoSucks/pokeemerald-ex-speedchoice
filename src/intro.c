@@ -26,6 +26,7 @@
 #include "constants/rgb.h"
 #include "constants/battle_anim.h"
 #include "done_button.h"
+#include "flash_missing_screen.h"
 
 /*
     The intro is grouped into the following scenes
@@ -1056,15 +1057,9 @@ static void MainCB2_EndIntro(void)
 
 static void LoadCopyrightGraphics(u16 tilesetAddress, u16 tilemapAddress, u16 paletteAddress)
 {
-    if(gFlashMemoryPresent) {
-        LZ77UnCompVram(gIntroCopyright_Gfx, (void *)(VRAM + tilesetAddress));
-        LZ77UnCompVram(gIntroCopyright_Tilemap, (void *)(VRAM + tilemapAddress));
-        LoadPalette(gIntroCopyright_Pal, paletteAddress, 32);
-    } else {
-        LZ77UnCompVram(gIntroFlashError_Gfx, (void *)(VRAM + tilesetAddress));
-        LZ77UnCompVram(gIntroFlashError_Tilemap, (void *)(VRAM + tilemapAddress));
-        LoadPalette(gIntroFlashError_Pal, paletteAddress, 32);
-    }
+    LZ77UnCompVram(gIntroCopyright_Gfx, (void *)(VRAM + tilesetAddress));
+    LZ77UnCompVram(gIntroCopyright_Tilemap, (void *)(VRAM + tilemapAddress));
+    LoadPalette(gIntroCopyright_Pal, paletteAddress, 32);
 }
 
 static void SerialCB_CopyrightScreen(void)
@@ -1119,13 +1114,13 @@ static u8 SetUpCopyrightScreen(void)
         }
         break;
     case 141:
-        if (!gFlashMemoryPresent) {
-            while(1); // loop forever on the error screen.
-        }
         if (UpdatePaletteFade())
             break;
         CreateTask(Task_Scene1_Load, 0);
-        SetMainCallback2(MainCB2_Intro);
+        if (gFlashMemoryPresent != TRUE)
+            SetMainCallback2(CB2_FlashMissingScreen);
+        else
+            SetMainCallback2(MainCB2_Intro);
         sInIntro = TRUE;
         if (gMultibootProgramStruct.gcmb_field_2 != 0)
         {
