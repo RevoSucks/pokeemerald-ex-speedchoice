@@ -312,8 +312,8 @@ enum
 // ----------------------
 enum
 {
-    EVO_EV_OFF,
-    EVO_EV_ON // STATIC
+    EVO_EV_ON,
+    EVO_EV_OFF
 };
 
 // Enumeration for optionType in the Speedchoice struct below.
