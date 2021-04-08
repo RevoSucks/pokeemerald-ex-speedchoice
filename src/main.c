@@ -116,10 +116,11 @@ void AgbMain()
 
     gSoftResetDisabled = FALSE;
 
-    gDebugSystemEnabled = DEBUGGING;
+    gDebugSystemEnabled = DEBUG;
 
-    if (gFlashMemoryPresent != TRUE)
-        SetMainCallback2(NULL);
+    // Instead, handle it in intro.
+    //if (gFlashMemoryPresent != TRUE)
+    //    SetMainCallback2(NULL);
 
     gLinkTransferringData = FALSE;
     gUnknown_03000000 = 0xFC0;

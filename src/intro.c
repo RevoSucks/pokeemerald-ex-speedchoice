@@ -1056,9 +1056,15 @@ static void MainCB2_EndIntro(void)
 
 static void LoadCopyrightGraphics(u16 tilesetAddress, u16 tilemapAddress, u16 paletteAddress)
 {
-    LZ77UnCompVram(gIntroCopyright_Gfx, (void *)(VRAM + tilesetAddress));
-    LZ77UnCompVram(gIntroCopyright_Tilemap, (void *)(VRAM + tilemapAddress));
-    LoadPalette(gIntroCopyright_Pal, paletteAddress, 32);
+    if(gFlashMemoryPresent) {
+        LZ77UnCompVram(gIntroCopyright_Gfx, (void *)(VRAM + tilesetAddress));
+        LZ77UnCompVram(gIntroCopyright_Tilemap, (void *)(VRAM + tilemapAddress));
+        LoadPalette(gIntroCopyright_Pal, paletteAddress, 32);
+    } else {
+        LZ77UnCompVram(gIntroFlashError_Gfx, (void *)(VRAM + tilesetAddress));
+        LZ77UnCompVram(gIntroFlashError_Tilemap, (void *)(VRAM + tilemapAddress));
+        LoadPalette(gIntroFlashError_Pal, paletteAddress, 32);
+    }
 }
 
 static void SerialCB_CopyrightScreen(void)
@@ -1113,6 +1119,9 @@ static u8 SetUpCopyrightScreen(void)
         }
         break;
     case 141:
+        if (!gFlashMemoryPresent) {
+            while(1); // loop forever on the error screen.
+        }
         if (UpdatePaletteFade())
             break;
         CreateTask(Task_Scene1_Load, 0);

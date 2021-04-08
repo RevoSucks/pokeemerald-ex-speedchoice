@@ -36,6 +36,7 @@ GAME_CODE   := SPDX
 MAKER_CODE  := 01
 REVISION    := 0
 MODERN      ?= 0
+DEBUG       ?= 0
 
 SHELL := /bin/bash -o pipefail
 
@@ -77,7 +78,7 @@ OBJ_DIR := build/modern
 LIBPATH := -L "$(dir $(shell $(CC) -mthumb -print-file-name=libgcc.a))" -L "$(dir $(shell $(CC) -mthumb -print-file-name=libc.a))"
 endif
 
-CPPFLAGS := -iquote include -iquote $(GFLIB_SUBDIR) -Wno-trigraphs -DMODERN=$(MODERN)
+CPPFLAGS := -iquote include -iquote $(GFLIB_SUBDIR) -Wno-trigraphs -DMODERN=$(MODERN) -DDEBUG=$(DEBUG)
 ifeq ($(MODERN),0)
 CPPFLAGS += -I tools/agbcc/include -I tools/agbcc
 endif
