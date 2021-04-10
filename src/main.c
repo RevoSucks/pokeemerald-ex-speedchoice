@@ -26,6 +26,8 @@
 #include "debug.h"
 #include "constants/rgb.h"
 #include "done_button.h"
+#include "boot_error_screen.h"
+#include "emu_accuracy_tests.h"
 
 static void VBlankIntr(void);
 static void HBlankIntr(void);
@@ -71,7 +73,9 @@ u8 gLinkVSyncDisabled;
 u32 IntrMain_Buffer[0x200];
 s8 gPcmDmaCounter;
 
+
 static EWRAM_DATA u16 gTrainerId = 0;
+EWRAM_DATA u8 gEmulatorCheck = 0; // This should be 0xFF for a good check.
 
 //EWRAM_DATA void (**gFlashTimerIntrFunc)(void) = NULL;
 
@@ -87,6 +91,10 @@ void DoFrameTimers(void);
 
 #define B_START_SELECT (B_BUTTON | START_BUTTON | SELECT_BUTTON)
 
+extern void NESPipelineTest_Internal(void);
+extern u32 NESPipelineTest_Internal_End; // not a variable
+extern s32 TimerPrescalerTest(void);
+
 void AgbMain()
 {
     // Modern compilers are liberal with the stack on entry to this function,
@@ -94,11 +102,13 @@ void AgbMain()
 #if !MODERN
     RegisterRamReset(RESET_ALL);
 #endif //MODERN
+    // Do the bad emu check. Copy the code to RAM.
     *(vu16 *)BG_PLTT = RGB_WHITE; // Set the backdrop to white on startup
     InitGpuRegManager();
     REG_WAITCNT = WAITCNT_PREFETCH_ENABLE | WAITCNT_WS0_S_1 | WAITCNT_WS0_N_3;
     InitKeys();
     InitIntrHandlers();
+    RunEmulationAccuracyTests();
     m4aSoundInit();
     EnableVCountIntrAtLine150();
     InitRFU();
@@ -118,9 +128,12 @@ void AgbMain()
 
     gDebugSystemEnabled = DEBUG;
 
-    // Instead, handle it in intro.
-    //if (gFlashMemoryPresent != TRUE)
-    //    SetMainCallback2(NULL);
+/*
+    if (gFlashMemoryPresent != TRUE)
+        gErrorScreenCode = ERROR_FLASH_1M_ERROR;
+    else if (gEmulatorCheck != 0xFF || prescaler != 0)
+        gErrorScreenCode = ERROR_FAILED_EMU_CHECK;
+*/
 
     gLinkTransferringData = FALSE;
     gUnknown_03000000 = 0xFC0;

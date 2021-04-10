@@ -26,7 +26,7 @@
 #include "constants/rgb.h"
 #include "constants/battle_anim.h"
 #include "done_button.h"
-#include "flash_missing_screen.h"
+#include "boot_error_screen.h"
 
 /*
     The intro is grouped into the following scenes
@@ -39,7 +39,7 @@
 */
 
 // Scene 1 main tasks
-static void Task_Scene1_Load(u8);
+void Task_Scene1_Load(u8);
 static void Task_Scene1_FadeIn(u8);
 static void Task_Scene1_WaterDrops(u8);
 static void Task_Scene1_PanUp(u8);
@@ -1035,7 +1035,7 @@ static void VBlankCB_Intro(void)
     ScanlineEffect_InitHBlankDmaTransfer();
 }
 
-static void MainCB2_Intro(void)
+void MainCB2_Intro(void)
 {
     RunTasks();
     AnimateSprites();
@@ -1116,11 +1116,11 @@ static u8 SetUpCopyrightScreen(void)
     case 141:
         if (UpdatePaletteFade())
             break;
-        CreateTask(Task_Scene1_Load, 0);
-        if (gFlashMemoryPresent != TRUE)
-            SetMainCallback2(CB2_FlashMissingScreen);
+        if (gWhichErrorMessage != FATAL_OKAY)
+            SetMainCallback2(CB2_BootErrorScreen);
         else
             SetMainCallback2(MainCB2_Intro);
+        CreateTask(Task_Scene1_Load, 0);
         sInIntro = TRUE;
         if (gMultibootProgramStruct.gcmb_field_2 != 0)
         {
@@ -1168,7 +1168,7 @@ void CB2_InitCopyrightScreenAfterTitleScreen(void)
 
 #define sBigDropSpriteId data[0]
 
-static void Task_Scene1_Load(u8 taskId)
+void Task_Scene1_Load(u8 taskId)
 {
     SetVBlankCallback(NULL);
     sIntroCharacterGender = Random() & 1;

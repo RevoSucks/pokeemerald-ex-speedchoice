@@ -263,7 +263,6 @@ SECTIONS {
         src/berry_tag_screen.o(.text);
         src/mystery_event_menu.o(.text);
         src/save_failed_screen.o(.text);
-        src/flash_missing_screen.o(.text);
         src/braille_puzzles.o(.text);
         src/pokeblock_feed.o(.text);
         src/clear_save_data_screen.o(.text);
@@ -335,6 +334,9 @@ SECTIONS {
         src/day_night.o(.text);
         src/speedchoice.o(.text);
         src/done_button.o(.text);
+        src/boot_error_screen.o(.text);
+        src/emu_accuracy_tests.o(.text);
+        src/pipeline_suite_asm.o(.text);
     } =0
 
     script_data :
@@ -629,7 +631,6 @@ SECTIONS {
         src/berry_tag_screen.o(.rodata);
         src/mystery_event_menu.o(.rodata);
         src/save_failed_screen.o(.rodata);
-        src/flash_missing_screen.o(.rodata);
         src/braille_puzzles.o(.rodata);
         src/pokeblock_feed.o(.rodata);
         src/clear_save_data_screen.o(.rodata);
@@ -700,6 +701,8 @@ SECTIONS {
         src/speedchoice.o(.rodata);
         src/done_button.o(.rodata);
         data/rando_cv.o(.rodata);
+        src/emu_accuracy_tests.o(.rodata);
+        src/boot_error_screen.o(.rodata);
         src/m4a_tables.o(.rodata);
         data/sound_data.o(.rodata);
     } =0
