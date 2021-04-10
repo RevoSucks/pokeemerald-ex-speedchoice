@@ -103,7 +103,7 @@ const u8 gSystemText_TerminatorS[] = _("{COLOR RED}$");
 /* SPEEDCHOICE MENU TEXT (Header Text)             */
 /* ----------------------------------------------- */
 const u8 gSpeedchoiceTextHeader[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}EX SPEEDCHOICE MENU");
-const u8 gSpeedchoiceCurrentVersion[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}v0.1.1");
+const u8 gSpeedchoiceCurrentVersion[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}v0.1.2");
 
 /* ----------------------------------------------- */
 /* SPEEDCHOICE MENU TEXT (Option Choices)          */
