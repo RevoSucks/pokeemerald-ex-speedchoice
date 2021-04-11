@@ -10,7 +10,13 @@ extern const char NESPipelineTest_Internal_End[];
 extern const char TimerPrescalerTest[];
 extern const char TimerPrescalerTest_End[];
 
-bool8 DoTest(const char * start, const char * end, u32 expectedValue, ...)
+u16 SetIME(u16 c) {
+    u16 backupIME = REG_IME;
+    REG_IME = c;
+    return backupIME;
+}
+
+s32 DoTest(const char * start, const char * end, u32 expectedValue, ...)
 {
     u32 * d;
     const u32 * s;
@@ -27,7 +33,33 @@ bool8 DoTest(const char * start, const char * end, u32 expectedValue, ...)
     return resp == expectedValue;
 }
 
-bool8 NESPipelineTest(void)
+extern u32 PrefetchBufferResult_Func(void);
+extern u32 PrefetchBufferResult_Func_End(void); // not a func but needed to shut compiler up
+
+s32 PrefetchBufferTest(void)
+{
+    s32 result;
+    u16 waitCntBackup;
+    u16 imeBak;
+    u32 prefetch;
+
+    result = 0;
+    imeBak = SetIME(0);
+    waitCntBackup = REG_WAITCNT;
+    REG_WAITCNT = 0x4014;
+    prefetch = PrefetchBufferResult_Func();
+    if ( prefetch != 24 )
+        result |= 1;
+    REG_WAITCNT = 0x14;
+    prefetch = PrefetchBufferResult_Func();
+    if ( prefetch != 51 )
+        result |= 2;
+    REG_WAITCNT = waitCntBackup;
+    SetIME(imeBak);
+    return (result != 0) ? 0 : 1; // If result isnt 0, it means it failed. Return the correct error status.
+}
+
+s32 NESPipelineTest(void)
 {
     return DoTest(
         NESPipelineTest_Internal,
@@ -36,7 +68,7 @@ bool8 NESPipelineTest(void)
     );
 }
 
-bool8 TimingTest(void)
+s32 TimingTest(void)
 {
     s32 i, j;
     u32 failMask = 0;
@@ -72,13 +104,15 @@ bool8 TimingTest(void)
 
 static const u8 sText_InsnPrefetch[] = _("Insn Prefetch");
 static const u8 sText_TimerPrescaler[] = _("Timer Prescaler");
+static const u8 sText_PrefetchBuffer[] = _("Prefetch Buffer");
 
 static const struct TestSpec {
     const u8 * name;
-    bool8 (*const func)(void);
+    s32 (*const func)(void);
 } sTestSpecs[] = {
     {sText_InsnPrefetch, NESPipelineTest},
     {sText_TimerPrescaler, TimingTest},
+    {sText_PrefetchBuffer, PrefetchBufferTest},
 };
 
 void RunEmulationAccuracyTests(void)

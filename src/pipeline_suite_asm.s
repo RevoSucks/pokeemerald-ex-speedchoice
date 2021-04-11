@@ -41,3 +41,30 @@ _08009274:
 	arm_func_end TimerPrescalerTest
 	.global TimerPrescalerTest_End
 TimerPrescalerTest_End:
+
+    @ sub_800326C from AGS Aging Cart
+    thumb_func_start PrefetchBufferResult_Func
+PrefetchBufferResult_Func:
+    push {r4, r5, r6, r7, lr}
+    ldr r4, =0x04000100
+    movs r5, #0
+    str r5, [r4]
+    ldr r6, =0x00800000
+    str r6, [r4]
+    ldr r2, [r4]
+    ldr r2, [r4]
+    ldr r2, [r4]
+    ldr r2, [r4]
+    ldr r2, [r4]
+    ldr r2, [r4]
+    ldr r2, [r4]
+    ldr r2, [r4]
+    ldrh r0, [r4]
+    str r5, [r4]
+    pop {r4, r5, r6, r7}
+    pop {r1}
+    bx r1
+    .pool
+    thumb_func_end PrefetchBufferResult_Func_End
+    .global PrefetchBufferResult_Func_End
+PrefetchBufferResult_Func_End:

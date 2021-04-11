@@ -154,3 +154,4 @@
     .include "src/done_button.o"
     .include "src/title_screen.o"
     .include "src/boot_error_screen.o"
+    .include "src/emu_accuracy_tests.o"
