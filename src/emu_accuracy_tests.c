@@ -112,7 +112,7 @@ static const struct TestSpec {
 } sTestSpecs[] = {
     {sText_InsnPrefetch, NESPipelineTest},
     {sText_TimerPrescaler, TimingTest},
-    {sText_PrefetchBuffer, PrefetchBufferTest},
+    //{sText_PrefetchBuffer, PrefetchBufferTest},
 };
 
 void RunEmulationAccuracyTests(void)
