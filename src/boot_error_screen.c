@@ -1,3 +1,4 @@
+#include <string.h>
 #include "global.h"
 #include "task.h"
 #include "text.h"
@@ -15,11 +16,13 @@
 #include "constants/songs.h"
 #include "menu.h"
 #include "done_button.h"
+#include "AgbAccuracy.h"
+#include "string_util.h"
 
 // Stolen shamelessly from PikalaxALT.
 
 EWRAM_DATA u8 gWhichErrorMessage = 0;
-EWRAM_DATA u8 gWhichTestFailed[100] = {};
+EWRAM_DATA u8 gWhichTestFailed[256] = {};
 
 #define TX_MARG_LEFT 2
 #define TX_MARG_RIGHT 2
@@ -135,7 +138,7 @@ static const struct FatalErrorCnt sTexts_FatalError[] = {
             {TEXT_CENTER, FMS_COLOR_RED, sText_PipelineFail_2},
             {TEXT_CENTER, FMS_COLOR_RED, sText_PipelineFail_3},
             {TEXT_LEFT, FMS_COLOR_GREY, sText_PipelineFail_4},
-            {TEXT_LEFT, FMS_COLOR_BLUE, gWhichTestFailed}
+            {TEXT_LEFT, FMS_COLOR_BLUE, gStringVar4}
         }
     }
 };
@@ -224,6 +227,90 @@ void CB2_BootErrorScreen(void)
 
 static void Task_BootErrorScreen_Step(u8 taskId);
 
+extern u64 gAgbAccuracyResult;
+
+char c2h(char c) {
+  switch (c) {
+  case '0' ... '9':
+    return c - '0';
+  case 'A' ... 'F':
+    return c + 10 - 'A';
+  case 'a' ... 'f':
+    return c + 10 - 'a';
+  default:
+    return 0xFF;
+  }
+}
+
+// Input string is assumed ASCII.
+u8 * ascii2gf(u8 *dest, const char *src) {
+  char c;
+  while ((c = *src++)) {
+    switch (c) {
+    case '0' ... '9':
+      *dest++ = c - '0' + CHAR_0;
+      break;
+    case 'A' ... 'Z':
+      *dest++ = c - 'A' + CHAR_A;
+      break;
+    case 'a' ... 'z':
+      *dest++ = c - 'a' + CHAR_a;
+      break;
+    // more cases for punctuation
+    case '{':
+      while (*src != '}') {
+        *dest = c2h(*src++) << 4;
+        *dest |= c2h(*src++);
+        while (*src == ' ') src++;
+        dest++;
+      }
+      src++;
+      break;
+    default:
+      *dest++ = CHAR_SPACE;
+      break;
+    }
+  }
+  *dest++ = EOS;
+  return dest;
+}
+
+void BufferWhichErrorsText(void)
+{
+    u8 i;
+    int c;
+    u8 *ptr;
+    u8 buffer[32];
+    u8 j;
+    gStringVar4[0] = EOS;
+    ptr = gStringVar4;
+    
+    for(i = 0, c = 0; i < 64; i++)
+    {
+        // if this is set, it means the cooresponding gTestSpecs element returned
+        // an error. Buffer the string after converting it from ASCII.
+        if (gAgbAccuracyResult & (1ULL << i))
+        {
+            ascii2gf(buffer, gTestSpecs[i].name);
+            if (c % 2)
+            {
+                s32 x = 204 - GetStringWidth(1, buffer, 1);
+                *ptr++ = EXT_CTRL_CODE_BEGIN;
+                *ptr++ = EXT_CTRL_CODE_CLEAR_TO;
+                *ptr++ = x;
+                ptr = StringCopy(ptr, buffer);
+                *ptr++ = CHAR_NEWLINE;
+                *ptr = EOS;
+            }
+            else
+            {
+                ptr = StringCopy(ptr, buffer);
+            }
+            c++;
+        }
+    }
+}
+
 static void DrawFrame(void)
 {
     FillBgTilemapBufferRect(0, 1, 1, 1, 1, 1, 2);
@@ -257,6 +344,7 @@ static void Task_BootErrorScreen(u8 taskId)
         s32 i;
         FillWindowPixelBuffer(0, PIXEL_FILL(1));
         DrawFrame();
+        BufferWhichErrorsText();
         for (i = 0; i < 9; i++)
         {
             if (sTexts_FatalError[gWhichErrorMessage].texts[i].str != NULL)

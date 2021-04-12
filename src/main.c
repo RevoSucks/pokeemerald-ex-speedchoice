@@ -27,7 +27,7 @@
 #include "constants/rgb.h"
 #include "done_button.h"
 #include "boot_error_screen.h"
-#include "emu_accuracy_tests.h"
+#include "AgbAccuracy.h"
 
 static void VBlankIntr(void);
 static void HBlankIntr(void);
@@ -75,7 +75,9 @@ s8 gPcmDmaCounter;
 
 
 static EWRAM_DATA u16 gTrainerId = 0;
-EWRAM_DATA u8 gEmulatorCheck = 0; // This should be 0xFF for a good check.
+
+// 0 for accurate. Non 0 will bring up the error screen.
+EWRAM_DATA u64 gAgbAccuracyResult = 0;
 
 //EWRAM_DATA void (**gFlashTimerIntrFunc)(void) = NULL;
 
@@ -108,7 +110,7 @@ void AgbMain()
     REG_WAITCNT = WAITCNT_PREFETCH_ENABLE | WAITCNT_WS0_S_1 | WAITCNT_WS0_N_3;
     InitKeys();
     InitIntrHandlers();
-    RunEmulationAccuracyTests();
+    gAgbAccuracyResult = RunAgbAccuracyTests(-1);
     m4aSoundInit();
     EnableVCountIntrAtLine150();
     InitRFU();
@@ -127,13 +129,13 @@ void AgbMain()
     gSoftResetDisabled = FALSE;
 
     gDebugSystemEnabled = DEBUG;
-
-/*
-    if (gFlashMemoryPresent != TRUE)
-        gErrorScreenCode = ERROR_FLASH_1M_ERROR;
-    else if (gEmulatorCheck != 0xFF || prescaler != 0)
-        gErrorScreenCode = ERROR_FAILED_EMU_CHECK;
-*/
+    
+    if (gFlashMemoryPresent == FALSE)
+        gWhichErrorMessage = FATAL_NO_FLASH;
+    else if (gAgbAccuracyResult)
+        gWhichErrorMessage = FATAL_ACCU_FAIL;
+    else
+        gWhichErrorMessage = FATAL_OKAY;
 
     gLinkTransferringData = FALSE;
     gUnknown_03000000 = 0xFC0;

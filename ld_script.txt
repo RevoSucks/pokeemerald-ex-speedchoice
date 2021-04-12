@@ -335,8 +335,7 @@ SECTIONS {
         src/speedchoice.o(.text);
         src/done_button.o(.text);
         src/boot_error_screen.o(.text);
-        src/emu_accuracy_tests.o(.text);
-        src/pipeline_suite_asm.o(.text);
+        src/AgbAccuracy.o(.text);
     } =0
 
     script_data :
@@ -397,6 +396,7 @@ SECTIONS {
         *libgcc.a:fp-bit.o(.text);
         *libgcc.a:_lshrdi3.o(.text);
         *libgcc.a:_negdi2.o(.text);
+        *libgcc.a:_ashldi3.o(.text);
         *libc.a:memcpy.o(.text);
         *libc.a:memset.o(.text);
         *libc.a:strcmp.o(.text);
@@ -701,7 +701,7 @@ SECTIONS {
         src/speedchoice.o(.rodata);
         src/done_button.o(.rodata);
         data/rando_cv.o(.rodata);
-        src/emu_accuracy_tests.o(.rodata);
+        src/AgbAccuracy.o(.rodata);
         src/boot_error_screen.o(.rodata);
         src/m4a_tables.o(.rodata);
         data/sound_data.o(.rodata);
