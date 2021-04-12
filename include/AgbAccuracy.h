@@ -128,6 +128,8 @@ enum TestList {
 
 extern const struct TestSpec gTestSpecs[];
 
+#define TEST_MASK(mask) (1ULL << mask)
+
 u64 RunAgbAccuracyTests(u64);
 
 #endif // _AGB_ACCURACY_H

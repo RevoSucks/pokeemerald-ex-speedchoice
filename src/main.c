@@ -110,7 +110,9 @@ void AgbMain()
     REG_WAITCNT = WAITCNT_PREFETCH_ENABLE | WAITCNT_WS0_S_1 | WAITCNT_WS0_N_3;
     InitKeys();
     InitIntrHandlers();
-    gAgbAccuracyResult = RunAgbAccuracyTests(-1);
+    gAgbAccuracyResult = RunAgbAccuracyTests(
+     TEST_MASK(TEST_TIMER_PRESCALER) |
+     TEST_MASK(TEST_INSN_PREFETCH)); // only do first 2 tests
     m4aSoundInit();
     EnableVCountIntrAtLine150();
     InitRFU();
