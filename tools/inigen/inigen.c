@@ -72,7 +72,8 @@ static const char * gTypeNames[] = {
     "Psychic",
     "Ice",
     "Dragon",
-    "Dark"
+    "Dark",
+    "Fairy"
 };
 
 const struct StaticPokemon gStaticPokemon[][8] = {
@@ -518,7 +519,6 @@ int main(int argc, char ** argv)
     print("[%s]\n", romName);
     print("Game=%s\n", romCode);
     print("Version=0\n");
-    print("Type=Em\n");
     print("TableFile=gba_english\n");
 
     // Find the first block after the ROM
@@ -536,6 +536,7 @@ int main(int argc, char ** argv)
     print("FreeSpace=0x%X\n", end);
 
     // Pokemon data
+    config_sym("PokedexOrder", "gSpeciesToNationalPokedexNum");
     print("PokemonCount=%d\n", NUM_SPECIES - 1);
     print("PokemonNameLength=%d\n", POKEMON_NAME_LENGTH + 1);
     config_sym("PokemonMovesets", "gLevelUpLearnsets");
