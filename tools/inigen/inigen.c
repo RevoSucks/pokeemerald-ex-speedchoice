@@ -73,7 +73,7 @@ static const char * gTypeNames[] = {
     "Ice",
     "Dragon",
     "Dark",
-	"Fairy"
+    "Fairy"
 };
 
 const struct StaticPokemon gStaticPokemon[][8] = {
@@ -536,7 +536,7 @@ int main(int argc, char ** argv)
     print("FreeSpace=0x%X\n", end);
 
     // Pokemon data
-	config_sym("PokedexOrder", "gSpeciesToNationalPokedexNum");
+    config_sym("PokedexOrder", "gSpeciesToNationalPokedexNum");
     print("PokemonCount=%d\n", NUM_SPECIES - 1);
     print("PokemonNameLength=%d\n", POKEMON_NAME_LENGTH + 1);
     config_sym("PokemonMovesets", "gLevelUpLearnsets");
