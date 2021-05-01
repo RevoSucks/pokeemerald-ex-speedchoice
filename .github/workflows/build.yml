@@ -32,6 +32,3 @@ jobs:
 
       - name: Agbcc
         run: make -j${nproc} 
-
-      - name: Modern
-        run: make -j${nproc} modern
