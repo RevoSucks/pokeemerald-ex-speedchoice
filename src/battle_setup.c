@@ -491,7 +491,8 @@ static void sub_80B0828(void)
 // Initiates battle where Wally catches Ralts
 void StartWallyTutorialBattle(void)
 {
-    CreateMaleMon(&gEnemyParty[0], SPECIES_RALTS, 5);
+    CreateMon(&gEnemyParty[0], SPECIES_KIRLIA, 5, USE_RANDOM_IVS, 1, Random32(), OT_ID_PRESET, Random32());
+    //CreateMaleMon(&gEnemyParty[0], SPECIES_RALTS, 5);
     ScriptContext2_Enable();
     gMain.savedCallback = CB2_ReturnToFieldContinueScriptPlayMapMusic;
     gBattleTypeFlags = BATTLE_TYPE_WALLY_TUTORIAL;
