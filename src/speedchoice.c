@@ -103,7 +103,7 @@ const u8 gSystemText_TerminatorS[] = _("{COLOR RED}$");
 /* SPEEDCHOICE MENU TEXT (Header Text)             */
 /* ----------------------------------------------- */
 const u8 gSpeedchoiceTextHeader[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}EX SPEEDCHOICE MENU");
-const u8 gSpeedchoiceCurrentVersion[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}v0.1.6");
+const u8 gSpeedchoiceCurrentVersion[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}v0.1.7");
 
 /* ----------------------------------------------- */
 /* SPEEDCHOICE MENU TEXT (Option Choices)          */
@@ -988,6 +988,7 @@ void CB2_InitSpeedchoice(void)
 
         if(!gAlreadyLoaded)
         {
+            StartTimer1();
             gLocalSpeedchoiceConfig.trueIndex = 0;
             gLocalSpeedchoiceConfig.pageIndex = 0;
             gLocalSpeedchoiceConfig.pageNum = 1;
@@ -1351,6 +1352,7 @@ static void Task_AskToStartGame(u8 taskId)
     switch (Menu_ProcessInputNoWrapClearOnChoose())
     {
     case 0:  // YES
+        SeedRngAndSetTrainerId(); // fix Trainer ID potentially being skipped
         PlayBGM(MUS_DUMMY);
         PlaySE(SE_SELECT);
         SaveSpeedchoiceOptions(taskId);
