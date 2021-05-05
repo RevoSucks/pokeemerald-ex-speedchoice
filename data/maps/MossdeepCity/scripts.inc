@@ -60,8 +60,21 @@ MossdeepCity_EventScript_Woman:: @ 81E4B0B
 	end
 
 MossdeepCity_EventScript_WhiteRock:: @ 81E4B14
+    checkitem ITEM_ODD_KEYSTONE, 1
+	compare VAR_RESULT, TRUE
+	goto_if_eq MossdeepCity_DoSpiritombEncounter
 	msgbox MossdeepCity_Text_ItsAWhiteRock, MSGBOX_SIGN
 	end
+
+MossdeepCity_DoSpiritombEncounter::
+	playmoncry SPECIES_SPIRITOMB, 0
+	msgbox MossdeepCity_Text_SpiritombEncounter, MSGBOX_DEFAULT
+	waitmoncry
+    waitbuttonpress
+    setwildbattle SPECIES_SPIRITOMB, 25, ITEM_NONE
+	dowildbattle
+	removeitem ITEM_ODD_KEYSTONE
+    end
 
 MossdeepCity_EventScript_GymSign:: @ 81E4B1D
 	msgbox MossdeepCity_Text_GymSign, MSGBOX_SIGN
@@ -437,3 +450,5 @@ MossdeepCity_Text_SootopolisNewGymLeader: @ 81E5581
 	.string "People tell me the new LEADER once\n"
 	.string "mentored WALLACE.$"
 
+MossdeepCity_Text_SpiritombEncounter:
+    .string "Yulaaah!$" @ ugh stupid preproc not recognizing that...
