@@ -16,6 +16,7 @@
 #include "field_effect.h"
 #include "event_object_lock.h"
 #include "event_object_movement.h"
+#include "event_scripts.h"
 #include "field_message_box.h"
 #include "field_player_avatar.h"
 #include "field_screen_effect.h"
@@ -52,9 +53,11 @@
 #include "constants/event_objects.h"
 #include "speedchoice.h"
 #include "done_button.h"
+#include "constants/items.h"
 
 typedef u16 (*SpecialFunc)(void);
 typedef void (*NativeFunc)(void);
+typedef bool8 (*ScrFunc)(struct ScriptContext*);
 
 EWRAM_DATA const u8 *gRamScriptRetAddr = NULL;
 static EWRAM_DATA u32 sAddressOffset = 0; // For relative addressing in vgoto etc., used by saved scripts (e.g. Mystery Event)
@@ -137,10 +140,15 @@ bool8 ScrCmd_specialvar(struct ScriptContext *ctx)
 
 bool8 ScrCmd_callnative(struct ScriptContext *ctx)
 {
-    NativeFunc func = (NativeFunc)ScriptReadWord(ctx);
-
-    func();
+    u32 func = ScriptReadWord(ctx);
+    ((NativeFunc) func)();
     return FALSE;
+}
+
+bool8 ScrCmd_callfunc(struct ScriptContext *ctx)
+{
+    u32 func = ScriptReadWord(ctx);
+    return ((ScrFunc) func)(ctx);
 }
 
 bool8 ScrCmd_waitstate(struct ScriptContext *ctx)
@@ -463,7 +471,7 @@ bool8 ScrCmd_compare_var_to_var(struct ScriptContext *ctx)
     return FALSE;
 }
 
-// Note: addvar doesn't support adding from a variable in vanilla. If you were to 
+// Note: addvar doesn't support adding from a variable in vanilla. If you were to
 // add a VarGet() to the above, make sure you change the `addvar VAR_*, -1`
 // in the contest scripts to `subvar VAR_*, 1`, else contests will break.
 bool8 ScrCmd_addvar(struct ScriptContext *ctx)
@@ -654,7 +662,7 @@ bool8 ScrCmd_fadescreenswapbuffers(struct ScriptContext *ctx)
     switch (mode)
     {
         case FADE_TO_BLACK:
-        case FADE_TO_WHITE:   
+        case FADE_TO_WHITE:
         default:
             CpuCopy32(gPlttBufferUnfaded, gPaletteDecompressionBuffer, PLTT_DECOMP_BUFFER_SIZE);
             FadeScreen(mode, 0);
@@ -1003,9 +1011,27 @@ bool8 ScrCmd_applymovement(struct ScriptContext *ctx)
 {
     u16 localId = VarGet(ScriptReadHalfword(ctx));
     const void *movementScript = (const void *)ScriptReadWord(ctx);
+    struct ObjectEvent *objEvent;
+
 
     ScriptMovement_StartObjectMovementScript(localId, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, movementScript);
     sMovingNpcId = localId;
+    if (localId != OBJ_EVENT_ID_FOLLOWER) { // Force follower into pokeball
+      objEvent = GetFollowerObject();
+      // return early if no follower or in shadowing state
+      if (objEvent == NULL || gSprites[objEvent->spriteId].data[1] == 0) {
+        return FALSE;
+      }
+      // ClearEventObjectMovement(
+      objEvent->singleMovementActive = 0;
+      objEvent->heldMovementActive = FALSE;
+      objEvent->heldMovementFinished = FALSE;
+      objEvent->movementActionId = 0xFF;
+      gSprites[objEvent->spriteId].data[1] = 0;
+      // )
+      gSprites[objEvent->spriteId].animCmdIndex = 0; // Needed because of weird animCmdIndex stuff
+      ScriptMovement_StartObjectMovementScript(OBJ_EVENT_ID_FOLLOWER, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, EnterPokeballMovement);
+    }
     return FALSE;
 }
 
@@ -1248,6 +1274,16 @@ bool8 ScrCmd_lock(struct ScriptContext *ctx)
 bool8 ScrCmd_releaseall(struct ScriptContext *ctx)
 {
     u8 playerObjectId;
+    struct ObjectEvent *followerObject = GetFollowerObject();
+    if (followerObject) { // Release follower from movement
+      // ObjectEventClearHeldMovement( TODO: Change the way data[1] determines state
+      followerObject->singleMovementActive = FALSE;
+      followerObject->movementActionId = 0xFF;
+      followerObject->heldMovementActive = FALSE;
+      followerObject->heldMovementFinished = FALSE;
+      gSprites[followerObject->spriteId].data[2] = 0;
+      // )
+    }
 
     HideFieldMessageBox();
     playerObjectId = GetObjectEventIdByLocalIdAndMap(OBJ_EVENT_ID_PLAYER, 0, 0);
@@ -1260,6 +1296,16 @@ bool8 ScrCmd_releaseall(struct ScriptContext *ctx)
 bool8 ScrCmd_release(struct ScriptContext *ctx)
 {
     u8 playerObjectId;
+    struct ObjectEvent *followerObject = GetFollowerObject();
+    if (followerObject) { // Release follower from movement
+      // ObjectEventClearHeldMovement(
+      followerObject->singleMovementActive = FALSE;
+      followerObject->movementActionId = 0xFF;
+      followerObject->heldMovementActive = FALSE;
+      followerObject->heldMovementFinished = FALSE;
+      gSprites[followerObject->spriteId].data[2] = 0;
+      // )
+    }
 
     HideFieldMessageBox();
     if (gObjectEvents[gSelectedObjectEvent].active)
@@ -1572,6 +1618,16 @@ bool8 ScrCmd_bufferleadmonspeciesname(struct ScriptContext *ctx)
     u8 *dest = sScriptStringVars[stringVarIndex];
     u8 partyIndex = GetLeadMonIndex();
     u32 species = GetMonData(&gPlayerParty[partyIndex], MON_DATA_SPECIES, NULL);
+    StringCopy(dest, gSpeciesNames[species]);
+    return FALSE;
+}
+
+bool8 ScrFunc_bufferlivemonspeciesname(struct ScriptContext *ctx)
+{
+    u8 stringVarIndex = ScriptReadByte(ctx);
+
+    u8 *dest = sScriptStringVars[stringVarIndex];
+    u32 species = GetMonData(GetFirstLiveMon(), MON_DATA_SPECIES);
     StringCopy(dest, gSpeciesNames[species]);
     return FALSE;
 }
@@ -2059,6 +2115,13 @@ bool8 ScrCmd_playmoncry(struct ScriptContext *ctx)
     return FALSE;
 }
 
+bool8 ScrFunc_playfirstmoncry(struct ScriptContext *ctx)
+{
+  u16 species = GetMonData(GetFirstLiveMon(), MON_DATA_SPECIES);
+  PlayCry5(species, 0);
+  return FALSE;
+}
+
 bool8 ScrCmd_waitmoncry(struct ScriptContext *ctx)
 {
     SetupNativeScript(ctx, IsCryFinished);
@@ -2348,5 +2411,21 @@ bool8 ScrCmd_checkspeedchoice(struct ScriptContext *ctx)
     u8 setting = ScriptReadByte(ctx);
 
     ctx->comparisonResult = CheckSpeedchoiceOption(option, setting);
+    return TRUE;
+}
+
+int CountNumberUniqueFossils()
+{
+    int i;
+    int numUnique = 0;
+    for(i = ITEM_ARMOR_FOSSIL; i <= ITEM_CLAW_FOSSIL; i++) { // check every fossil.
+        numUnique += CheckBagHasItem(i, 1);
+    }
+    return numUnique;
+}
+
+bool8 ScrCmd_checkpluralfossils(struct ScriptContext *ctx)
+{
+    ctx->comparisonResult = (CountNumberUniqueFossils() > 1) ? TRUE : FALSE;
     return TRUE;
 }

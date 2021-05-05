@@ -2620,63 +2620,63 @@ static const u8 sMonFrontAnimIdsTable[NUM_SPECIES - 1] =
 
 static const u8 sMonAnimationDelayTable[NUM_SPECIES - 1] =
 {
-    [SPECIES_BLASTOISE - 1] = 0x32,
-    [SPECIES_WEEDLE - 1] = 0x0a,
-    [SPECIES_KAKUNA - 1] = 0x14,
-    [SPECIES_BEEDRILL - 1] = 0x23,
-    [SPECIES_PIDGEOTTO - 1] = 0x19,
-    [SPECIES_FEAROW - 1] = 0x02,
-    [SPECIES_EKANS - 1] = 0x1e,
-    [SPECIES_NIDORAN_F - 1] = 0x1c,
-    [SPECIES_NIDOKING - 1] = 0x19,
-    [SPECIES_PARAS - 1] = 0x0a,
-    [SPECIES_PARASECT - 1] = 0x2d,
-    [SPECIES_VENONAT - 1] = 0x14,
-    [SPECIES_DIGLETT - 1] = 0x19,
-    [SPECIES_DUGTRIO - 1] = 0x23,
-    [SPECIES_MEOWTH - 1] = 0x28,
-    [SPECIES_PERSIAN - 1] = 0x14,
-    [SPECIES_MANKEY - 1] = 0x14,
-    [SPECIES_GROWLITHE - 1] = 0x1e,
-    [SPECIES_ARCANINE - 1] = 0x28,
-    [SPECIES_POLIWHIRL - 1] = 0x05,
-    [SPECIES_WEEPINBELL - 1] = 0x03,
-    [SPECIES_MUK - 1] = 0x2d,
-    [SPECIES_SHELLDER - 1] = 0x14,
-    [SPECIES_HAUNTER - 1] = 0x17,
-    [SPECIES_DROWZEE - 1] = 0x30,
-    [SPECIES_HYPNO - 1] = 0x28,
-    [SPECIES_HITMONCHAN - 1] = 0x19,
-    [SPECIES_SCYTHER - 1] = 0x0a,
-    [SPECIES_TAUROS - 1] = 0x0a,
-    [SPECIES_TYPHLOSION - 1] = 0x14,
-    [SPECIES_FERALIGATR - 1] = 0x05,
-    [SPECIES_NATU - 1] = 0x1e,
-    [SPECIES_MAREEP - 1] = 0x32,
-    [SPECIES_AMPHAROS - 1] = 0x0a,
-    [SPECIES_POLITOED - 1] = 0x28,
-    [SPECIES_DUNSPARCE - 1] = 0x0a,
-    [SPECIES_STEELIX - 1] = 0x2d,
-    [SPECIES_QWILFISH - 1] = 0x27,
-    [SPECIES_SCIZOR - 1] = 0x13,
-    [SPECIES_OCTILLERY - 1] = 0x14,
-    [SPECIES_SMOOCHUM - 1] = 0x28,
-    [SPECIES_TYRANITAR - 1] = 0x0a,
-    [SPECIES_LUGIA - 1] = 0x14,
-    [SPECIES_WAILORD - 1] = 0x0a,
-    [SPECIES_KECLEON - 1] = 0x1e,
-    [SPECIES_MILOTIC - 1] = 0x2d,
-    [SPECIES_SPHEAL - 1] = 0x0f,
-    [SPECIES_SNORUNT - 1] = 0x14,
-    [SPECIES_GRUMPIG - 1] = 0x0f,
-    [SPECIES_WYNAUT - 1] = 0x0f,
-    [SPECIES_DUSCLOPS - 1] = 0x1e,
-    [SPECIES_ABSOL - 1] = 0x2d,
-    [SPECIES_SALAMENCE - 1] = 0x46,
-    [SPECIES_KYOGRE - 1] = 0x3c,
-    [SPECIES_RAYQUAZA - 1] = 0x3c,
-    [SPECIES_TAPU_FINI - 1] = 0x5,
-    [SPECIES_ROTOM_FAN - 1] = 0x7,
+    [SPECIES_BLASTOISE - 1]  = 50,
+    [SPECIES_WEEDLE - 1]     = 10,
+    [SPECIES_KAKUNA - 1]     = 20,
+    [SPECIES_BEEDRILL - 1]   = 35,
+    [SPECIES_PIDGEOTTO - 1]  = 25,
+    [SPECIES_FEAROW - 1]     = 2,
+    [SPECIES_EKANS - 1]      = 30,
+    [SPECIES_NIDORAN_F - 1]  = 28,
+    [SPECIES_NIDOKING - 1]   = 25,
+    [SPECIES_PARAS - 1]      = 10,
+    [SPECIES_PARASECT - 1]   = 45,
+    [SPECIES_VENONAT - 1]    = 20,
+    [SPECIES_DIGLETT - 1]    = 25,
+    [SPECIES_DUGTRIO - 1]    = 35,
+    [SPECIES_MEOWTH - 1]     = 40,
+    [SPECIES_PERSIAN - 1]    = 20,
+    [SPECIES_MANKEY - 1]     = 20,
+    [SPECIES_GROWLITHE - 1]  = 30,
+    [SPECIES_ARCANINE - 1]   = 40,
+    [SPECIES_POLIWHIRL - 1]  = 5,
+    [SPECIES_WEEPINBELL - 1] = 3,
+    [SPECIES_MUK - 1]        = 45,
+    [SPECIES_SHELLDER - 1]   = 20,
+    [SPECIES_HAUNTER - 1]    = 23,
+    [SPECIES_DROWZEE - 1]    = 48,
+    [SPECIES_HYPNO - 1]      = 40,
+    [SPECIES_HITMONCHAN - 1] = 25,
+    [SPECIES_SCYTHER - 1]    = 10,
+    [SPECIES_TAUROS - 1]     = 10,
+    [SPECIES_TYPHLOSION - 1] = 20,
+    [SPECIES_FERALIGATR - 1] = 5,
+    [SPECIES_NATU - 1]       = 30,
+    [SPECIES_MAREEP - 1]     = 50,
+    [SPECIES_AMPHAROS - 1]   = 10,
+    [SPECIES_POLITOED - 1]   = 40,
+    [SPECIES_DUNSPARCE - 1]  = 10,
+    [SPECIES_STEELIX - 1]    = 45,
+    [SPECIES_QWILFISH - 1]   = 39,
+    [SPECIES_SCIZOR - 1]     = 19,
+    [SPECIES_OCTILLERY - 1]  = 20,
+    [SPECIES_SMOOCHUM - 1]   = 40,
+    [SPECIES_TYRANITAR - 1]  = 10,
+    [SPECIES_LUGIA - 1]      = 20,
+    [SPECIES_WAILORD - 1]    = 10,
+    [SPECIES_KECLEON - 1]    = 30,
+    [SPECIES_MILOTIC - 1]    = 45,
+    [SPECIES_SPHEAL - 1]     = 15,
+    [SPECIES_SNORUNT - 1]    = 20,
+    [SPECIES_GRUMPIG - 1]    = 15,
+    [SPECIES_WYNAUT - 1]     = 15,
+    [SPECIES_DUSCLOPS - 1]   = 30,
+    [SPECIES_ABSOL - 1]      = 45,
+    [SPECIES_SALAMENCE - 1]  = 70,
+    [SPECIES_KYOGRE - 1]     = 60,
+    [SPECIES_RAYQUAZA - 1]   = 60,
+    [SPECIES_TAPU_FINI - 1]  = 5,
+    [SPECIES_ROTOM_FAN - 1]  = 7,
 };
 
 const u8 gPPUpGetMask[] = {0x03, 0x0c, 0x30, 0xc0}; // Masks for getting PP Up count, also PP Max values
@@ -5486,7 +5486,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                         temp2 = itemEffect[itemEffectParam];
                         dataSigned = GetMonData(mon, sGetMonDataEVConstants[temp1], NULL);
                         evChange = temp2;
-     
+
                         if (evChange > 0) // Increasing EV (HP or Atk)
                         {
                             // Has EV increase limit already been reached?
@@ -5590,7 +5590,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                         {
                             if (!usedByAI)
                             {
-                                // Restore HP 
+                                // Restore HP
                                 dataUnsigned = GetMonData(mon, MON_DATA_HP, NULL) + dataUnsigned;
                                 if (dataUnsigned > GetMonData(mon, MON_DATA_MAX_HP, NULL))
                                     dataUnsigned = GetMonData(mon, MON_DATA_MAX_HP, NULL);
@@ -5669,7 +5669,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                                     dataUnsigned = CalculatePPWithBonus(moveId, GetMonData(mon, MON_DATA_PP_BONUSES, NULL), moveIndex);
                                 }
                                 SetMonData(mon, MON_DATA_PP1 + moveIndex, &dataUnsigned);
-                                
+
                                 // Heal battler PP too (if applicable)
                                 if (gMain.inBattle
                                  && battlerId != MAX_BATTLERS_COUNT && !(gBattleMons[battlerId].status2 & STATUS2_TRANSFORMED)
@@ -5706,7 +5706,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
         case 5:
             effectFlags = itemEffect[i];
             temp1 = 0;
-            
+
             // Loop through and try each of the ITEM5 effects
             while (effectFlags != 0)
             {
@@ -5968,7 +5968,7 @@ static void BufferStatRoseMessage(s32 arg0)
     {
         StringCopy(gBattleTextBuff2, gText_StatRose);
     }
-    BattleStringExpandPlaceholdersToDisplayedString(gText_PkmnsStatChanged2);
+    BattleStringExpandPlaceholdersToDisplayedString(gText_DefendersStatRose);
 }
 
 u8 *UseStatIncreaseItem(u16 itemId)
@@ -6151,7 +6151,6 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 mode, u16 evolutionItem, u
             case EVO_LEVEL_DUSK:
                 RtcCalcLocalTime();
                 if (gLocalTime.hours >= 17 && gLocalTime.hours < 18 && gEvolutionTable[species][i].param <= level)
-                    targetSpecies = gEvolutionTable[species][i].targetSpecies;
                 break;
             case EVO_LEVEL:
                 if (gEvolutionTable[species][i].param <= level)
@@ -7428,7 +7427,7 @@ static void Task_PokemonSummaryAnimateAfterDelay(u8 taskId)
     if (--gTasks[taskId].data[3] == 0)
     {
         StartMonSummaryAnimation(READ_PTR_FROM_TASK(taskId, 0), gTasks[taskId].data[2]);
-        SummaryScreen_SetUnknownTaskId(0xFF);
+        SummaryScreen_SetAnimDelayTaskId(TASK_NONE);
         DestroyTask(taskId);
     }
 }
@@ -7495,7 +7494,7 @@ void PokemonSummaryDoMonAnimation(struct Sprite* sprite, u16 species, bool8 oneF
         STORE_PTR_IN_TASK(sprite, taskId, 0);
         gTasks[taskId].data[2] = sMonFrontAnimIdsTable[species - 1];
         gTasks[taskId].data[3] = sMonAnimationDelayTable[species - 1];
-        SummaryScreen_SetUnknownTaskId(taskId);
+        SummaryScreen_SetAnimDelayTaskId(taskId);
         SetSpriteCB_MonAnimDummy(sprite);
     }
     else

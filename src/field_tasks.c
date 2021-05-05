@@ -147,6 +147,18 @@ static void Task_RunTimeBasedEvents(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
 
+    if (!ScriptContext2_IsEnabled())
+    {
+        RunTimeBasedEvents(data);
+        UpdateAmbientCry(&tAmbientCryState, &tAmbientCryDelay);
+    }
+}
+
+/*
+static void Task_RunTimeBasedEvents(u8 taskId)
+{
+    s16 *data = gTasks[taskId].data;
+
     ProcessImmediateTimeEvents();
 
     if (!ScriptContext2_IsEnabled())
@@ -161,6 +173,7 @@ static void Task_RunTimeBasedEvents(u8 taskId)
         DoTimeBasedEvents();
     }
 }
+*/
 
 void ForceTimeBasedEvents(void)
 {

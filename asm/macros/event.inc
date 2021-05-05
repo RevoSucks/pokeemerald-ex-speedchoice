@@ -1641,6 +1641,18 @@
     .byte \setting
     .endm
 
+    @ Like callnative, but function expects a ctx
+    .macro callfunc func:req
+    .byte 0xe4
+    .4byte \func
+    .endm
+
+    @ Return whether the player has more than 1 unique fossil. Replaces the way Game Freak
+    @ checks whether to use the multichoice menu.
+    .macro checkpluralfossils
+    .byte 0xe5
+    .endm
+
 @ Supplementary
 
 	.macro goto_if_unset flag:req, dest:req

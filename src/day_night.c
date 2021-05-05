@@ -11,6 +11,23 @@
 #include "constants/region_map_sections.h"
 #include "constants/rgb.h"
 
+u8 GetCurrentTimeOfDay(void)
+{
+    return GetTimeOfDay(gLocalTime.hours);
+}
+
+u8 GetTimeOfDay(s8 hours)
+{
+    if (hours < HOUR_MORNING)
+        return TIME_NIGHT;
+    else if (hours < HOUR_DAY)
+        return TIME_MORNING;
+    else if (hours < HOUR_NIGHT)
+        return TIME_DAY;
+    else
+        return TIME_NIGHT;
+}
+
 #define TINT_MORNING Q_8_8(0.7), Q_8_8(0.7), Q_8_8(0.9)
 #define TINT_DAY Q_8_8(1.0), Q_8_8(1.0), Q_8_8(1.0)
 #define TINT_NIGHT Q_8_8(0.6), Q_8_8(0.6), Q_8_8(0.92)
@@ -59,23 +76,6 @@ static const u16 sTimeOfDayTints[][3] = {
     [22] =  {TINT_NIGHT},
     [23] =  {TINT_NIGHT},
 };
-
-u8 GetCurrentTimeOfDay(void)
-{
-    return GetTimeOfDay(gLocalTime.hours);
-}
-
-u8 GetTimeOfDay(s8 hours)
-{
-    if (hours < HOUR_MORNING)
-        return TIME_NIGHT;
-    else if (hours < HOUR_DAY)
-        return TIME_MORNING;
-    else if (hours < HOUR_NIGHT)
-        return TIME_DAY;
-    else
-        return TIME_NIGHT;
-}
 
 static void LoadPaletteOverrides(void)
 {

@@ -4,6 +4,17 @@
 #include "constants/moves.h"
 
 #define SPECIES_SHINY_TAG 5000
+#define N_FOLLOWER_HAPPY_MESSAGES 31
+#define N_FOLLOWER_NEUTRAL_MESSAGES 15
+#define N_FOLLOWER_SAD_MESSAGES 3
+#define N_FOLLOWER_UPSET_MESSAGES 3
+#define N_FOLLOWER_ANGRY_MESSAGES 5
+#define N_FOLLOWER_PENSIVE_MESSAGES 20
+#define N_FOLLOWER_LOVE_MESSAGES 10
+#define N_FOLLOWER_SURPRISE_MESSAGES 20
+#define N_FOLLOWER_CURIOUS_MESSAGES 7
+#define N_FOLLOWER_MUSIC_MESSAGES 15
+#define N_FOLLOWER_POISONED_MESSAGES 1
 
 struct MonCoords
 {
@@ -69,6 +80,13 @@ struct Trainer
 
 #define TRAINER_ENCOUNTER_MUSIC(trainer)((gTrainers[trainer].encounterMusic_gender & 0x7F))
 
+struct FollowerMessagePool
+{
+    const char * const * messages;
+    const u8 * script;
+    u16 length;
+};
+
 extern const u16 gMinigameDigits_Pal[];
 extern const u32 gMinigameDigits_Gfx[];
 
@@ -119,5 +137,18 @@ extern const u8 gTrainerClassNames[][13];
 extern const u8 gSpeciesNames[][POKEMON_NAME_LENGTH + 1];
 extern const u8 gMoveNames[MOVES_COUNT][MOVE_NAME_LENGTH + 1];
 extern const u8 *const gZMoveNames[];
+
+// Follower text messages
+extern const char * const gFollowerHappyMessages[];
+extern const char * const gFollowerNeutralMessages[];
+extern const char * const gFollowerSadMessages[];
+extern const char * const gFollowerUpsetMessages[];
+extern const char * const gFollowerAngryMessages[];
+extern const char * const gFollowerPensiveMessages[];
+extern const char * const gFollowerLoveMessages[];
+extern const char * const gFollowerSurpriseMessages[];
+extern const char * const gFollowerCuriousMessages[];
+extern const char * const gFollowerMusicMessages[];
+extern const char * const gFollowerPoisonedMessages[];
 
 #endif // GUARD_DATA_H

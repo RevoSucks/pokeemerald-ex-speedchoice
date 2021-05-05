@@ -1025,7 +1025,7 @@ void DoSecretBaseGlitterMatSparkle(void)
     {
         gSprites[spriteId].coordOffsetEnabled = TRUE;
         gSprites[spriteId].oam.priority = 1;
-        gSprites[spriteId].oam.paletteNum = 5;
+        gSprites[spriteId].oam.paletteNum = 5; // TODO: What palette should this use?
         gSprites[spriteId].callback = SpriteCB_GlitterMatSparkle;
         gSprites[spriteId].data[0] = 0;
     }
@@ -1298,7 +1298,7 @@ u8 CreateRecordMixingLights(void)
     else
     {
         struct Sprite *sprite = &gSprites[spriteId];
-        sub_8092FF0(16, 13, &sprite->pos1.x, &sprite->pos1.y);
+        GetMapCoordsFromSpritePos(16, 13, &sprite->pos1.x, &sprite->pos1.y);
         sprite->coordOffsetEnabled = TRUE;
         sprite->pos1.x += 16;
         sprite->pos1.y += 2;

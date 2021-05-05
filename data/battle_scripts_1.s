@@ -7787,7 +7787,7 @@ BattleScript_ArenaTurnBeginning::
 	pause 0x8
 	playse SE_ARENA_TIMEUP1
 	various14 BS_ATTACKER
-	arenajudmengtstring 8
+	arenajudgmentstring 8
 	arenawaitmessage 8
 	pause 0x40
 	various15 BS_ATTACKER
@@ -7797,7 +7797,7 @@ BattleScript_ArenaTurnBeginning::
 BattleScript_82DB8E0:: @ Unused battlescript
 	playse SE_DING_DONG
 	various14 BS_ATTACKER
-	arenajudmengtstring BS_TARGET
+	arenajudgmentstring BS_TARGET
 	arenawaitmessage BS_TARGET
 	pause 0x40
 	various15 BS_ATTACKER
@@ -7814,25 +7814,25 @@ BattleScript_ArenaDoJudgment::
 	playse SE_ARENA_TIMEUP1
 	pause 0x40
 	various14 BS_ATTACKER
-	arenajudmengtstring 1
+	arenajudgmentstring 1
 	arenawaitmessage 1
 	pause 0x40
 	setbyte gBattleCommunication, 0x0
 	arenajudgmentwindow
 	pause 0x40
 	arenajudgmentwindow
-	arenajudmengtstring 2
+	arenajudgmentstring 2
 	arenawaitmessage 2
 	arenajudgmentwindow
-	arenajudmengtstring 3
+	arenajudgmentstring 3
 	arenawaitmessage 3
 	arenajudgmentwindow
-	arenajudmengtstring 4
+	arenajudgmentstring 4
 	arenawaitmessage 4
 	arenajudgmentwindow
 	jumpifbyte CMP_EQUAL, gBattleCommunication + 1, 0x3, BattleScript_ArenaJudgmentPlayerLoses
 	jumpifbyte CMP_EQUAL, gBattleCommunication + 1, 0x4, BattleScript_ArenaJudgmentDraw
-	arenajudmengtstring 5
+	arenajudgmentstring 5
 	arenawaitmessage 5
 	arenajudgmentwindow
 	various15 BS_ATTACKER
@@ -7846,7 +7846,7 @@ BattleScript_ArenaDoJudgment::
 	end2
 
 BattleScript_ArenaJudgmentPlayerLoses:
-	arenajudmengtstring 6
+	arenajudgmentstring 6
 	arenawaitmessage 6
 	arenajudgmentwindow
 	various15 BS_ATTACKER
@@ -7860,7 +7860,7 @@ BattleScript_ArenaJudgmentPlayerLoses:
 	end2
 
 BattleScript_ArenaJudgmentDraw:
-	arenajudmengtstring 7
+	arenajudgmentstring 7
 	arenawaitmessage 7
 	arenajudgmentwindow
 	various15 BS_ATTACKER

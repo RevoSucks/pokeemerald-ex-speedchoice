@@ -682,6 +682,7 @@ static void Task_DoDoorWarp(u8 taskId)
     struct Task *task = &gTasks[taskId];
     s16 *x = &task->data[2];
     s16 *y = &task->data[3];
+    struct ObjectEvent *followerObject = GetFollowerObject();
 
     switch (task->tState)
     {
@@ -689,6 +690,15 @@ static void Task_DoDoorWarp(u8 taskId)
         FreezeObjectEvents();
         PlayerGetDestCoords(x, y);
         PlaySE(GetDoorSoundEffect(*x, *y - 1));
+        if (followerObject) { // Put follower into pokeball
+          // TODO: ClearObjectEventMovement (
+          followerObject->singleMovementActive = 0;
+          ObjectEventClearHeldMovement(followerObject);
+          gSprites[followerObject->spriteId].data[1] = 0;
+          gSprites[followerObject->spriteId].animCmdIndex = 0; // Needed because of weird animCmdIndex stuff
+          // )
+          ObjectEventSetHeldMovement(followerObject, MOVEMENT_ACTION_ENTER_POKEBALL);
+        }
         task->data[1] = FieldAnimateDoorOpen(*x, *y - 1);
         task->tState = 1;
         break;
@@ -1087,7 +1097,7 @@ static void LoadOrbEffectPalette(bool8 blueOrb)
     }
 }
 
-static bool8 sub_80B02C8(u16 shakeDir)
+static bool8 UpdateOrbEffectBlend(u16 shakeDir)
 {
     u8 lo = REG_BLDALPHA & 0xFF;
     u8 hi = REG_BLDALPHA >> 8;
@@ -1095,21 +1105,17 @@ static bool8 sub_80B02C8(u16 shakeDir)
     if (shakeDir != 0)
     {
         if (lo)
-        {
             lo--;
-        }
     }
     else
     {
-        if (hi < 0x10)
-        {
+        if (hi < 16)
             hi++;
-        }
     }
 
     SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(lo, hi));
 
-    if (lo == 0 && hi == 0x10)
+    if (lo == 0 && hi == 16)
         return TRUE;
     else
         return FALSE;
@@ -1193,7 +1199,7 @@ static void Task_OrbEffect(u8 taskId)
         {
             tShakeDelay = 8;
             tShakeDir ^= 1;
-            if (sub_80B02C8(tShakeDir) == TRUE)
+            if (UpdateOrbEffectBlend(tShakeDir) == TRUE)
             {
                 tState = 5;
                 sub_8199DF0(0, PIXEL_FILL(0), 0, 1);

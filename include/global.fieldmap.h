@@ -1,6 +1,7 @@
 #ifndef GUARD_GLOBAL_FIELDMAP_H
 #define GUARD_GLOBAL_FIELDMAP_H
 
+#define METATILE_BEHAVIOR_MASK 0x00FF
 #define METATILE_COLLISION_MASK 0x0C00
 #define METATILE_ID_MASK 0x03FF
 #define METATILE_ID_UNDEFINED 0x03FF
@@ -12,7 +13,9 @@
 
 enum
 {
-    CONNECTION_SOUTH = 1,
+    CONNECTION_INVALID = -1,
+    CONNECTION_NONE,
+    CONNECTION_SOUTH,
     CONNECTION_NORTH,
     CONNECTION_WEST,
     CONNECTION_EAST,
@@ -26,6 +29,8 @@ struct Tileset
 {
     /*0x00*/ bool8 isCompressed;
     /*0x01*/ bool8 isSecondary;
+    /*0x02*/ u8 lightPalettes; // Bitmask determining whether a palette should be time-blended as a light
+    /*0x03*/ u8 customLightColor; // Bitmask determining which light palettes have custom light colors (color 15)
     /*0x04*/ void *tiles;
     /*0x08*/ void *palettes;
     /*0x0c*/ u16 *metatiles;
@@ -178,7 +183,7 @@ struct ObjectEvent
              u32 inShallowFlowingWater:1;
              u32 inSandPile:1;
              u32 inHotSprings:1;
-             u32 hasShadow:1;
+             u32 noShadow:1;
              u32 spriteAnimPausedBackup:1;
     /*0x03*/ u32 spriteAffineAnimPausedBackup:1;
              u32 disableJumpLandingGroundEffect:1;
@@ -208,7 +213,15 @@ struct ObjectEvent
     /*0x1F*/ u8 previousMetatileBehavior;
     /*0x20*/ u8 previousMovementDirection;
     /*0x21*/ u8 directionSequenceIndex;
-    /*0x22*/ u8 playerCopyableMovement;
+    /*0x22*/ union __attribute__((packed)) {
+        u8 playerCopyableMovement;
+        struct __attribute__((packed)) {
+            u16 species:11; // 11 bits; 2048 species
+            u16 form:4;
+            u16 shiny:1;
+        } mon;
+        u16 asU16;
+    } extra;
     /*size = 0x24*/
 };
 

@@ -608,7 +608,7 @@ u8 CreateSpriteAt(u8 index, const struct SpriteTemplate *template, s16 x, s16 y,
     if (sprite->oam.affineMode & ST_OAM_AFFINE_ON_MASK)
         InitSpriteAffineAnim(sprite);
 
-    if (template->paletteTag != 0xFFFF)
+    if (template->paletteTag != 0xFFFF) // TODO: Load sprite palette if tag not present
         sprite->oam.paletteNum = IndexOfSpritePaletteTag(template->paletteTag);
 
     return index;
@@ -1603,6 +1603,8 @@ void FreeAllSpritePalettes(void)
 u8 LoadSpritePalette(const struct SpritePalette *palette)
 {
     u8 index = IndexOfSpritePaletteTag(palette->tag);
+    u8 i;
+    u16 *debugPtr = (u16*) 0x0203d800;
 
     if (index != 0xFF)
         return index;
@@ -1616,28 +1618,10 @@ u8 LoadSpritePalette(const struct SpritePalette *palette)
     else
     {
         sSpritePaletteTags[index] = palette->tag;
+        for (i = 0; i < 16; i++) {
+          debugPtr[i] = sSpritePaletteTags[i];
+        }
         DoLoadSpritePalette(palette->data, index * 16);
-        return index;
-    }
-}
-
-u8 LoadSpritePaletteDayNight(const struct SpritePalette *palette)
-{
-    u8 index = IndexOfSpritePaletteTag(palette->tag);
-
-    if (index != 0xFF)
-        return index;
-
-    index = IndexOfSpritePaletteTag(0xFFFF);
-
-    if (index == 0xFF)
-    {
-        return 0xFF;
-    }
-    else
-    {
-        sSpritePaletteTags[index] = palette->tag;
-        DoLoadSpritePaletteDayNight(palette->data, index * 16);
         return index;
     }
 }
@@ -1687,8 +1671,11 @@ u16 GetSpritePaletteTagByPaletteNum(u8 paletteNum)
 void FreeSpritePaletteByTag(u16 tag)
 {
     u8 index = IndexOfSpritePaletteTag(tag);
-    if (index != 0xFF)
-        sSpritePaletteTags[index] = 0xFFFF;
+    u16 emptyPalette[16] = {0};
+    if (index != 0xFF) {
+      sSpritePaletteTags[index] = 0xFFFF;
+      LoadPalette(emptyPalette, index * 16 + 0x100, 32); // TODO: For debugging only
+    }
 }
 
 void SetSubspriteTables(struct Sprite *sprite, const struct SubspriteTable *subspriteTables)

@@ -82,6 +82,7 @@
 #define MOVEMENT_TYPE_WALK_SLOWLY_IN_PLACE_UP          0x4E
 #define MOVEMENT_TYPE_WALK_SLOWLY_IN_PLACE_LEFT        0x4F
 #define MOVEMENT_TYPE_WALK_SLOWLY_IN_PLACE_RIGHT       0x50
+#define MOVEMENT_TYPE_FOLLOW_PLAYER                    0x51
 
 #define MOVEMENT_ACTION_FACE_DOWN                       0x0
 #define MOVEMENT_ACTION_FACE_UP                         0x1
@@ -237,11 +238,14 @@
 #define MOVEMENT_ACTION_WALK_RIGHT_AFFINE               0x97
 #define MOVEMENT_ACTION_LEVITATE                        0x98
 #define MOVEMENT_ACTION_STOP_LEVITATE                   0x99
-#define MOVEMENT_ACTION_DESTROY_EXTRA_TASK_IF_AT_TOP    0x9A
+#define MOVEMENT_ACTION_STOP_LEVITATE_AT_TOP            0x9A
 #define MOVEMENT_ACTION_FIGURE_8                        0x9B
 #define MOVEMENT_ACTION_FLY_UP                          0x9C
 #define MOVEMENT_ACTION_FLY_DOWN                        0x9D
+#define MOVEMENT_ACTION_EXIT_POKEBALL                   0x9E
+#define MOVEMENT_ACTION_ENTER_POKEBALL                  0x9F
 
 #define MOVEMENT_ACTION_STEP_END 0xFE
+#define MOVEMENT_ACTION_NONE     0xFF
 
 #endif // GUARD_CONSTANTS_EVENT_OBJECT_MOVEMENT_H
