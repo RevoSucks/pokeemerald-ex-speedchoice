@@ -1649,7 +1649,7 @@
 
     @ Return whether the player has more than 1 unique fossil. Replaces the way Game Freak
     @ checks whether to use the multichoice menu.
-    .macro checkpluralfossils
+    .macro checkhasfossils
     .byte 0xe5
     .endm
 

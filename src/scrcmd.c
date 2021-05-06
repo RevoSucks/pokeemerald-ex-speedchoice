@@ -2421,11 +2421,12 @@ int CountNumberUniqueFossils()
     for(i = ITEM_ARMOR_FOSSIL; i <= ITEM_CLAW_FOSSIL; i++) { // check every fossil.
         numUnique += CheckBagHasItem(i, 1);
     }
+    numUnique += CheckBagHasItem(ITEM_OLD_AMBER, 1); // add old amber too.
     return numUnique;
 }
 
-bool8 ScrCmd_checkpluralfossils(struct ScriptContext *ctx)
+bool8 ScrCmd_checkhasfossils(struct ScriptContext *ctx)
 {
-    ctx->comparisonResult = (CountNumberUniqueFossils() > 1) ? TRUE : FALSE;
+    gSpecialVar_Result = (CountNumberUniqueFossils() > 0) ? TRUE : FALSE;
     return TRUE;
 }

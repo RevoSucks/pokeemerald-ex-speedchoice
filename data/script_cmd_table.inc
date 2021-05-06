@@ -229,6 +229,6 @@ gScriptCmdTable:: @ 81DB67C
 	.4byte ScrCmd_bufferitemnameplural      @ 0xe2
     .4byte ScrCmd_checkspeedchoice          @ 0xe3 speedchoice addition
     .4byte ScrCmd_callfunc                  @ 0xe4
-    .4byte ScrCmd_checkpluralfossils        @ 0xe5 speedchoice EX addition
+    .4byte ScrCmd_checkhasfossils           @ 0xe5 speedchoice EX addition
 gScriptCmdTableEnd:: @ 81DBA08
 	.4byte ScrCmd_nop
