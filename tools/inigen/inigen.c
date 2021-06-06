@@ -518,7 +518,7 @@ int main(int argc, char ** argv)
 #endif
 #define config_set(name, value) (print("%s=0x%X\n", (name), (value)))
 #define sym_get(name) (GetSymbolByName((name))->st_value)
-#define config_sym(name, symname) (config_set((name), sym_get(symname) & 0xFFFFFF))
+#define config_sym(name, symname) (config_set((name), sym_get(symname) - 0x08000000))
 
     // Initialize Capstone
     cs_open(CS_ARCH_ARM, CS_MODE_THUMB, &sCapstone);
@@ -554,7 +554,7 @@ int main(int argc, char ** argv)
     config_sym("PokemonEvolutions", "gEvolutionTable");
     config_sym("StarterPokemon", "sStarterMon");
     // This symbol is inside a C function, so we must take an assist from capstone.
-    config_set("StarterItems", get_instr_addr(elfFile, "CB2_GiveStarter", IsLoadingStarterItems) & 0xFFFFFF);
+    config_set("StarterItems", get_instr_addr(elfFile, "CB2_GiveStarter", IsLoadingStarterItems) - 0x08000000);
     config_sym("TrainerData", "gTrainers");
     Elf32_Sym * Em_gTrainers = GetSymbolByName("gTrainers");
     config_sym("WildPokemon", "gWildMonHeaders");
@@ -588,19 +588,19 @@ int main(int argc, char ** argv)
         sprintf(buffer, "gItemIconPalette_%sTMHM", gTypeNames[i]);
         if (i != 0)
             print(",");
-        print("0x%X", GetSymbolByName(buffer)->st_value & 0xFFFFFF);
+        print("0x%X", GetSymbolByName(buffer)->st_value - 0x08000000);
     }
     print("]\n");
 
-    config_set("IntroCryOffset", get_instr_addr(elfFile, "Task_NewGameBirchSpeechSub_InitPokeBall", IsIntroLotadForCry) & 0xFFFFFF);
-    config_set("IntroSpriteOffset", get_instr_addr(elfFile, "NewGameBirchSpeech_CreateLotadSprite", IsIntroLotadForPic) & 0xFFFFFF);
+    config_set("IntroCryOffset", get_instr_addr(elfFile, "Task_NewGameBirchSpeechSub_InitPokeBall", IsIntroLotadForCry) - 0x08000000);
+    config_set("IntroSpriteOffset", get_instr_addr(elfFile, "NewGameBirchSpeech_CreateLotadSprite", IsIntroLotadForPic) - 0x08000000);
     print("ItemBallPic=%d\n", OBJ_EVENT_GFX_ITEM_BALL);
     config_sym("TradeTableOffset", "sIngameTrades");
     Elf32_Sym * Em_gIngameTrades = GetSymbolByName("sIngameTrades");
     print("TradeTableSize=%d\n", Em_gIngameTrades->st_size / 60); // hardcoded for now
     print("TradesUnused=[]\n"); // so randomizer doesn't complain
-    config_set("CatchingTutorialOpponentMonOffset", get_instr_addr(elfFile, "StartWallyTutorialBattle", IsWallyRalts) & 0xFFFFFF);
-    config_set("CatchingTutorialPlayerMonOffset", get_instr_addr(elfFile, "PutZigzagoonInPlayerParty", IsWallyZigzagoon) & 0xFFFFFF);
+    config_set("CatchingTutorialOpponentMonOffset", get_instr_addr(elfFile, "StartWallyTutorialBattle", IsWallyRalts) - 0x08000000);
+    config_set("CatchingTutorialPlayerMonOffset", get_instr_addr(elfFile, "PutZigzagoonInPlayerParty", IsWallyZigzagoon) - 0x08000000);
     config_sym("PCPotionOffset", "gNewGamePCItems");
 
     // These may need some fixing to support dynamic offsets.
@@ -611,17 +611,17 @@ int main(int argc, char ** argv)
             if (gStaticPokemon[i][j].label == NULL) break;
             if (j != 0)
                 print(",");
-            print("0x%X", (sym_get(gStaticPokemon[i][j].label) & 0xFFFFFF) + gStaticPokemon[i][j].offset);
+            print("0x%X", (sym_get(gStaticPokemon[i][j].label) - 0x08000000) + gStaticPokemon[i][j].offset);
         }
         print("]\n");
     }
     for (int i = 0; i < len(gTMTexts); i++) {
         Elf32_Sym * sym = GetSymbolByName(gTMTexts[i].label);
-        print("TMTextSpdc[]=[%d,0x%X,%s]\n", gTMTexts[i].tmno, (sym->st_value + 2) & 0xFFFFFF, gTMTexts[i].text);
+        print("TMTextSpdc[]=[%d,0x%X,%s]\n", gTMTexts[i].tmno, (sym->st_value + 2) - 0x08000000, gTMTexts[i].text);
     }
     for (int i = 0; i < len(gMoveTutorTexts); i++) {
         Elf32_Sym * sym = GetSymbolByName(gMoveTutorTexts[i].label);
-        print("MoveTutorTextSpdc[]=[%d,0x%X,%s]\n", gMoveTutorTexts[i].tmno, (sym->st_value + 2) & 0xFFFFFF, gMoveTutorTexts[i].text);
+        print("MoveTutorTextSpdc[]=[%d,0x%X,%s]\n", gMoveTutorTexts[i].tmno, (sym->st_value + 2) - 0x08000000, gMoveTutorTexts[i].text);
     }
 
     config_sym("PokedexOrder", "gSpeciesToNationalPokedexNum");

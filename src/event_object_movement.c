@@ -1989,8 +1989,9 @@ void UpdateLightSprite(struct Sprite *sprite) {
     Weather_SetBlendCoeffs(7, 12);
     sprite->invisible = FALSE;
   } else {
-    Weather_SetBlendCoeffs(12, 12);
-    sprite->invisible = gSaveBlock2Ptr->playTimeVBlanks & 1;
+    Weather_SetBlendCoeffs(7, 12);
+    sprite->invisible = FALSE;
+    //sprite->invisible = gSaveBlock2Ptr->playTimeVBlanks & 1;
   }
 }
 
