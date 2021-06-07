@@ -1576,9 +1576,12 @@ static const u8 sTM08Desc[] = _(
     "Attack & Defense.");
 
 static const u8 sTM09Desc[] = _(
-    "Shoots 2 to 5 seeds\n"
-    "in a row to strike\n"
-    "the foe.");
+    "A sweet smelling\n"
+    "scent that lures\n"
+    "POKéMON.");
+    //"Shoots 2 to 5 seeds\n"
+    //"in a row to strike\n"
+    //"the foe.");
 
 static const u8 sTM10Desc[] = _(
     "The attack power\n"

@@ -576,7 +576,7 @@ int main(int argc, char ** argv)
     Elf32_Sym * Em_gAbilityNames = GetSymbolByName("gAbilityNames");
     print("AbilityNameLength=%d\n", Em_gAbilityNames->st_size / ABILITIES_COUNT);
     config_sym("TmMoves", "sTMHMMoves");
-    config_sym("TmMovesDuplicate", "sUnused_StatStrings");
+    //config_sym("TmMovesDuplicate", "sUnused_StatStrings");
     config_sym("MoveTutorData", "gTutorMoves");
     Elf32_Sym* Em_gTutorMoves = GetSymbolByName("gTutorMoves");
     print("MoveTutorMoves=%d\n", Em_gTutorMoves->st_size / 2);
