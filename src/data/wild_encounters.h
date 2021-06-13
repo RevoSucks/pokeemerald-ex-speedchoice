@@ -10332,7 +10332,7 @@ const struct WildPokemonHeader gWildMonHeaders[] =
     },
     {
         .mapGroup = MAP_GROUP(ALTERING_CAVE),
-        .mapNum = MAP_NUM(ALTERING_CAVE),
+        .mapNum = MAP_NUM(ALTERING_CAVE_SUB_CAVE1),
         .landMonsInfo = &gAlteringCave2_LandMonsInfo,
         .waterMonsInfo = NULL,
         .rockSmashMonsInfo = NULL,
@@ -10340,7 +10340,7 @@ const struct WildPokemonHeader gWildMonHeaders[] =
     },
     {
         .mapGroup = MAP_GROUP(ALTERING_CAVE),
-        .mapNum = MAP_NUM(ALTERING_CAVE),
+        .mapNum = MAP_NUM(ALTERING_CAVE_SUB_CAVE2),
         .landMonsInfo = &gAlteringCave3_LandMonsInfo,
         .waterMonsInfo = NULL,
         .rockSmashMonsInfo = NULL,
@@ -10348,7 +10348,7 @@ const struct WildPokemonHeader gWildMonHeaders[] =
     },
     {
         .mapGroup = MAP_GROUP(ALTERING_CAVE),
-        .mapNum = MAP_NUM(ALTERING_CAVE),
+        .mapNum = MAP_NUM(ALTERING_CAVE_SUB_CAVE3),
         .landMonsInfo = &gAlteringCave4_LandMonsInfo,
         .waterMonsInfo = NULL,
         .rockSmashMonsInfo = NULL,
@@ -10356,7 +10356,7 @@ const struct WildPokemonHeader gWildMonHeaders[] =
     },
     {
         .mapGroup = MAP_GROUP(ALTERING_CAVE),
-        .mapNum = MAP_NUM(ALTERING_CAVE),
+        .mapNum = MAP_NUM(ALTERING_CAVE_SUB_CAVE4),
         .landMonsInfo = &gAlteringCave5_LandMonsInfo,
         .waterMonsInfo = NULL,
         .rockSmashMonsInfo = NULL,
@@ -10364,7 +10364,7 @@ const struct WildPokemonHeader gWildMonHeaders[] =
     },
     {
         .mapGroup = MAP_GROUP(ALTERING_CAVE),
-        .mapNum = MAP_NUM(ALTERING_CAVE),
+        .mapNum = MAP_NUM(ALTERING_CAVE_SUB_CAVE5),
         .landMonsInfo = &gAlteringCave6_LandMonsInfo,
         .waterMonsInfo = NULL,
         .rockSmashMonsInfo = NULL,
@@ -10372,7 +10372,7 @@ const struct WildPokemonHeader gWildMonHeaders[] =
     },
     {
         .mapGroup = MAP_GROUP(ALTERING_CAVE),
-        .mapNum = MAP_NUM(ALTERING_CAVE),
+        .mapNum = MAP_NUM(ALTERING_CAVE_SUB_CAVE6),
         .landMonsInfo = &gAlteringCave7_LandMonsInfo,
         .waterMonsInfo = NULL,
         .rockSmashMonsInfo = NULL,
@@ -10380,7 +10380,7 @@ const struct WildPokemonHeader gWildMonHeaders[] =
     },
     {
         .mapGroup = MAP_GROUP(ALTERING_CAVE),
-        .mapNum = MAP_NUM(ALTERING_CAVE),
+        .mapNum = MAP_NUM(ALTERING_CAVE_SUB_CAVE7),
         .landMonsInfo = &gAlteringCave8_LandMonsInfo,
         .waterMonsInfo = NULL,
         .rockSmashMonsInfo = NULL,
@@ -10388,7 +10388,7 @@ const struct WildPokemonHeader gWildMonHeaders[] =
     },
     {
         .mapGroup = MAP_GROUP(ALTERING_CAVE),
-        .mapNum = MAP_NUM(ALTERING_CAVE),
+        .mapNum = MAP_NUM(ALTERING_CAVE_SUB_CAVE8),
         .landMonsInfo = &gAlteringCave9_LandMonsInfo,
         .waterMonsInfo = NULL,
         .rockSmashMonsInfo = NULL,

@@ -3925,13 +3925,12 @@ u8 GetGenderFromSpeciesAndPersonality(u16 species, u32 personality)
 
 u32 GetUnownSpeciesId(u32 personality)
 {
-    return GetUnownLetterByPersonality(personality) + SPECIES_UNOWN_B - 1; //TODO
-    /*
+    // Blame UltimaSoul I guess
+    //return GetUnownLetterByPersonality(personality) + SPECIES_UNOWN_B - 1; //TODO
     u16 unownLetter = GetUnownLetterByPersonality(personality);
     if (unownLetter == 0)
         return SPECIES_UNOWN;
     return unownLetter + SPECIES_UNOWN_B - 1;
-    */
 }
 
 void SetMultiuseSpriteTemplateToPokemon(u16 speciesTag, u8 battlerPosition)

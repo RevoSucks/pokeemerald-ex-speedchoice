@@ -47,6 +47,8 @@
 #include "debug.h"
 #include "done_button.h"
 
+extern s32 CountUsablePartyMons(u8 battlerId);
+
 /*
 NOTE: The data and functions in this file up until (but not including) sSoundMovesTable
 are actually part of battle_main.c. They needed to be moved to this file in order to
@@ -3856,6 +3858,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u16 ability, u8 special, u16 move
                 && !(gBattleStruct->illusion[BATTLE_OPPOSITE(battler)].on)
                 && !(gStatuses3[BATTLE_OPPOSITE(battler)] & STATUS3_SEMI_INVULNERABLE))
             {
+                gBattlerAttacker = battler;
                 gBattlerTarget = BATTLE_OPPOSITE(battler);
                 BattleScriptPushCursorAndCallback(BattleScript_ImposterActivates);
                 effect++;
@@ -4583,7 +4586,9 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u16 ability, u8 special, u16 move
              && (CanBattlerSwitch(battler) || !(gBattleTypeFlags & BATTLE_TYPE_TRAINER))
              && !(gBattleTypeFlags & BATTLE_TYPE_ARENA)
              // Not currently held by Sky Drop
-             && !(gStatuses3[battler] & STATUS3_ON_AIR && gStatuses3[battler] & STATUS3_UNDERGROUND))
+             && !(gStatuses3[battler] & STATUS3_ON_AIR && gStatuses3[battler] & STATUS3_UNDERGROUND)
+             // Has a mon to switch into
+             && CountUsablePartyMons(battler) > 0)
             {
                 gBattleResources->flags->flags[battler] |= RESOURCE_FLAG_EMERGENCY_EXIT;
                 effect++;

@@ -55,7 +55,7 @@ static void RecordLastUsedMoveByTarget(void);
 static void BattleAI_DoAIProcessing(void);
 static void AIStackPushVar(const u8 *);
 static bool8 AIStackPop(void);
-static s32 CountUsablePartyMons(u8 battlerId);
+s32 CountUsablePartyMons(u8 battlerId);
 static s32 AI_GetAbility(u32 battlerId, bool32 guess);
 
 static void Cmd_if_random_less_than(void);
@@ -1624,7 +1624,7 @@ static void Cmd_nop_2B(void)
 {
 }
 
-static s32 CountUsablePartyMons(u8 battlerId)
+s32 CountUsablePartyMons(u8 battlerId)
 {
     s32 battlerOnField1, battlerOnField2, i, ret;
     struct Pokemon *party;

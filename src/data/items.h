@@ -1047,7 +1047,7 @@ const struct Item gItems[] =
     {
         .name = _("X Attack"),
         .itemId = ITEM_X_ATTACK,
-        .price = 1000,
+        .price = 500,
         .description = sXAttackDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
@@ -1060,7 +1060,7 @@ const struct Item gItems[] =
     {
         .name = _("X Defense"),
         .itemId = ITEM_X_DEFENSE,
-        .price = 2000,
+        .price = 550,
         .description = sXDefendDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
@@ -1073,7 +1073,7 @@ const struct Item gItems[] =
     {
         .name = _("X Speed"),
         .itemId = ITEM_X_SPEED,
-        .price = 1000,
+        .price = 350,
         .description = sXSpeedDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
@@ -1086,7 +1086,7 @@ const struct Item gItems[] =
     {
         .name = _("X Accuracy"),
         .itemId = ITEM_X_ACCURACY,
-        .price = 1000,
+        .price = 950,
         .description = sXAccuracyDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
@@ -1099,7 +1099,7 @@ const struct Item gItems[] =
     {
         .name = _("X Sp. Atk"),
         .itemId = ITEM_X_SP_ATK,
-        .price = 1000,
+        .price = 350,
         .description = sXSpecialAttackDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
@@ -1112,7 +1112,7 @@ const struct Item gItems[] =
     {
         .name = _("X Sp. Def"),
         .itemId = ITEM_X_SP_DEF,
-        .price = 2000,
+        .price = 350,
         .description = sXSpecialDefenseDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
@@ -1567,14 +1567,9 @@ const struct Item gItems[] =
         .itemId = ITEM_RARE_BONE,
         .price = 5000,
         .description = sRareBoneDesc,
-        .pocket = POCKET_KEY_ITEMS,
-        #ifdef POKEMON_EXPANSION
-            .type = ITEM_USE_PARTY_MENU,
-            .fieldUseFunc = ItemUseOutOfBattle_FormChange,
-        #else
-            .type = ITEM_USE_BAG_MENU,
-            .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        #endif
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
     },
 
 // Mail

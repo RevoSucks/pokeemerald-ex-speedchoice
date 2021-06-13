@@ -558,8 +558,8 @@ int main(int argc, char ** argv)
     config_sym("TrainerData", "gTrainers");
     Elf32_Sym * Em_gTrainers = GetSymbolByName("gTrainers");
     config_sym("WildPokemon", "gWildMonHeaders");
-    print("TrainerEntrySize=%d\n", Em_gTrainers->st_size / TRAINERS_COUNT);
-    config_set("TrainerCount", TRAINERS_COUNT);
+    print("TrainerEntrySize=%d\n", Em_gTrainers->st_size / (TRAINERS_COUNT - 1));
+    config_set("TrainerCount", (TRAINERS_COUNT - 1));
     config_sym("TrainerClassNames", "gTrainerClassNames");
     Elf32_Sym * Em_gTrainerClassNames = GetSymbolByName("gTrainerClassNames");
     print("TrainerClassCount=%d\n", TRAINER_CLASS_COUNT);
