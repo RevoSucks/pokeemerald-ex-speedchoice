@@ -44,6 +44,7 @@
 #include "constants/songs.h"
 #include "debug.h"
 #include "done_button.h"
+#include "day_night.h"
 
 static void SetUpItemUseCallback(u8 taskId);
 static void FieldCB_UseItemOnField(void);
@@ -810,6 +811,25 @@ void ItemUseOutOfBattle_DoneButton(u8 taskId)
     DisplayItemMessage(taskId, 1, gAreYouDoneWithRace, DoDoneButtonYesNo);
 }
 
+void Task_WaitUntilAPress(u8 taskId)
+{
+    if(JOY_NEW(A_BUTTON)) {
+        gTasks[taskId].func = BagMenu_InitListsMenu;
+    }
+}
+
+const u8 gTimeHasBeenAdvanced[] = _("Time has been advanced.\n");
+
+void ItemUseOutOfBattle_SleepingBag(u8 taskId)
+{
+    if(gTasks[taskId].tUsingRegisteredKeyItem == TRUE) {
+        DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem);
+    } else {
+        AdvanceTimeToNextPeriod();
+        DisplayItemMessage(taskId, 1, gTimeHasBeenAdvanced, Task_WaitUntilAPress);
+    }
+}
+
 static void BootUpSoundTMHM(u8 taskId)
 {
     PlaySE(SE_PC_LOGIN);
@@ -892,12 +912,27 @@ static void Task_UseRepel(u8 taskId)
     if (!IsSEPlaying())
     {
         VarSet(VAR_REPEL_STEP_COUNT, ItemId_GetHoldEffectParam(gSpecialVar_ItemId));
+        VarSet(VAR_LAST_USED_REPEL, gSpecialVar_ItemId);
         RemoveUsedItem();
+        if (gTasks[taskId].data[15] == 1)
+        {
+            DestroyTask(taskId);
+            EnableBothScriptContexts();
+            return;
+        }
         if (!InBattlePyramid())
             DisplayItemMessage(taskId, 1, gStringVar4, BagMenu_InitListsMenu);
         else
             DisplayItemMessageInBattlePyramid(taskId, gStringVar4, Task_CloseBattlePyramidBagMessage);
     }
+}
+
+void Special_UseLastRepelInField(void)
+{
+    u8 taskId = CreateTask(Task_UseRepel, 0);
+    gTasks[taskId].data[15] = 1;
+    gSpecialVar_ItemId = VarGet(VAR_LAST_USED_REPEL);
+    PlaySE(SE_REPEL);
 }
 
 static void Task_UsedBlackWhiteFlute(u8 taskId)

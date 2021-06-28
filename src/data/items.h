@@ -5405,9 +5405,9 @@ const struct Item gItems[] =
         .price = 0,
         .holdEffect = HOLD_EFFECT_GRACIDEA,
         .description = sGracideaDesc,
-        .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_FormChange,
     },
 
     [ITEM_BUG_MEMORY] =
@@ -7058,13 +7058,10 @@ const struct Item gItems[] =
         .name = _("HealthFeather"),
         .itemId = ITEM_HEALTH_WING,
         .price = 300,
-        .holdEffect = 0,
-        .holdEffectParam = 4,
         .description = sHealthWingDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .secondaryId = STAT_HP,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Medicine,
     },
 
     [ITEM_MUSCLE_WING] =
@@ -7072,13 +7069,10 @@ const struct Item gItems[] =
         .name = _("MuscleFeather"),
         .itemId = ITEM_MUSCLE_WING,
         .price = 300,
-        .holdEffect = 0,
-        .holdEffectParam = 4,
         .description = sMuscleWingDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .secondaryId = STAT_ATK,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Medicine,
     },
 
     [ITEM_RESIST_WING] =
@@ -7086,13 +7080,10 @@ const struct Item gItems[] =
         .name = _("ResistFeather"),
         .itemId = ITEM_RESIST_WING,
         .price = 300,
-        .holdEffect = 0,
-        .holdEffectParam = 4,
         .description = sResistWingDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .secondaryId = STAT_DEF,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Medicine,
     },
 
     [ITEM_GENIUS_WING] =
@@ -7100,13 +7091,10 @@ const struct Item gItems[] =
         .name = _("GeniusFeather"),
         .itemId = ITEM_GENIUS_WING,
         .price = 300,
-        .holdEffect = 0,
-        .holdEffectParam = 4,
         .description = sGeniusWingDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .secondaryId = STAT_SPATK,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Medicine,
     },
 
     [ITEM_CLEVER_WING] =
@@ -7114,13 +7102,10 @@ const struct Item gItems[] =
         .name = _("CleverFeather"),
         .itemId = ITEM_CLEVER_WING,
         .price = 300,
-        .holdEffect = 0,
-        .holdEffectParam = 4,
         .description = sCleverWingDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .secondaryId = STAT_SPDEF,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Medicine,
     },
 
     [ITEM_SWIFT_WING] =
@@ -7128,13 +7113,10 @@ const struct Item gItems[] =
         .name = _("Swift Feather"),
         .itemId = ITEM_SWIFT_WING,
         .price = 300,
-        .holdEffect = 0,
-        .holdEffectParam = 4,
         .description = sSwiftWingDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .secondaryId = STAT_SPEED,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Medicine,
     },
 
     [ITEM_PRETTY_WING] =
@@ -7642,7 +7624,7 @@ const struct Item gItems[] =
 
     [ITEM_DONE_BUTTON] =
     {
-        .name = _("DONE BUTTON"),
+        .name = _("Done Button"),
         .itemId = ITEM_DONE_BUTTON,
         .price = 0,
         .description = sDoneButton,
@@ -7651,6 +7633,20 @@ const struct Item gItems[] =
         .pocket = POCKET_KEY_ITEMS,
         .type = 4,
         .fieldUseFunc = ItemUseOutOfBattle_DoneButton,
+        .secondaryId = 0,
+    },
+
+    [ITEM_SLEEPING_BAG] =
+    {
+        .name = _("Sleeping Bag"),
+        .itemId = ITEM_SLEEPING_BAG,
+        .price = 0,
+        .description = sSleepingBag,
+        .importance = 1,
+        .unk19 = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = 4,
+        .fieldUseFunc = ItemUseOutOfBattle_SleepingBag,
         .secondaryId = 0,
     },
 };

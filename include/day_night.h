@@ -21,5 +21,6 @@ void LoadPaletteDayNight(const void *src, u16 offset, u16 size);
 void CheckClockForImmediateTimeEvents(void);
 void ProcessImmediateTimeEvents(void);
 void DoLoadSpritePaletteDayNight(const u16 *src, u16 paletteOffset);
+void AdvanceTimeToNextPeriod(void);
 
 #endif // GUARD_DAY_NIGHT_H

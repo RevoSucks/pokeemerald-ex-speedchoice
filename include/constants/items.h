@@ -705,8 +705,9 @@
 #define ITEM_TAPUNIUM_Z               602
 #define ITEM_ULTRANECROZIUM_Z         603
 #define ITEM_DONE_BUTTON              604
+#define ITEM_SLEEPING_BAG             605
 
-#define ITEMS_COUNT 605
+#define ITEMS_COUNT 606
 #define ITEM_FIELD_ARROW ITEMS_COUNT
 
 // Range of berries given out by various NPCS

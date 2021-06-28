@@ -11,11 +11,49 @@
 #include "constants/region_map_sections.h"
 #include "constants/rgb.h"
 
+void AdvanceTimeToNextPeriod(void)
+{
+    u8 time = GetCurrentTimeOfDay();
+
+    switch(time) {
+        case TIME_MORNING: // Set it to TIME_DAY.
+            gLocalTime.hours = HOUR_DAY;
+            gLocalTime.minutes = 0;
+            gLocalTime.seconds = 0;
+            break;
+        case TIME_DAY: // Set it to TIME_NIGHT.
+            gLocalTime.hours = HOUR_NIGHT;
+            gLocalTime.minutes = 0;
+            gLocalTime.seconds = 0;
+            break;            
+        case TIME_NIGHT: // Set it to TIME_MORNING.
+            gLocalTime.days += 1;
+            gLocalTime.hours = HOUR_MORNING;
+            gLocalTime.minutes = 0;
+            gLocalTime.seconds = 0;
+            break;
+    }
+    RtcReset();
+    RtcCalcLocalTimeOffset(
+        gLocalTime.days,
+        gLocalTime.hours,
+        gLocalTime.minutes,
+        gLocalTime.seconds);
+    gSaveBlock2Ptr->lastBerryTreeUpdate = gLocalTime;
+    VarSet(VAR_DAYS, gLocalTime.days);
+    DisableResetRTC();
+}
+
 u8 GetCurrentTimeOfDay(void)
 {
     return GetTimeOfDay(gLocalTime.hours);
 }
 
+/*
+#define HOUR_MORNING 4
+#define HOUR_DAY 10
+#define HOUR_NIGHT 20
+*/
 u8 GetTimeOfDay(s8 hours)
 {
     if (hours < HOUR_MORNING)

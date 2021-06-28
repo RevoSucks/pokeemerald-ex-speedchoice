@@ -660,7 +660,7 @@ static void Task_CreditsTheEnd5(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
-        DrawTheEnd(0x3800, 0);
+        DrawTheEnd(0x3800, 0); // PAL FIX
 
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0, RGB_BLACK);
         gTasks[taskId].tDelay = 7200;
@@ -1292,7 +1292,7 @@ static void LoadTheEndScreen(u16 arg0, u16 arg1, u16 palOffset)
     u16 i;
 
     LZ77UnCompVram(sCreditsCopyrightEnd_Gfx, (void *)(VRAM + arg0));
-    LoadPalette(gIntroCopyright_Pal, palOffset, sizeof(gIntroCopyright_Pal));
+    LoadPalette(gIntroCopyrightOld_Pal, palOffset, sizeof(gIntroCopyrightOld_Pal)); // Shame on you whoever changed this palette. Oh.. it was me.
 
     baseTile = (palOffset / 16) << 12;
 

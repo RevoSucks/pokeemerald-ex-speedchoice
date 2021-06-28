@@ -8138,6 +8138,7 @@ extern const u16 gIntroLightning_Pal[];
 extern const u32 gIntroCopyright_Gfx[];
 extern const u32 gIntroCopyright_Tilemap[];
 extern const u16 gIntroCopyright_Pal[16];
+extern const u16 gIntroCopyrightOld_Pal[16];
 extern const u32 gIntroVolbeat_Gfx[];
 extern const u16 gIntroVolbeat_Pal[];
 extern const u32 gIntroTorchic_Gfx[];
@@ -9697,5 +9698,8 @@ extern const u16 gMonMarkingsMenu_Pal[];
 
 extern const u32 gItemIcon_DoneButton[];
 extern const u32 gItemIconPalette_DoneButton[];
+
+extern const u32 gItemIcon_SleepingBag[];
+extern const u32 gItemIconPalette_SleepingBag[];
 
 #endif //GUARD_GRAPHICS_H

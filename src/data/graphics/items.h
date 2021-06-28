@@ -1632,3 +1632,6 @@ const u32 gItemIconPalette_UltranecroziumZ[] = INCBIN_U32("graphics/items/icon_p
 
 const u32 gItemIcon_DoneButton[] = INCBIN_U32("graphics/items/icons/done_button.4bpp.lz");
 const u32 gItemIconPalette_DoneButton[] = INCBIN_U32("graphics/items/icon_palettes/done_button.gbapal.lz");
+
+const u32 gItemIcon_SleepingBag[] = INCBIN_U32("graphics/items/icons/sleeping_bag.4bpp.lz");
+const u32 gItemIconPalette_SleepingBag[] = INCBIN_U32("graphics/items/icon_palettes/sleeping_bag.gbapal.lz");

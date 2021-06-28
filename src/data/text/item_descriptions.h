@@ -3017,3 +3017,8 @@ static const u8 sDoneButton[] = _(
     "Ends the current\n"
     "race. No, you can't\n"
     "throw it, Keiz.");
+
+static const u8 sSleepingBag[] = _(
+    "Advances time\n"
+    "until the next\n"
+    "time period.");

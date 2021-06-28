@@ -61,33 +61,37 @@ bool8 IsMirageIslandPresent(void)
 
 void UpdateShoalTideFlag(void)
 {
+    #define LOW_TIDE 0
+    #define HIGH_TIDE 1
     static const u8 tide[] =
     {
-        1, // 00
-        1, // 01
-        1, // 02
-        0, // 03
-        0, // 04
-        0, // 05
-        0, // 06
-        0, // 07
-        0, // 08
-        1, // 09
-        1, // 10
-        1, // 11
-        1, // 12
-        1, // 13
-        1, // 14
-        0, // 15
-        0, // 16
-        0, // 17
-        0, // 18
-        0, // 19
-        0, // 20
-        1, // 21
-        1, // 22
-        1, // 23
+        HIGH_TIDE, // 00 (NIGHT)
+        HIGH_TIDE, // 01 (NIGHT)
+        HIGH_TIDE, // 02 (NIGHT)
+        LOW_TIDE,  // 03 (NIGHT)
+        LOW_TIDE,  // 04 (MORNING)
+        LOW_TIDE,  // 05 (MORNING)
+        LOW_TIDE,  // 06 (MORNING)
+        LOW_TIDE,  // 07 (MORNING)
+        LOW_TIDE,  // 08 (MORNING)
+        HIGH_TIDE, // 09 (MORNING)
+        HIGH_TIDE, // 10 (DAY)
+        HIGH_TIDE, // 11 (DAY)
+        HIGH_TIDE, // 12 (DAY)
+        HIGH_TIDE, // 13 (DAY)
+        HIGH_TIDE, // 14 (DAY)
+        LOW_TIDE,  // 15 (DAY)
+        LOW_TIDE,  // 16 (DAY)
+        LOW_TIDE,  // 17 (DAY)
+        LOW_TIDE,  // 18 (DAY)
+        LOW_TIDE,  // 19 (DAY)
+        LOW_TIDE,  // 20 (NIGHT)
+        HIGH_TIDE, // 21 (NIGHT)
+        HIGH_TIDE, // 22 (NIGHT)
+        HIGH_TIDE, // 23 (NIGHT)
     };
+    #undef LOW_TIDE
+    #undef HIGH_TIDE
 
     if (IsMapTypeOutdoors(GetLastUsedWarpMapType()))
     {

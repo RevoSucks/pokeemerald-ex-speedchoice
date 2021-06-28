@@ -1785,6 +1785,7 @@ const u16 gSummaryScreenAppealJam_Tilemap[] = INCBIN_U16("graphics/interface/app
 const u16 gSummaryScreenWindow_Tilemap[] = INCBIN_U16("graphics/interface/summary.bin");
 
 const u16 gIntroCopyright_Pal[] = INCBIN_U16("graphics/intro/copyright.gbapal");
+const u16 gIntroCopyrightOld_Pal[] = INCBIN_U16("graphics/intro/copyright_old.gbapal"); // FIX for THE END
 const u32 gIntroCopyright_Gfx[] = INCBIN_U32("graphics/intro/copyright.4bpp.lz");
 const u32 gIntroCopyright_Tilemap[] = INCBIN_U32("graphics/intro/copyright.bin.lz");
 
