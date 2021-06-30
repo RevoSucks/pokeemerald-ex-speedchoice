@@ -11346,7 +11346,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_CLANGING_SCALES] =
     {
-        .effect = EFFECT_DEFENSE_DOWN_HIT,
+        .effect = EFFECT_ATTACKER_DEFENSE_DOWN_HIT,
         .power = 110,
         .type = TYPE_DRAGON,
         .accuracy = 100,
@@ -12176,7 +12176,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_BODY_PRESS] =
     {
-        .effect = EFFECT_PLACEHOLDER,   //TODO
+        .effect = EFFECT_BODY_PRESS,
         .power = 80,
         .type = TYPE_FIGHTING,
         .accuracy = 100,

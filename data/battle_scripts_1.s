@@ -368,6 +368,12 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectExtremeEvoboost
 	.4byte BattleScript_EffectTerrainHit
     .4byte BattleScript_EffectSkyDrop
+    .4byte BattleScript_EffectAttackerDefenseDownHit
+	.4byte BattleScript_EffectBodyPress
+
+BattleScript_EffectAttackerDefenseDownHit:
+	setmoveeffect MOVE_EFFECT_DEF_MINUS_1 | MOVE_EFFECT_AFFECTS_USER
+	goto BattleScript_EffectHit
 
 BattleScript_EffectSkyDrop:
 	jumpifstatus2 BS_ATTACKER, STATUS2_MULTIPLETURNS, BattleScript_SkyDropTurn2
@@ -2082,6 +2088,7 @@ BattleScript_EffectChangeTypeOnItem:
 BattleScript_EffectFusionCombo:
 BattleScript_EffectRevelationDance:
 BattleScript_EffectBelch:
+BattleScript_EffectBodyPress:
 
 BattleScript_HitFromAtkCanceler::
 	attackcanceler
