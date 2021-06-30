@@ -38,5 +38,6 @@ void ItemUseOutOfBattle_DoneButton(u8 taskId);
 void ItemUseOutOfBattle_SleepingBag(u8 taskId);
 u8 CanUseDigOrEscapeRopeOnCurMap(void);
 u8 CheckIfItemIsTMHMOrEvolutionStone(u16 itemId);
+u32 CanThrowBall(void);
 
 #endif // GUARD_ITEM_USE_H

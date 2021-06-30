@@ -37,6 +37,7 @@
 #define B_ACTION_CANCEL_PARTNER         12 // when choosing an action
 #define B_ACTION_NOTHING_FAINTED        13 // when choosing an action
 #define B_ACTION_DEBUG                  20
+#define B_ACTION_THROW_BALL             21 // R to throw last used ball
 #define B_ACTION_NONE                   0xFF
 
 #define MAX_TRAINER_ITEMS 4
@@ -144,6 +145,8 @@ struct ProtectStruct
     u32 usedThroatChopPreventedMove:1;
     u32 micle:1;
     u32 custap:1;    // also quick claw
+    u32 beakBlastCharge:1;
+    u32 shellTrap:1;
     u32 physicalDmg;
     u32 specialDmg;
     u8 physicalBattlerId;
@@ -229,6 +232,7 @@ struct WishFutureKnock
     u8 wishMonId[MAX_BATTLERS_COUNT];
     u8 weatherDuration;
     u8 knockedOffMons[2]; // Each battler is represented by a bit. The array entry is dependent on the battler's side.
+    u8 meltedItemMons[2]; // Same as above
 };
 
 struct AI_SavedBattleMon
@@ -577,6 +581,7 @@ struct BattleStruct
     u16 changedSpecies[PARTY_SIZE]; // For Zygarde or future forms when multiple mons can change into the same pokemon.
     u8 quickClawBattlerId;
     u8 skyDropTargets[MAX_BATTLERS_COUNT]; // For Sky Drop, to account for if multiple Pokemon use Sky Drop in a double battle.
+    u8 ballSpriteIds[2];    // item gfx, window gfx
 };
 
 #define GET_MOVE_TYPE(move, typeArg)                        \

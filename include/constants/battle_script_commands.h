@@ -177,6 +177,12 @@
 #define VARIOUS_JUMP_IF_UNDER_200               106
 #define VARIOUS_SET_SKY_DROP                    107
 #define VARIOUS_CLEAR_SKY_DROP                  108
+#define VARIOUS_TRY_SET_CORROSIVE_GAS           109
+#define VARIOUS_SET_BEAK_BLAST                  110
+#define VARIOUS_SWAP_SIDE_STATUSES              111
+#define VARIOUS_SET_SHELL_TRAP                  112
+#define VARIOUS_CLEAR_SHELL_TRAP                113
+#define VARIOUS_CHECK_SHELL_TRAP                114
 
 // Cmd_manipulatedamage
 #define DMG_CHANGE_SIGN            0

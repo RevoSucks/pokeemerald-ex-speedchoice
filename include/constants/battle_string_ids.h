@@ -589,8 +589,14 @@
 #define STRINGID_TERRAINREMOVED 575
 #define STRINGID_TARGETTOOHEAVY 576
 #define STRINGID_PKMNTOOKTARGETHIGH 577
+#define STRINGID_PKMNINSNAPTRAP                  578
+#define STRINGID_METEORBEAMCHARGING              579
+#define STRINGID_ITEMMELTED                      580
+#define STRINGID_HEATUPBEAK                      581
+#define STRINGID_COURTCHANGE                     582
+#define STRINGID_PREPARESHELLTRAP                583
 
-#define BATTLESTRINGS_COUNT     578
+#define BATTLESTRINGS_COUNT     584
 
 //// multichoice message IDs
 // switch in ability message
@@ -657,14 +663,19 @@
 #define B_MSG_LEECH_SEED_OOZE  4
 
 // gFirstTurnOfTwoStringIds
-#define B_MSG_TURN1_RAZOR_WIND  0
-#define B_MSG_TURN1_SOLAR_BEAM  1
-#define B_MSG_TURN1_SKULL_BASH  2
-#define B_MSG_TURN1_SKY_ATTACK  3
-#define B_MSG_TURN1_FLY         4
-#define B_MSG_TURN1_DIG         5
-#define B_MSG_TURN1_DIVE        6
-#define B_MSG_TURN1_BOUNCE      7
+#define B_MSG_TURN1_RAZOR_WIND    0
+#define B_MSG_TURN1_SOLAR_BEAM    1
+#define B_MSG_TURN1_SKULL_BASH    2
+#define B_MSG_TURN1_SKY_ATTACK    3
+#define B_MSG_TURN1_FLY           4
+#define B_MSG_TURN1_DIG           5
+#define B_MSG_TURN1_DIVE          6
+#define B_MSG_TURN1_BOUNCE        7
+#define B_MSG_TURN1_PHANTOM_FORCE 8
+#define B_MSG_TURN1_GEOMANCY      9
+#define B_MSG_TURN1_FREEZE_SHOCK  10
+#define B_MSG_TURN1_SKY_DROP      11
+#define B_MSG_TURN1_METEOR_BEAM   12
 
 // gMoveWeatherChangeStringIds
 #define B_MSG_STARTED_RAIN      0

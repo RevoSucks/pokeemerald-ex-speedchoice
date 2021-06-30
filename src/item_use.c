@@ -1011,6 +1011,26 @@ void ItemUseOutOfBattle_EvolutionStone(u8 taskId)
     SetUpItemUseCallback(taskId);
 }
 
+u32 CanThrowBall(void)
+{
+    if (IsBattlerAlive(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT))
+        && IsBattlerAlive(GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT))) 
+    {
+        return 1;   // There are two present pokemon.
+    }
+    else if (gBattlerInMenuId == GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT)
+             && IsBattlerAlive(GetBattlerAtPosition(B_POSITION_PLAYER_LEFT))) 
+    {
+        return 2;   // Attempting to throw a ball with the second pokemon while both are alive.
+    }
+    else if (IsPlayerPartyAndPokemonStorageFull() == TRUE)
+    {
+        return 3;   // No room for mon
+    }
+    
+    return 0;   // usable 
+}
+
 void ItemUseInBattle_PokeBall(u8 taskId)
 {
     if ((gDebugSystemEnabled == TRUE) && FlagGet(FLAG_SYS_NO_CATCHING)) {

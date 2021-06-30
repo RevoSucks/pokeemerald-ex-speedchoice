@@ -367,6 +367,12 @@ extern const u8 BattleScript_CustapBerryActivation[];
 extern const u8 BattleScript_MicleBerryActivateEnd2[];
 extern const u8 BattleScript_MicleBerryActivateRet[];
 extern const u8 BattleScript_JabocaRowapBerryActivates[];
+extern const u8 BattleScript_MeltedItem[];
+extern const u8 BattleScript_BeakBlastSetUp[];
+extern const u8 BattleScript_BeakBlastBurn[];
+extern const u8 BattleScript_ShellTrapSetUp[];
+extern const u8 BattleScript_ShellTrapExplode[];
+extern const u8 BattleScript_EffectShellTrap[];
 
 // zmoves
 extern const u8 BattleScript_ZMoveActivateDamaging[];

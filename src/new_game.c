@@ -233,6 +233,7 @@ void NewGameInitData(void)
         AddBagItem(ITEM_MACH_BIKE, 1);
         FlagSet(FLAG_RECEIVED_BIKE); // put the flag here for making sure you got the bicycle
     //}
+    gSaveBlock2Ptr->lastUsedBall = ITEM_POKE_BALL;
 }
 
 static void ResetMiniGamesRecords(void)
