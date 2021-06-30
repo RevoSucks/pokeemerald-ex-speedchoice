@@ -5,4 +5,6 @@ void Debug_ShowMainMenu(void);
 
 extern int gDebugSystemEnabled;
 
+void Debug_ShowMainMenu(void);
+
 #endif // GUARD_DEBUG_H

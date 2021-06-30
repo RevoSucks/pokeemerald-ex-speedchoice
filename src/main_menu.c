@@ -12,6 +12,7 @@
 #include "international_string_util.h"
 #include "link.h"
 #include "main.h"
+#include "main_menu.h"
 #include "menu.h"
 #include "list_menu.h"
 #include "mystery_event_menu.h"
