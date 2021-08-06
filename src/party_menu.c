@@ -4335,7 +4335,13 @@ static bool8 IsItemFlute(u16 item)
 static bool8 ExecuteTableBasedItemEffect_(u8 partyMonIndex, u16 item, u8 monMoveIndex)
 {
     if (gMain.inBattle)
-        return ExecuteTableBasedItemEffect(&gPlayerParty[partyMonIndex], item, GetPartyIdFromBattleSlot(partyMonIndex), monMoveIndex);
+    {
+        if ((partyMonIndex == 0 && gStatuses3[B_POSITION_PLAYER_LEFT] & STATUS3_EMBARGO)
+          || (partyMonIndex == 1 && gStatuses3[B_POSITION_PLAYER_RIGHT] & STATUS3_EMBARGO))
+            return TRUE;    // cannot use on this mon
+        else
+            return ExecuteTableBasedItemEffect(&gPlayerParty[partyMonIndex], item, GetPartyIdFromBattleSlot(partyMonIndex), monMoveIndex);
+    }
     else
         return ExecuteTableBasedItemEffect(&gPlayerParty[partyMonIndex], item, partyMonIndex, monMoveIndex);
 }
@@ -5146,12 +5152,19 @@ static void PartyMenuTryEvolution(u8 taskId)
 {
     struct Pokemon *mon = &gPlayerParty[gPartyMenu.slotId];
     u16 targetSpecies = GetEvolutionTargetSpecies(mon, EVO_MODE_NORMAL, ITEM_NONE, SPECIES_NONE);
+    bool8 canStopEvo = TRUE;
 
     if (targetSpecies != SPECIES_NONE)
     {
+        // handle forcing evo for speedchoice.
+        if(CheckSpeedchoiceOption(EVO_EVERY_LEVEL, EVO_EV_OFF) == FALSE)
+            canStopEvo = FALSE;
+        else
+            canStopEvo = TRUE;
+
         FreePartyPointers();
         gCB2_AfterEvolution = gPartyMenu.exitCallback;
-        BeginEvolutionScene(mon, targetSpecies, TRUE, gPartyMenu.slotId);
+        BeginEvolutionScene(mon, targetSpecies, canStopEvo, gPartyMenu.slotId);
         DestroyTask(taskId);
     }
     else

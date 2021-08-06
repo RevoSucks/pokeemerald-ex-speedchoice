@@ -168,6 +168,7 @@ const u8 gSpeedchoiceOptionFastEggHatch[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}
 // PAGE 5
 const u8 gSpeedchoiceOptionGen7XItems[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}GEN 7 X ITEMS");
 const u8 gSpeedchoiceOptionEvoEveryLv[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}EVO EVERY LV");
+const u8 gSpeedchoiceOptionInverseBattles[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}INVERSE BATTLES");
 
 // CONSTANT OPTIONS
 const u8 gSpeedchoiceOptionPage[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}PAGE");
@@ -208,6 +209,7 @@ const u8 gSpeedchoiceTooltipEarlyBike[] = _("Start game with Bicycle.");
 const u8 gSpeedchoiceTooltipFastEggHatch[] = _("Makes eggs hatch quickly.");
 const u8 gSpeedchoiceTooltipGen7XItems[] = _("Stat boost +2 instead of +1.");
 const u8 gSpeedchoiceTooltipEvoEveryLv[] = _("{PKMN} evolve into a random\nbut set species every lv.");
+const u8 gSpeedchoiceTooltipInverseBattles[] = _("Inverse battles mechanic is\nenabled.\pSwitches type effectiveness.");
 
 // START GAME
 const u8 gSpeedchoiceStartGameText[] = _("CV: {STR_VAR_1}\nStart the game?");
@@ -260,7 +262,8 @@ static const u8 gPresetVanilla[CURRENT_OPTIONS_NUM] = {
     EASY_FALSE_SWIPE_OFF,   // EASY_FALSE_SWIPE
     FAST_CATCH_OFF,         // FAST_CATCH
     EARLY_BIKE_NO,          // EARLY_BIKE
-    EVO_EV_OFF              // EVO_EVERY_LEVEL
+    EVO_EV_OFF,             // EVO_EVERY_LEVEL
+    INV_BATTLES_OFF         // INVERSE_BATTLES
 };
 
 static const u8 gPresetBingo[CURRENT_OPTIONS_NUM] = {
@@ -277,7 +280,8 @@ static const u8 gPresetBingo[CURRENT_OPTIONS_NUM] = {
     EASY_FALSE_SWIPE_TUTOR, // EASY_FALSE_SWIPE
     FAST_CATCH_OFF,         // FAST_CATCH
     GEN_7_X_ITEMS_ON,       // GEN_7_X_ITEMS
-    EVO_EV_OFF              // EVO_EVERY_LEVEL
+    EVO_EV_OFF,             // EVO_EVERY_LEVEL
+    INV_BATTLES_OFF         // INVERSE_BATTLES
 };
 
 static const u8 gPresetCEA[CURRENT_OPTIONS_NUM] = {
@@ -294,7 +298,8 @@ static const u8 gPresetCEA[CURRENT_OPTIONS_NUM] = {
     EASY_FALSE_SWIPE_TUTOR, // EASY_FALSE_SWIPE
     FAST_CATCH_ON,          // FAST_CATCH
     GEN_7_X_ITEMS_ON,       // GEN_7_X_ITEMS
-    EVO_EV_OFF              // EVO_EVERY_LEVEL
+    EVO_EV_OFF,             // EVO_EVERY_LEVEL
+    INV_BATTLES_OFF         // INVERSE_BATTLES
 };
 
 static const u8 gPresetRace[CURRENT_OPTIONS_NUM] = {
@@ -311,7 +316,8 @@ static const u8 gPresetRace[CURRENT_OPTIONS_NUM] = {
     EASY_FALSE_SWIPE_TUTOR, // EASY_FALSE_SWIPE
     FAST_CATCH_OFF,         // FAST_CATCH
     GEN_7_X_ITEMS_ON,       // GEN_7_X_ITEMS
-    EVO_EV_OFF              // EVO_EVERY_LEVEL
+    EVO_EV_OFF,             // EVO_EVERY_LEVEL
+    INV_BATTLES_OFF         // INVERSE_BATTLES
 };
 
 static const u8 gPresetMeme[CURRENT_OPTIONS_NUM] = {
@@ -328,7 +334,8 @@ static const u8 gPresetMeme[CURRENT_OPTIONS_NUM] = {
     EASY_FALSE_SWIPE_OFF,   // EASY_FALSE_SWIPE
     FAST_CATCH_OFF,         // FAST_CATCH
     GEN_7_X_ITEMS_OFF,      // GEN_7_X_ITEMS
-    EVO_EV_ON               // EVO_EVERY_LEVEL
+    EVO_EV_ON,              // EVO_EVERY_LEVEL
+    INV_BATTLES_ON          // INVERSE_BATTLES
 };
 
 /*
@@ -630,6 +637,17 @@ const struct SpeedchoiceOption SpeedchoiceOptions[CURRENT_OPTIONS_NUM + 1] = // 
         /* Option Usable  */ TRUE
     },
     // ----------------------------------
+    // INVERSE BATTLES OPTION
+    // ----------------------------------
+    { 
+        /* Option Count   */ 2,
+        /* Option Type    */ NORMAL,
+        /* Option Preset  */ gSpeedchoiceOptionInverseBattles,
+        /* Option Text    */ OptionChoiceConfigOnOff,
+        /* Option Tooltip */ gSpeedchoiceTooltipInverseBattles,
+        /* Option Usable  */ TRUE
+    },
+    // ----------------------------------
     // PAGE STATIC OPTION
     // ----------------------------------
     { 
@@ -702,6 +720,7 @@ void SetOptionChoicesAndConfigFromPreset(const u8 *preset)
     gSaveBlock2Ptr->speedchoiceConfig.fastCatch = preset[FAST_CATCH];
     gSaveBlock2Ptr->speedchoiceConfig.gen7XItems = preset[GEN_7_X_ITEMS];
     gSaveBlock2Ptr->speedchoiceConfig.evoEveryLevel = preset[EVO_EVERY_LEVEL];
+    gSaveBlock2Ptr->speedchoiceConfig.inverseBattles = preset[INVERSE_BATTLES];
 }
 
 /*
@@ -738,6 +757,8 @@ bool8 CheckSpeedchoiceOption(u8 option, u8 selection)
             return gSaveBlock2Ptr->speedchoiceConfig.gen7XItems == selection;
         case EVO_EVERY_LEVEL:
             return gSaveBlock2Ptr->speedchoiceConfig.evoEveryLevel == selection;
+        case INVERSE_BATTLES:
+            return gSaveBlock2Ptr->speedchoiceConfig.inverseBattles == selection;
         default:
             return FALSE;
     }
@@ -1239,7 +1260,7 @@ u32 CalculateCheckValue(u8 taskId)
     u8 totalBitsUsed;
 
     // do checkvalue increment for 32-bit value.
-    for(checkValue = 0, i = 0, totalBitsUsed = 0; i < CURRENT_OPTIONS_NUM; i++)
+    for(checkValue = 0, i = 2, totalBitsUsed = 0; i < CURRENT_OPTIONS_NUM; i++)
     {
         checkValue += gLocalSpeedchoiceConfig.optionConfig[i] << totalBitsUsed;
         totalBitsUsed += GetNumBitsUsed(SpeedchoiceOptions[i].optionCount);
@@ -1276,6 +1297,7 @@ static void SaveSpeedchoiceOptions(u8 taskId)
     gSaveBlock2Ptr->speedchoiceConfig.fastCatch = gLocalSpeedchoiceConfig.optionConfig[FAST_CATCH];
     gSaveBlock2Ptr->speedchoiceConfig.gen7XItems = gLocalSpeedchoiceConfig.optionConfig[GEN_7_X_ITEMS];
     gSaveBlock2Ptr->speedchoiceConfig.evoEveryLevel = gLocalSpeedchoiceConfig.optionConfig[EVO_EVERY_LEVEL];
+    gSaveBlock2Ptr->speedchoiceConfig.inverseBattles = gLocalSpeedchoiceConfig.optionConfig[INVERSE_BATTLES];
 
     // write the playername.
     for (i = 0; i < PLAYER_NAME_LENGTH; i++) {

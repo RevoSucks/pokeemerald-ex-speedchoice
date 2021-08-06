@@ -31,6 +31,7 @@
 #include "item_icon.h"
 #include "item_use.h"
 #include "item.h"
+#include "constants/items.h"
 
 enum
 {   // Corresponds to gHealthboxElementsGfxTable (and the tables after it) in graphics.c
@@ -856,6 +857,12 @@ u8 GetMegaIndicatorSpriteId(u32 healthboxSpriteId)
     if (spriteId >= MAX_SPRITES)
         return 0xFF;
     return gSprites[spriteId].hOther_IndicatorSpriteId;
+}
+
+static void InitLastUsedBallAssets(void)
+{
+    gBattleStruct->ballSpriteIds[0] = MAX_SPRITES;
+    gBattleStruct->ballSpriteIds[1] = MAX_SPRITES;
 }
 
 u8 CreateBattlerHealthboxSprites(u8 battlerId)
@@ -3305,9 +3312,16 @@ bool32 CanThrowLastUsedBall(void)
      || !CheckBagHasItem(gSaveBlock2Ptr->lastUsedBall, 1)));
 }
 
-
 void TryAddLastUsedBallItemSprites(void)
 {
+    if (gSaveBlock2Ptr->lastUsedBall != ITEM_NONE && !CheckBagHasItem(gSaveBlock2Ptr->lastUsedBall, 1))
+    {
+        // we're out of the last used ball, so just set it to the first ball in the bag
+        // we have to compact the bag first bc it is typically only compacted when you open it
+        CompactItemsInBagPocket(&gBagPockets[BALLS_POCKET]);
+        gSaveBlock2Ptr->lastUsedBall = gBagPockets[BALLS_POCKET].itemSlots[0].itemId;
+    }
+
     if (CanThrowBall() != 0
      || (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
      || !CheckBagHasItem(gSaveBlock2Ptr->lastUsedBall, 1))

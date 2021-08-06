@@ -7,7 +7,7 @@
 
 // The current total number of selectable options. Be sure to count preset too and
 // player name.
-#define CURRENT_OPTIONS_NUM 14
+#define CURRENT_OPTIONS_NUM 15
 
 // Maximum number of possible selectable options per option.
 #define MAX_CHOICES 6
@@ -99,6 +99,7 @@ enum
     //FAST_EGG_HATCH, // DEPRECATED (default)
     GEN_7_X_ITEMS,
     EVO_EVERY_LEVEL,
+    INVERSE_BATTLES,
 
     // ----------------------
     // STATIC OPTIONS
@@ -314,6 +315,15 @@ enum
 {
     EVO_EV_ON,
     EVO_EV_OFF
+};
+
+// ----------------------
+// INVERSE_BATTLES ENUM
+// ----------------------
+enum
+{
+    INV_BATTLES_ON,
+    INV_BATTLES_OFF
 };
 
 // Enumeration for optionType in the Speedchoice struct below.

@@ -797,6 +797,9 @@ static bool8 ShouldUseItem(void)
        || (gStatuses3[gActiveBattler] & STATUS3_ON_AIR && gStatuses3[gActiveBattler] & STATUS3_UNDERGROUND))
         return FALSE;
 
+    if (gStatuses3[gActiveBattler] & STATUS3_EMBARGO)
+        return FALSE;
+
     if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
         party = gPlayerParty;
     else

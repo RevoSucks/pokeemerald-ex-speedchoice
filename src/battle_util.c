@@ -46,6 +46,7 @@
 #include "constants/weather.h"
 #include "debug.h"
 #include "done_button.h"
+#include "speedchoice.h"
 
 extern s32 CountUsablePartyMons(u8 battlerId);
 
@@ -8142,7 +8143,8 @@ u16 CalcPartyMonTypeEffectivenessMultiplier(u16 move, u16 speciesDef, u16 abilit
 
 u16 GetTypeModifier(u8 atkType, u8 defType)
 {
-    if (B_FLAG_INVERSE_BATTLE != 0 && FlagGet(B_FLAG_INVERSE_BATTLE))
+    //if (B_FLAG_INVERSE_BATTLE != 0 && FlagGet(B_FLAG_INVERSE_BATTLE))
+    if (CheckSpeedchoiceOption(INVERSE_BATTLES, INV_BATTLES_ON) == TRUE)
         return sInverseTypeEffectivenessTable[atkType][defType];
     else
         return sTypeEffectivenessTable[atkType][defType];
