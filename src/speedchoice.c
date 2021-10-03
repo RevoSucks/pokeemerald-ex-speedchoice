@@ -103,7 +103,7 @@ const u8 gSystemText_TerminatorS[] = _("{COLOR RED}$");
 /* SPEEDCHOICE MENU TEXT (Header Text)             */
 /* ----------------------------------------------- */
 const u8 gSpeedchoiceTextHeader[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}EX SPEEDCHOICE MENU");
-const u8 gSpeedchoiceCurrentVersion[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}v0.2.7");
+const u8 gSpeedchoiceCurrentVersion[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}v0.3.0");
 
 /* ----------------------------------------------- */
 /* SPEEDCHOICE MENU TEXT (Option Choices)          */
@@ -169,6 +169,8 @@ const u8 gSpeedchoiceOptionFastEggHatch[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}
 const u8 gSpeedchoiceOptionGen7XItems[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}GEN 7 X ITEMS");
 const u8 gSpeedchoiceOptionEvoEveryLv[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}EVO EVERY LV");
 const u8 gSpeedchoiceOptionInverseBattles[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}INVERSE BATTLES");
+const u8 gSpeedchoiceOptionShuffleMusic[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}SHUFFLE MUSIC");
+const u8 gSpeedchoiceOptionDebug[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}DEBUG MENUS");
 
 // CONSTANT OPTIONS
 const u8 gSpeedchoiceOptionPage[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}PAGE");
@@ -210,6 +212,8 @@ const u8 gSpeedchoiceTooltipFastEggHatch[] = _("Makes eggs hatch quickly.");
 const u8 gSpeedchoiceTooltipGen7XItems[] = _("Stat boost +2 instead of +1.");
 const u8 gSpeedchoiceTooltipEvoEveryLv[] = _("{PKMN} evolve into a random\nbut set species every lv.");
 const u8 gSpeedchoiceTooltipInverseBattles[] = _("Inverse battles mechanic is\nenabled.\pSwitches type effectiveness.");
+const u8 gSpeedchoiceTooltipShuffleMusic[] = _("Randomly shuffles music and \nfanfares between others.");
+const u8 gSpeedchoiceTooltipDebug[] = _("Enables the debug menus for\ntroubleshooting.\pR+Start in the field for the\nField Debug menu.\pSelect in battle for the Battle\nDebug Menu.");
 
 // START GAME
 const u8 gSpeedchoiceStartGameText[] = _("CV: {STR_VAR_1}\nStart the game?");
@@ -263,7 +267,9 @@ static const u8 gPresetVanilla[CURRENT_OPTIONS_NUM] = {
     FAST_CATCH_OFF,         // FAST_CATCH
     EARLY_BIKE_NO,          // EARLY_BIKE
     EVO_EV_OFF,             // EVO_EVERY_LEVEL
-    INV_BATTLES_OFF         // INVERSE_BATTLES
+    INV_BATTLES_OFF,        // INVERSE_BATTLES
+    SHUFFLE_MUSIC_OFF,      // SHUFFLE_MUSIC
+    DEBUG_MENUS_OFF         // DEBUG_MENUS
 };
 
 static const u8 gPresetBingo[CURRENT_OPTIONS_NUM] = {
@@ -281,7 +287,9 @@ static const u8 gPresetBingo[CURRENT_OPTIONS_NUM] = {
     FAST_CATCH_OFF,         // FAST_CATCH
     GEN_7_X_ITEMS_ON,       // GEN_7_X_ITEMS
     EVO_EV_OFF,             // EVO_EVERY_LEVEL
-    INV_BATTLES_OFF         // INVERSE_BATTLES
+    INV_BATTLES_OFF,        // INVERSE_BATTLES
+    SHUFFLE_MUSIC_OFF,      // SHUFFLE_MUSIC
+    DEBUG_MENUS_OFF         // DEBUG_MENUS
 };
 
 static const u8 gPresetCEA[CURRENT_OPTIONS_NUM] = {
@@ -299,7 +307,9 @@ static const u8 gPresetCEA[CURRENT_OPTIONS_NUM] = {
     FAST_CATCH_ON,          // FAST_CATCH
     GEN_7_X_ITEMS_ON,       // GEN_7_X_ITEMS
     EVO_EV_OFF,             // EVO_EVERY_LEVEL
-    INV_BATTLES_OFF         // INVERSE_BATTLES
+    INV_BATTLES_OFF,        // INVERSE_BATTLES
+    SHUFFLE_MUSIC_OFF,      // SHUFFLE_MUSIC
+    DEBUG_MENUS_OFF         // DEBUG_MENUS
 };
 
 static const u8 gPresetRace[CURRENT_OPTIONS_NUM] = {
@@ -317,7 +327,9 @@ static const u8 gPresetRace[CURRENT_OPTIONS_NUM] = {
     FAST_CATCH_OFF,         // FAST_CATCH
     GEN_7_X_ITEMS_ON,       // GEN_7_X_ITEMS
     EVO_EV_OFF,             // EVO_EVERY_LEVEL
-    INV_BATTLES_OFF         // INVERSE_BATTLES
+    INV_BATTLES_OFF,        // INVERSE_BATTLES
+    SHUFFLE_MUSIC_OFF,      // SHUFFLE_MUSIC
+    DEBUG_MENUS_OFF         // DEBUG_MENUS
 };
 
 static const u8 gPresetMeme[CURRENT_OPTIONS_NUM] = {
@@ -335,7 +347,9 @@ static const u8 gPresetMeme[CURRENT_OPTIONS_NUM] = {
     FAST_CATCH_OFF,         // FAST_CATCH
     GEN_7_X_ITEMS_OFF,      // GEN_7_X_ITEMS
     EVO_EV_ON,              // EVO_EVERY_LEVEL
-    INV_BATTLES_ON          // INVERSE_BATTLES
+    INV_BATTLES_ON,         // INVERSE_BATTLES
+    SHUFFLE_MUSIC_ON,       // SHUFFLE_MUSIC
+    DEBUG_MENUS_ON          // DEBUG_MENUS
 };
 
 /*
@@ -648,6 +662,28 @@ const struct SpeedchoiceOption SpeedchoiceOptions[CURRENT_OPTIONS_NUM + 1] = // 
         /* Option Usable  */ TRUE
     },
     // ----------------------------------
+    // SHUFFLE_MUSIC OPTION
+    // ----------------------------------
+    { 
+        /* Option Count   */ 2,
+        /* Option Type    */ NORMAL,
+        /* Option Preset  */ gSpeedchoiceOptionShuffleMusic,
+        /* Option Text    */ OptionChoiceConfigOnOff,
+        /* Option Tooltip */ gSpeedchoiceTooltipShuffleMusic,
+        /* Option Usable  */ TRUE
+    },
+    // ----------------------------------
+    // DEBUG_MENUS OPTION
+    // ----------------------------------
+    { 
+        /* Option Count   */ 2,
+        /* Option Type    */ NORMAL,
+        /* Option Preset  */ gSpeedchoiceOptionDebug,
+        /* Option Text    */ OptionChoiceConfigOnOff,
+        /* Option Tooltip */ gSpeedchoiceTooltipDebug,
+        /* Option Usable  */ TRUE
+    },
+    // ----------------------------------
     // PAGE STATIC OPTION
     // ----------------------------------
     { 
@@ -721,6 +757,8 @@ void SetOptionChoicesAndConfigFromPreset(const u8 *preset)
     gSaveBlock2Ptr->speedchoiceConfig.gen7XItems = preset[GEN_7_X_ITEMS];
     gSaveBlock2Ptr->speedchoiceConfig.evoEveryLevel = preset[EVO_EVERY_LEVEL];
     gSaveBlock2Ptr->speedchoiceConfig.inverseBattles = preset[INVERSE_BATTLES];
+    gSaveBlock2Ptr->speedchoiceConfig.shuffleMusic = preset[SHUFFLE_MUSIC];
+    gSaveBlock2Ptr->speedchoiceConfig.debugMenus = preset[DEBUG_MENUS];
 }
 
 /*
@@ -759,6 +797,10 @@ bool8 CheckSpeedchoiceOption(u8 option, u8 selection)
             return gSaveBlock2Ptr->speedchoiceConfig.evoEveryLevel == selection;
         case INVERSE_BATTLES:
             return gSaveBlock2Ptr->speedchoiceConfig.inverseBattles == selection;
+        case SHUFFLE_MUSIC:
+            return gSaveBlock2Ptr->speedchoiceConfig.shuffleMusic == selection;
+        case DEBUG_MENUS:
+            return gSaveBlock2Ptr->speedchoiceConfig.debugMenus == selection;
         default:
             return FALSE;
     }
@@ -1298,6 +1340,8 @@ static void SaveSpeedchoiceOptions(u8 taskId)
     gSaveBlock2Ptr->speedchoiceConfig.gen7XItems = gLocalSpeedchoiceConfig.optionConfig[GEN_7_X_ITEMS];
     gSaveBlock2Ptr->speedchoiceConfig.evoEveryLevel = gLocalSpeedchoiceConfig.optionConfig[EVO_EVERY_LEVEL];
     gSaveBlock2Ptr->speedchoiceConfig.inverseBattles = gLocalSpeedchoiceConfig.optionConfig[INVERSE_BATTLES];
+    gSaveBlock2Ptr->speedchoiceConfig.shuffleMusic = gLocalSpeedchoiceConfig.optionConfig[SHUFFLE_MUSIC];
+    gSaveBlock2Ptr->speedchoiceConfig.debugMenus = gLocalSpeedchoiceConfig.optionConfig[DEBUG_MENUS];
 
     // write the playername.
     for (i = 0; i < PLAYER_NAME_LENGTH; i++) {
@@ -1366,6 +1410,8 @@ static void Task_SpeedchoiceMenuFadeOut(u8 taskId)
     }
 }
 
+extern int gShuffleMusic;
+
 /*
  * Prompt the Yes/No menu choice to determine if the run/race is started.
  */
@@ -1380,6 +1426,19 @@ static void Task_AskToStartGame(u8 taskId)
         SaveSpeedchoiceOptions(taskId);
         BeginNormalPaletteFade(-1, 0, 0, 0x10, 0);
         gTasks[taskId].func = Task_SpeedchoiceMenuFadeOut;
+        if(CheckSpeedchoiceOption(SHUFFLE_MUSIC, SHUFFLE_MUSIC_ON) == TRUE)
+            gShuffleMusic = TRUE;
+        // start the timers here!
+        gSaveBlock1Ptr->doneButtonStats.frameCount = 0;
+        gSaveBlock1Ptr->doneButtonStats.owFrameCount = 0;
+        gSaveBlock1Ptr->doneButtonStats.battleFrameCount = 0;
+        gSaveBlock1Ptr->doneButtonStats.menuFrameCount = 0;
+        gSaveBlock1Ptr->doneButtonStats.introsFrameCount = 0;
+        gFrameTimers.frameCount = 0;
+        gFrameTimers.owFrameCount = 0;
+        gFrameTimers.battleFrameCount = 0;
+        gFrameTimers.menuFrameCount = 0;
+        gFrameTimers.introsFrameCount = 0;
         break;
     case 1:  // NO
     case -1: // B button

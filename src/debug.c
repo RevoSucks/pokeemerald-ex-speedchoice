@@ -54,7 +54,8 @@
 // =================================
 // GLOBAL ON/OFF FOR DEBUGGING
 // =================================
-EWRAM_DATA int gDebugSystemEnabled = 0;
+// DEPRECATED
+//EWRAM_DATA int gDebugSystemEnabled = FALSE;
 // =================================
 
 
@@ -2807,6 +2808,9 @@ static void DebugAction_Sound_MUS(u8 taskId)
     gTasks[taskId].data[4] = 0;                         //Digit Selected
     gTasks[taskId].data[5] = gTasks[taskId].data[3];    //Last song played (for stopping)
 }
+
+extern int gShuffleMusic;
+
 static void DebugAction_Sound_MUS_SelectId(u8 taskId)
 {
     if (gMain.newKeys & DPAD_ANY)
@@ -2843,9 +2847,13 @@ static void DebugAction_Sound_MUS_SelectId(u8 taskId)
 
     if (gMain.newKeys & A_BUTTON)
     {
+        int setShuffleMusicBack = gShuffleMusic == TRUE;
+        gShuffleMusic = FALSE;
         m4aSongNumStop(gTasks[taskId].data[5]);
         gTasks[taskId].data[5] = gTasks[taskId].data[3];
         m4aSongNumStart(gTasks[taskId].data[3]);
+        if(setShuffleMusicBack)
+            gShuffleMusic = TRUE;
     }
     else if (gMain.newKeys & B_BUTTON)
     {

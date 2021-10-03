@@ -328,7 +328,7 @@ bool8 CheckForTrainersWantingBattle(void)
 {
     u8 i;
 
-    if ((gDebugSystemEnabled == TRUE) && FlagGet(FLAG_SYS_NO_TRAINER_SEE))
+    if ((CheckSpeedchoiceOption(DEBUG_MENUS, DEBUG_MENUS_ON) == TRUE) && FlagGet(FLAG_SYS_NO_TRAINER_SEE))
         return FALSE;
 
     gNoOfApproachingTrainers = 0;

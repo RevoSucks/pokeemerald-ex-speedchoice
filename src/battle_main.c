@@ -3853,7 +3853,7 @@ static void HandleTurnActionSelectionState(void)
                     }
                     break;
                 case B_ACTION_USE_ITEM:
-                    if (((gDebugSystemEnabled == TRUE) && FlagGet(FLAG_SYS_NO_BAG_USE)) || (gBattleTypeFlags & (BATTLE_TYPE_LINK
+                    if (((CheckSpeedchoiceOption(DEBUG_MENUS, DEBUG_MENUS_ON) == TRUE) && FlagGet(FLAG_SYS_NO_BAG_USE)) || (gBattleTypeFlags & (BATTLE_TYPE_LINK
                                             | BATTLE_TYPE_FRONTIER_NO_PYRAMID
                                             | BATTLE_TYPE_EREADER_TRAINER
                                             | BATTLE_TYPE_RECORDED_LINK))

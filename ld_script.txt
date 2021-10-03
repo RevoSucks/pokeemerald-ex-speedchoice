@@ -340,6 +340,7 @@ SECTIONS {
         src/boot_error_screen.o(.text);
         src/AgbAccuracy.o(.text);
         src/special_fossils.o(.text);
+        src/rhh_copyright.o(.text);
     } =0
 
     script_data :
@@ -711,6 +712,7 @@ SECTIONS {
         src/special_fossils.o(.rodata);
         src/m4a_tables.o(.rodata);
         data/sound_data.o(.rodata);
+        src/rhh_copyright.o(.rodata);
     } =0
 
     song_data :

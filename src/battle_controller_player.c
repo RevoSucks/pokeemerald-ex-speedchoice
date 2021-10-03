@@ -38,6 +38,7 @@
 #include "constants/trainers.h"
 #include "constants/rgb.h"
 #include "debug.h"
+#include "speedchoice.h"
 
 extern struct MusicPlayerInfo gMPlayInfo_BGM;
 
@@ -334,7 +335,7 @@ static void HandleInputChooseAction(void)
     {
         SwapHpBarsWithHpText();
     }
-    else if ((gDebugSystemEnabled == TRUE) && gMain.newKeys & SELECT_BUTTON)
+    else if ((CheckSpeedchoiceOption(DEBUG_MENUS, DEBUG_MENUS_ON) == TRUE) && gMain.newKeys & SELECT_BUTTON)
     {
         BtlController_EmitTwoReturnValues(1, B_ACTION_DEBUG, 0);
         PlayerBufferExecCompleted();

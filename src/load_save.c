@@ -14,6 +14,8 @@
 #include "decoration_inventory.h"
 #include "agb_flash.h"
 #include "done_button.h"
+#include "sound.h"
+#include "speedchoice.h"
 
 static void ApplyNewEncryptionKeyToAllEncryptedData(u32 encryptionKey);
 
@@ -76,7 +78,9 @@ void SetSaveBlocksPointers(u16 offset)
 {
     struct SaveBlock1** sav1_LocalVar = &gSaveBlock1Ptr;
 
-    offset = (offset + Random()) & (SAVEBLOCK_MOVE_RANGE - 4);
+    // SPEEDCHOICE CHANGE: Disable the random Save Block DMAing crap.
+    //offset = (offset + Random()) & (SAVEBLOCK_MOVE_RANGE - 4);
+    offset = 0;
 
     gSaveBlock2Ptr = (void*)(&gSaveblock2) + offset;
     *sav1_LocalVar = (void*)(&gSaveblock1) + offset;
@@ -182,6 +186,8 @@ void LoadPlayerParty(void)
         gPlayerParty[i] = gSaveBlock1Ptr->playerParty[i];
 }
 
+extern int gShuffleMusic;
+
 void SaveObjectEvents(void)
 {
     int i;
@@ -190,12 +196,69 @@ void SaveObjectEvents(void)
         gSaveBlock1Ptr->objectEvents[i] = gObjectEvents[i];
 }
 
+#include "constants/songs.h"
+
+extern u32 gRandomizerCheckValue;
+
+extern int IsInFanfares(u16 songNum);
+
+extern EWRAM_DATA u16 gShuffledMusic[(END_MUS - START_MUS + 1) - SFANFARES_COUNT][2];
+extern EWRAM_DATA u16 gShuffledFanfares[SFANFARES_COUNT][2];
+
+struct Fanfare
+{
+    u16 songNum;
+    u16 duration;
+};
+
+extern const struct Fanfare sFanfares[];
+
 void LoadObjectEvents(void)
 {
-    int i;
+    int i, j;
 
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
         gObjectEvents[i] = gSaveBlock1Ptr->objectEvents[i];
+
+    // do the shuffling here if enabled. TODO: Add Shuffle Music option and check CheckSpeedchoiceOption() here.
+    if(CheckSpeedchoiceOption(SHUFFLE_MUSIC, SHUFFLE_MUSIC_ON) == TRUE) {
+        SeedRng((u16)gRandomizerCheckValue);
+        // initialize the gShuffledMusic array to shuffle.
+        for(i = 0, j = 0; i < (END_MUS - START_MUS); i++) {
+            // only add it to the array if its not in sFanfares.
+            if(!IsInFanfares(START_MUS + i)) {
+                gShuffledMusic[j][0] = START_MUS + i;
+                gShuffledMusic[j++][1] = START_MUS + i;
+            }
+        }
+        gShuffledMusic[j][0] = MUS_VS_WILD_NIGHT;
+        gShuffledMusic[j][1] = MUS_VS_WILD_NIGHT;
+        // initialize gShuffledFanfares too.
+        for(i = 0; i < SFANFARES_COUNT; i++) {
+            gShuffledFanfares[i][0] = sFanfares[i].songNum;
+            gShuffledFanfares[i][1] = sFanfares[i].songNum;
+        }
+        // shuffle tha array(s) now. Add 1 for VS wild night.
+        
+        // do the first shuffle for gShuffledMusic.
+        for(i = 0; i < (END_MUS - START_MUS + 1) - SFANFARES_COUNT; i++) {
+            int j = Random() % (((END_MUS - START_MUS) + 1) - SFANFARES_COUNT); // pick a random element to swap with on the [1] element.
+
+            // perform the swap.
+            int swap = gShuffledMusic[j][1];
+            gShuffledMusic[j][1] = gShuffledMusic[i][1];
+            gShuffledMusic[i][1] = swap;
+        }
+        // now for gShuffledFanfares.
+        for(i = 0; i < SFANFARES_COUNT; i++) {
+            int j = Random() % SFANFARES_COUNT;
+
+            // perform the swap.
+            int swap = gShuffledFanfares[j][1];
+            gShuffledFanfares[j][1] = gShuffledFanfares[i][1];
+            gShuffledFanfares[i][1] = swap;
+        }
+    }
 }
 
 void SaveSerializedGame(void)

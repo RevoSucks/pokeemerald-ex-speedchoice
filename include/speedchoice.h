@@ -7,7 +7,7 @@
 
 // The current total number of selectable options. Be sure to count preset too and
 // player name.
-#define CURRENT_OPTIONS_NUM 15
+#define CURRENT_OPTIONS_NUM 17
 
 // Maximum number of possible selectable options per option.
 #define MAX_CHOICES 6
@@ -19,7 +19,7 @@
 #define ALLOPTIONS_PER_PAGE OPTIONS_PER_PAGE + 2
 
 // Number of defined pages.
-#define MAX_PAGES 3
+#define MAX_PAGES 4
 
 // Deprecated macro. May have been in use for Sapphire Speedchoice when the window system
 // was different back then.
@@ -100,6 +100,8 @@ enum
     GEN_7_X_ITEMS,
     EVO_EVERY_LEVEL,
     INVERSE_BATTLES,
+    SHUFFLE_MUSIC,
+    DEBUG_MENUS,
 
     // ----------------------
     // STATIC OPTIONS
@@ -324,6 +326,24 @@ enum
 {
     INV_BATTLES_ON,
     INV_BATTLES_OFF
+};
+
+// ----------------------
+// SHUFFLE_MUSIC ENUM
+// ----------------------
+enum
+{
+    SHUFFLE_MUSIC_ON,
+    SHUFFLE_MUSIC_OFF
+};
+
+// ----------------------
+// DEBUG_MENUS
+// ----------------------
+enum
+{
+    DEBUG_MENUS_ON,
+    DEBUG_MENUS_OFF
 };
 
 // Enumeration for optionType in the Speedchoice struct below.

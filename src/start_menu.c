@@ -251,7 +251,7 @@ static bool8 SaveSuccesTimer(void);
 static bool8 SaveErrorTimer(void);
 static void InitBattlePyramidRetire(void);
 static void VBlankCB_LinkBattleSave(void);
-static bool32 InitSaveWindowAfterLinkBattle(u8 *par1);
+static bool32 InitSaveWindowAfterLinkBattle(u16 *par1);
 static void CB2_SaveAfterLinkBattle(void);
 static void ShowSaveInfoWindow(void);
 static void RemoveSaveInfoWindow(void);
@@ -1303,7 +1303,7 @@ static void VBlankCB_LinkBattleSave(void)
     TransferPlttBuffer();
 }
 
-static bool32 InitSaveWindowAfterLinkBattle(u8 *state)
+static bool32 InitSaveWindowAfterLinkBattle(u16 *state)
 {
     switch (*state)
     {

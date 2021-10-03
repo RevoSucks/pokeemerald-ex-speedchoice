@@ -27,6 +27,7 @@
 #include "constants/battle_anim.h"
 #include "done_button.h"
 #include "boot_error_screen.h"
+#include "rhh_copyright.h"
 
 /*
     The intro is grouped into the following scenes
@@ -1026,6 +1027,16 @@ static const struct SpritePalette sSpritePalette_RayquazaOrb[] =
     {},
 };
 
+static void VBlankCB_PretIntro(void)
+{
+    LoadOam();
+    ProcessSpriteCopyRequests();
+    TransferPlttBuffer();
+    ScanlineEffect_InitHBlankDmaTransfer();
+    RunTasks();
+    AnimateSprites();
+    BuildOamBuffer();
+}
 
 static void VBlankCB_Intro(void)
 {
@@ -1101,21 +1112,63 @@ static u8 SetUpCopyrightScreen(void)
         SetSerialCallback(SerialCB_CopyrightScreen);
         GameCubeMultiBoot_Init(&gMultibootProgramStruct);
     default:
+        if(gMain.state > 155)
+            RunTasks();
         UpdatePaletteFade();
         gMain.state++;
         GameCubeMultiBoot_Main(&gMultibootProgramStruct);
         break;
+        
+    // ---------------------------
+    // pret intro starts here
+    // ---------------------------
+    case 139:
+        RhhIntro_InitCopyrightBgs();
+        BeginNormalPaletteFade(0xFFFFFFFF, 0, 0x10, 0, RGB_WHITEALPHA);
+        SetVBlankCallback(VBlankCB_PretIntro);
+        gMain.state++;
+        break;
     case 140:
+        if (UpdatePaletteFade())
+            break;
+        RhhIntro_LoadCopyrightBgGraphics();
+        //BeginNormalPaletteFade(0x00000001, 0, 0x10, 0, RGB_BLACK); 
+        UpdatePaletteFade(); 
+        GameCubeMultiBoot_Main(&gMultibootProgramStruct);
+        gMain.state++;
+        break;
+
+    case 141:
+        RhhIntro_LoadCopyrightSpriteGraphics();
+        RhhIntro_CreateCopyRightSprites();
+        UpdatePaletteFade(); 
+        GameCubeMultiBoot_Main(&gMultibootProgramStruct);
+        gMain.state++;
+        break;
+
+    case 155:
+        RhhIntro_ShowRhhCredits();
+        UpdatePaletteFade();
+        GameCubeMultiBoot_Main(&gMultibootProgramStruct);
+        gMain.state++;
+        break;
+    
+    case 363:
         GameCubeMultiBoot_Main(&gMultibootProgramStruct);
         if (gMultibootProgramStruct.gcmb_field_2 != 1)
         {
-            BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
+            BeginNormalPaletteFade(0xFFFFFFFF, 3, 0, 0x10, RGB_BLACK);
             gMain.state++;
         }
         break;
-    case 141:
+    case 364:
         if (UpdatePaletteFade())
             break;
+        RhhIntro_DestroyRhhCreditSprites();
+        gMain.state++;
+        break;
+
+    case 365:
         if (gWhichErrorMessage != FATAL_OKAY)
             SetMainCallback2(CB2_BootErrorScreen);
         else

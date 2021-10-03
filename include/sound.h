@@ -20,7 +20,11 @@ enum {
     FANFARE_OBTAIN_B_POINTS,
     FANFARE_OBTAIN_SYMBOL,
     FANFARE_REGISTER_MATCH_CALL,
+    FANFARE_RG_HEAL,   // SPEEDCHOICE, for shuffle music
+    FANFARE_CABLE_CAR, // SPEEDCHOICE, this music stops early too
 };
+
+#define SFANFARES_COUNT 20
 
 void InitMapMusic(void);
 void MapMusicMain(void);

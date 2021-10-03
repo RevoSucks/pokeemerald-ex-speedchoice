@@ -36,7 +36,6 @@ GAME_CODE   := SPDX
 MAKER_CODE  := 01
 REVISION    := 0
 MODERN      ?= 0
-DEBUG       ?= 0
 
 SHELL := /bin/bash -o pipefail
 
@@ -78,7 +77,7 @@ OBJ_DIR := build/modern
 LIBPATH := -L "$(dir $(shell $(CC) -mthumb -print-file-name=libgcc.a))" -L "$(dir $(shell $(CC) -mthumb -print-file-name=libc.a))"
 endif
 
-CPPFLAGS := -iquote include -iquote $(GFLIB_SUBDIR) -Wno-trigraphs -DMODERN=$(MODERN) -DDEBUG=$(DEBUG)
+CPPFLAGS := -iquote include -iquote $(GFLIB_SUBDIR) -Wno-trigraphs -DMODERN=$(MODERN)
 ifeq ($(MODERN),0)
 CPPFLAGS += -I tools/agbcc/include -I tools/agbcc
 endif
@@ -116,7 +115,7 @@ MAKEFLAGS += --no-print-directory
 # Secondary expansion is required for dependency variables in object rules.
 .SECONDEXPANSION:
 
-.PHONY: all rom clean compare tidy tools mostlyclean clean-tools $(TOOLDIRS) berry_fix libagbsyscall modern debugging debugging_modern
+.PHONY: all rom clean compare tidy tools mostlyclean clean-tools $(TOOLDIRS) berry_fix libagbsyscall modern
 
 infoshell = $(foreach line, $(shell $1 | sed "s/ /__SPACE__/g"), $(info $(subst __SPACE__, ,$(line))))
 
@@ -265,12 +264,6 @@ endif
 
 ifeq ($(DINFO),1)
 override CFLAGS += -g
-endif
-
-# Debug menu
-ifeq ($(DDEBUGGING),1)
-override ASFLAGS += --defsym DEBUGGING=1
-override CPPFLAGS += -D DEBUGGING=1
 endif
 
 $(C_BUILDDIR)/%.o : $(C_SUBDIR)/%.c $$(c_dep)

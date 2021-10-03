@@ -155,3 +155,5 @@
     .include "src/title_screen.o"
     .include "src/boot_error_screen.o"
 	.include "src/debug.o"
+    .include "src/rhh_copyright.o"
+    .include "src/m4a.o"

@@ -248,7 +248,7 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
     if (input->pressedSelectButton && UseRegisteredKeyItemOnField() == TRUE)
         return TRUE;
 
-    if (gDebugSystemEnabled == TRUE) {
+    if (CheckSpeedchoiceOption(DEBUG_MENUS, DEBUG_MENUS_ON) == TRUE) {
         if (input->input_field_1_2)
         {
             PlaySE(SE_WIN_OPEN);
@@ -737,7 +737,7 @@ void RestartWildEncounterImmunitySteps(void)
 
 static bool8 CheckStandardWildEncounter(u16 metatileBehavior)
 {
-    if ((gDebugSystemEnabled == TRUE) && FlagGet(FLAG_SYS_NO_ENCOUNTER)) //DEBUG
+    if ((CheckSpeedchoiceOption(DEBUG_MENUS, DEBUG_MENUS_ON) == TRUE) && FlagGet(FLAG_SYS_NO_ENCOUNTER)) //DEBUG
         return FALSE;//
 
     if (sWildEncounterImmunitySteps < 4)

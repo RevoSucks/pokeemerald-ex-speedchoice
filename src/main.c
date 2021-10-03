@@ -129,8 +129,6 @@ void AgbMain()
     InitHeap(gHeap, HEAP_SIZE);
 
     gSoftResetDisabled = FALSE;
-
-    gDebugSystemEnabled = DEBUG;
     
     if (gFlashMemoryPresent == FALSE)
         gWhichErrorMessage = FATAL_NO_FLASH;

@@ -45,6 +45,7 @@
 #include "debug.h"
 #include "done_button.h"
 #include "day_night.h"
+#include "speedchoice.h"
 
 static void SetUpItemUseCallback(u8 taskId);
 static void FieldCB_UseItemOnField(void);
@@ -1033,7 +1034,7 @@ u32 CanThrowBall(void)
 
 void ItemUseInBattle_PokeBall(u8 taskId)
 {
-    if ((gDebugSystemEnabled == TRUE) && FlagGet(FLAG_SYS_NO_CATCHING)) {
+    if ((CheckSpeedchoiceOption(DEBUG_MENUS, DEBUG_MENUS_ON) == TRUE) && FlagGet(FLAG_SYS_NO_CATCHING)) {
         static const u8 sText_BallsCannotBeUsed[] = _("Poké Balls cannot be used\nright now!\p");
         DisplayItemMessage(taskId, 1, sText_BallsCannotBeUsed, BagMenu_InitListsMenu);
     }

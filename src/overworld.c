@@ -108,11 +108,11 @@ static void CB2_LoadMap2(void);
 static void VBlankCB_Field(void);
 static void SpriteCB_LinkPlayer(struct Sprite *sprite);
 void ChooseAmbientCrySpecies(void);
-static void DoMapLoadLoop(u8 *state);
-static bool32 LoadMapInStepsLocal(u8 *state, bool32);
-static bool32 LoadMapInStepsLink(u8 *state);
-static bool32 ReturnToFieldLocal(u8 *state);
-static bool32 ReturnToFieldLink(u8 *state);
+static void DoMapLoadLoop(u16 *state);
+static bool32 LoadMapInStepsLocal(u16 *state, bool32);
+static bool32 LoadMapInStepsLink(u16 *state);
+static bool32 ReturnToFieldLocal(u16 *state);
+static bool32 ReturnToFieldLink(u16 *state);
 static void InitObjectEventsLink(void);
 static void InitObjectEventsLocal(void);
 static void InitOverworldGraphicsRegisters(void);
@@ -1665,7 +1665,7 @@ void CB2_NewGame(void)
 
 void CB2_WhiteOut(void)
 {
-    u8 state;
+    u16 state;
 
     if (++gMain.state >= 120)
     {
@@ -1927,7 +1927,7 @@ static void InitCurrentFlashLevelScanlineEffect(void)
     }
 }
 
-static bool32 LoadMapInStepsLink(u8 *state)
+static bool32 LoadMapInStepsLink(u16 *state)
 {
     switch (*state)
     {
@@ -2006,7 +2006,7 @@ static bool32 LoadMapInStepsLink(u8 *state)
     return FALSE;
 }
 
-static bool32 LoadMapInStepsLocal(u8 *state, bool32 a2)
+static bool32 LoadMapInStepsLocal(u16 *state, bool32 a2)
 {
     switch (*state)
     {
@@ -2078,7 +2078,7 @@ static bool32 LoadMapInStepsLocal(u8 *state, bool32 a2)
     return FALSE;
 }
 
-static bool32 ReturnToFieldLocal(u8 *state)
+static bool32 ReturnToFieldLocal(u16 *state)
 {
     switch (*state)
     {
@@ -2109,7 +2109,7 @@ static bool32 ReturnToFieldLocal(u8 *state)
     return FALSE;
 }
 
-static bool32 ReturnToFieldLink(u8 *state)
+static bool32 ReturnToFieldLink(u16 *state)
 {
     switch (*state)
     {
@@ -2186,7 +2186,7 @@ static bool32 ReturnToFieldLink(u8 *state)
     return FALSE;
 }
 
-static void DoMapLoadLoop(u8 *state)
+static void DoMapLoadLoop(u16 *state)
 {
     while (!LoadMapInStepsLocal(state, FALSE));
 }

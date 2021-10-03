@@ -497,6 +497,8 @@ struct SpeedchoiceSaveOptions
     u8 gen7XItems:1;
     u8 evoEveryLevel:1;
     u8 inverseBattles:1;
+    u8 shuffleMusic:1;
+    u8 debugMenus:1;
 };
 
 // The struct has to be split in two because neither chunk of block 1 and 2 has enough room left for the full struct.
@@ -594,9 +596,11 @@ struct SaveBlock2
     /*0x57C*/ struct RankingHall2P hallRecords2P[2][3]; // From record mixing.
     /*0x624*/ u16 contestLinkResults[CONTEST_CATEGORIES_COUNT][CONTESTANT_COUNT];
     /*0x64C*/ struct BattleFrontier frontier;
+    // SPEEDCHOICE
     struct SpeedchoiceSaveOptions speedchoiceConfig;
     struct DoneButtonStats2 doneButtonStats;
-}; // sizeof=0xF2C
+    u32 typeTableRngSeed;
+};
 
 extern struct SaveBlock2 *gSaveBlock2Ptr;
 

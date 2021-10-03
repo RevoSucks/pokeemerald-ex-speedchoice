@@ -40,7 +40,7 @@ static void CreateFanfareTask(void);
 static void Task_DuckBGMForPokemonCry(u8 taskId);
 static void RestoreBGMVolumeAfterPokemonCry(void);
 
-static const struct Fanfare sFanfares[] = {
+const struct Fanfare sFanfares[] = {
     [FANFARE_LEVEL_UP]            = { MUS_LEVEL_UP,             80 },
     [FANFARE_OBTAIN_ITEM]         = { MUS_OBTAIN_ITEM,         160 },
     [FANFARE_EVOLVED]             = { MUS_EVOLVED,             220 },
@@ -59,9 +59,21 @@ static const struct Fanfare sFanfares[] = {
     [FANFARE_OBTAIN_B_POINTS]     = { MUS_OBTAIN_B_POINTS,     313 },
     [FANFARE_OBTAIN_SYMBOL]       = { MUS_OBTAIN_SYMBOL,       318 },
     [FANFARE_REGISTER_MATCH_CALL] = { MUS_REGISTER_MATCH_CALL, 135 },
+    [FANFARE_RG_HEAL]             = { MUS_RG_HEAL,             170 },
+    [FANFARE_CABLE_CAR]           = { MUS_CABLE_CAR,           170 },
 };
 
 #define CRY_VOLUME  120 // was 125 in R/S
+
+int IsInFanfares(u16 songNum) {
+    int i;
+    
+    for(i = 0; i < ARRAY_COUNT(sFanfares); i++) {
+        if (sFanfares[i].songNum == songNum)
+            return TRUE;
+    }
+    return FALSE;
+}
 
 void InitMapMusic(void)
 {

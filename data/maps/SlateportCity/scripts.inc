@@ -604,6 +604,37 @@ SlateportCity_Pokemart_Speedchoice: @ 81DD1F0
     .2byte ITEM_ROSE_INCENSE
     .2byte ITEM_LUCK_INCENSE
     .2byte ITEM_PURE_INCENSE
+    .2byte ITEM_UP_GRADE
+    .2byte ITEM_DUBIOUS_DISC
+    .2byte ITEM_DRAGON_SCALE
+    .2byte ITEM_DEEP_SEA_TOOTH
+    .2byte ITEM_DEEP_SEA_SCALE
+    .2byte ITEM_METAL_COAT
+    .2byte ITEM_KINGS_ROCK
+    .2byte ITEM_ELECTIRIZER
+    .2byte ITEM_MAGMARIZER
+    .2byte ITEM_OVAL_STONE
+    .2byte ITEM_PROTECTOR
+    .2byte ITEM_RAZOR_CLAW
+    .2byte ITEM_RAZOR_FANG
+    .2byte ITEM_REAPER_CLOTH
+    .2byte ITEM_PRISM_SCALE
+    .2byte ITEM_SACHET
+    .2byte ITEM_WHIPPED_DREAM
+    @ These are not implemented upstream yet.
+    @.2byte ITEM_CHIPPED_POT
+    @.2byte ITEM_CRACKED_POT
+    @.2byte ITEM_GALARICA_CUFF
+    @.2byte ITEM_GALARICA_WREATH
+    @.2byte ITEM_SWEET_APPLE
+    @.2byte ITEM_TART_APPLE
+    @.2byte ITEM_STRAWBERRY_SWEET
+    @.2byte ITEM_LOVE_SWEET
+    @.2byte ITEM_BERRY_SWEET
+    @.2byte ITEM_CLOVER_SWEET
+    @.2byte ITEM_FLOWER_SWEET
+    @.2byte ITEM_STAR_SWEET
+    @.2byte ITEM_RIBBON_SWEET
     .2byte ITEM_NONE
     release
     end

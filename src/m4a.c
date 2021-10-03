@@ -1,5 +1,7 @@
 #include <string.h>
 #include "gba/m4a_internal.h"
+#include "sound.h"
+#include "speedchoice.h"
 
 extern const u8 gCgb3Vol[];
 
@@ -104,14 +106,44 @@ void m4aSoundMain(void)
     SoundMain();
 }
 
+#include "constants/songs.h"
+#include "random.h"
+
+EWRAM_DATA int gShuffleMusic = FALSE;
+EWRAM_DATA u16 gShuffledMusic[(END_MUS - START_MUS + 1) - SFANFARES_COUNT][2] = {0};
+EWRAM_DATA u16 gShuffledFanfares[SFANFARES_COUNT][2] = {0}; // 18 is the number of set entries in sFanfares
+
 void m4aSongNumStart(u16 n)
 {
-    const struct MusicPlayer *mplayTable = gMPlayTable;
-    const struct Song *songTable = gSongTable;
-    const struct Song *song = &songTable[n];
-    const struct MusicPlayer *mplay = &mplayTable[song->ms];
+    // do the rando thing.
+    if(gShuffleMusic == TRUE && ((n >= START_MUS && n <= END_MUS) || n == MUS_VS_WILD_NIGHT) && CheckSpeedchoiceOption(SHUFFLE_MUSIC, SHUFFLE_MUSIC_ON) == TRUE) {
+        int i;
+        // first check gShuffleMusic.
+        for(i = 0; i < (END_MUS - START_MUS + 1) - SFANFARES_COUNT; i++) {
+            if(gShuffledMusic[i][0] == n) {
+                n = gShuffledMusic[i][1];
+                goto FOUND;
+            }
+        }
+        // then check gShuffledFanfares.
+        for(i = 0; i < SFANFARES_COUNT; i++) {
+            if(gShuffledFanfares[i][0] == n) {
+                n = gShuffledFanfares[i][1];
+                goto FOUND;
+            }
+        }
+        n = MUS_NONE; // no match found.
+FOUND:; // meh. I cant think of a better way to get out of this.
+    }
+    {
+        // blah, doing it like this.
+        const struct MusicPlayer *mplayTable = gMPlayTable;
+        const struct Song *songTable = gSongTable;
+        const struct Song *song = &songTable[n];
+        const struct MusicPlayer *mplay = &mplayTable[song->ms];
 
-    MPlayStart(mplay->info, song->header);
+        MPlayStart(mplay->info, song->header);
+    }
 }
 
 void m4aSongNumStartOrChange(u16 n)
