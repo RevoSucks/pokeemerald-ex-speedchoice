@@ -34,7 +34,7 @@ extern struct MusicPlayerInfo gMPlayInfo_SE1;
 extern struct MusicPlayerInfo gMPlayInfo_SE2;
 extern struct MusicPlayerInfo gMPlayInfo_SE3;
 extern struct ToneData gCryTable[];
-extern struct ToneData gCryTable2[];
+extern struct ToneData gCryTable_Reverse[];
 
 static void Task_Fanfare(u8 taskId);
 static void CreateFanfareTask(void);
@@ -527,7 +527,7 @@ void PlayCryInternal(u16 species, s8 pan, s8 volume, u8 priority, u8 mode)
     SetPokemonCryPriority(priority);
 
     species--;
-    gMPlay_PokemonCry = SetPokemonCryTone(v0 ? &gCryTable2[species] : &gCryTable[species]);
+    gMPlay_PokemonCry = SetPokemonCryTone(v0 ? &gCryTable_Reverse[species] : &gCryTable[species]);
 }
 
 bool8 IsCryFinished(void)
