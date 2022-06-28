@@ -202,7 +202,7 @@ extern u32 gRandomizerCheckValue;
 
 extern int IsInFanfares(u16 songNum);
 
-extern EWRAM_DATA u16 gShuffledMusic[(END_MUS - START_MUS + 1) - SFANFARES_COUNT][2];
+extern EWRAM_DATA u16 gShuffledMusic[(SONGS_END - SONGS_START + 1) - SFANFARES_COUNT][2];
 extern EWRAM_DATA u16 gShuffledFanfares[SFANFARES_COUNT][2];
 
 struct Fanfare
@@ -224,11 +224,11 @@ void LoadObjectEvents(void)
     if(CheckSpeedchoiceOption(SHUFFLE_MUSIC, SHUFFLE_MUSIC_ON) == TRUE) {
         SeedRng((u16)gRandomizerCheckValue);
         // initialize the gShuffledMusic array to shuffle.
-        for(i = 0, j = 0; i < (END_MUS - START_MUS); i++) {
+        for(i = 0, j = 0; i < (SONGS_END - SONGS_START); i++) {
             // only add it to the array if its not in sFanfares.
-            if(!IsInFanfares(START_MUS + i)) {
-                gShuffledMusic[j][0] = START_MUS + i;
-                gShuffledMusic[j++][1] = START_MUS + i;
+            if(!IsInFanfares(SONGS_START + i)) {
+                gShuffledMusic[j][0] = SONGS_START + i;
+                gShuffledMusic[j++][1] = SONGS_START + i;
             }
         }
         gShuffledMusic[j][0] = MUS_VS_WILD_NIGHT;
@@ -241,8 +241,8 @@ void LoadObjectEvents(void)
         // shuffle tha array(s) now. Add 1 for VS wild night.
         
         // do the first shuffle for gShuffledMusic.
-        for(i = 0; i < (END_MUS - START_MUS + 1) - SFANFARES_COUNT; i++) {
-            int j = Random() % (((END_MUS - START_MUS) + 1) - SFANFARES_COUNT); // pick a random element to swap with on the [1] element.
+        for(i = 0; i < (SONGS_END - SONGS_START + 1) - SFANFARES_COUNT; i++) {
+            int j = Random() % (((SONGS_END - SONGS_START) + 1) - SFANFARES_COUNT); // pick a random element to swap with on the [1] element.
 
             // perform the swap.
             int swap = gShuffledMusic[j][1];

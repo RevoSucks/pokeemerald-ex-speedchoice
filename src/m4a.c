@@ -7,7 +7,8 @@ extern const u8 gCgb3Vol[];
 
 #define BSS_CODE __attribute__((section(".bss.code")))
 
-BSS_CODE ALIGNED(4) char SoundMainRAM_Buffer[0x800] = {0};
+BSS_CODE ALIGNED(4) char SoundMainRAM_Buffer[0xB40] = {0};
+BSS_CODE ALIGNED(4) u32 hq_buffer_ptr[0x130] = {0};
 
 struct SoundInfo gSoundInfo;
 struct PokemonCrySong gPokemonCrySongs[MAX_POKEMON_CRIES];
@@ -78,9 +79,9 @@ void m4aSoundInit(void)
     SoundInit(&gSoundInfo);
     MPlayExtender(gCgbChans);
     m4aSoundMode(SOUND_MODE_DA_BIT_8
-               | SOUND_MODE_FREQ_13379
+               | SOUND_MODE_FREQ_18157
                | (12 << SOUND_MODE_MASVOL_SHIFT)
-               | (5 << SOUND_MODE_MAXCHN_SHIFT));
+               | (15 << SOUND_MODE_MAXCHN_SHIFT));
 
     for (i = 0; i < NUM_MUSIC_PLAYERS; i++)
     {
@@ -110,16 +111,16 @@ void m4aSoundMain(void)
 #include "random.h"
 
 EWRAM_DATA int gShuffleMusic = FALSE;
-EWRAM_DATA u16 gShuffledMusic[(END_MUS - START_MUS + 1) - SFANFARES_COUNT][2] = {0};
+EWRAM_DATA u16 gShuffledMusic[(SONGS_END - SONGS_START + 1) - SFANFARES_COUNT][2] = {0};
 EWRAM_DATA u16 gShuffledFanfares[SFANFARES_COUNT][2] = {0}; // 18 is the number of set entries in sFanfares
 
 void m4aSongNumStart(u16 n)
 {
     // do the rando thing.
-    if(gShuffleMusic == TRUE && ((n >= START_MUS && n <= END_MUS) || n == MUS_VS_WILD_NIGHT) && CheckSpeedchoiceOption(SHUFFLE_MUSIC, SHUFFLE_MUSIC_ON) == TRUE) {
+    if(gShuffleMusic == TRUE && ((n >= SONGS_START && n <= SONGS_END) || n == MUS_VS_WILD_NIGHT) && CheckSpeedchoiceOption(SHUFFLE_MUSIC, SHUFFLE_MUSIC_ON) == TRUE) {
         int i;
         // first check gShuffleMusic.
-        for(i = 0; i < (END_MUS - START_MUS + 1) - SFANFARES_COUNT; i++) {
+        for(i = 0; i < (SONGS_END - SONGS_START + 1) - SFANFARES_COUNT; i++) {
             if(gShuffledMusic[i][0] == n) {
                 n = gShuffledMusic[i][1];
                 goto FOUND;

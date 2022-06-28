@@ -2738,8 +2738,8 @@ static void DebugAction_Sound_SE_SelectId(u8 taskId)
         if(gMain.newKeys & DPAD_UP)
         {
             gTasks[taskId].data[3] += sPowersOfTen[gTasks[taskId].data[4]];
-            if(gTasks[taskId].data[3] > END_SE)
-                gTasks[taskId].data[3] = END_SE;
+            if(gTasks[taskId].data[3] > SOUND_EFFECTS_END)
+                gTasks[taskId].data[3] = SOUND_EFFECTS_END;
         }
         if(gMain.newKeys & DPAD_DOWN)
         {
@@ -2795,7 +2795,7 @@ static void DebugAction_Sound_MUS(u8 taskId)
 
     //Display initial ID
     StringCopy(gStringVar2, gText_DigitIndicator[0]);
-    ConvertIntToDecimalStringN(gStringVar3, START_MUS, STR_CONV_MODE_LEADING_ZEROS, DEBUG_NUMBER_DIGITS_ITEMS);
+    ConvertIntToDecimalStringN(gStringVar3, SONGS_START, STR_CONV_MODE_LEADING_ZEROS, DEBUG_NUMBER_DIGITS_ITEMS);
     StringCopyPadded(gStringVar1, gBGMNames[0], CHAR_SPACE, 35);
     StringExpandPlaceholders(gStringVar4, gDebugText_Sound_MUS_ID);
     AddTextPrinterParameterized(windowId, 1, gStringVar4, 1, 1, 0, NULL);
@@ -2804,7 +2804,7 @@ static void DebugAction_Sound_MUS(u8 taskId)
 
     gTasks[taskId].func = DebugAction_Sound_MUS_SelectId;
     gTasks[taskId].data[2] = windowId;
-    gTasks[taskId].data[3] = START_MUS;                 //Current ID
+    gTasks[taskId].data[3] = SONGS_START;                 //Current ID
     gTasks[taskId].data[4] = 0;                         //Digit Selected
     gTasks[taskId].data[5] = gTasks[taskId].data[3];    //Last song played (for stopping)
 }
@@ -2818,14 +2818,14 @@ static void DebugAction_Sound_MUS_SelectId(u8 taskId)
         if(gMain.newKeys & DPAD_UP)
         {
             gTasks[taskId].data[3] += sPowersOfTen[gTasks[taskId].data[4]];
-            if(gTasks[taskId].data[3] > END_MUS)
-                gTasks[taskId].data[3] = END_MUS;
+            if(gTasks[taskId].data[3] > SONGS_END)
+                gTasks[taskId].data[3] = SONGS_END;
         }
         if(gMain.newKeys & DPAD_DOWN)
         {
             gTasks[taskId].data[3] -= sPowersOfTen[gTasks[taskId].data[4]];
-            if(gTasks[taskId].data[3] < START_MUS)
-                gTasks[taskId].data[3] = START_MUS;
+            if(gTasks[taskId].data[3] < SONGS_START)
+                gTasks[taskId].data[3] = SONGS_START;
         }
         if(gMain.newKeys & DPAD_LEFT)
         {
@@ -2839,7 +2839,7 @@ static void DebugAction_Sound_MUS_SelectId(u8 taskId)
         }
 
         StringCopy(gStringVar2, gText_DigitIndicator[gTasks[taskId].data[4]]);
-        StringCopyPadded(gStringVar1, gBGMNames[gTasks[taskId].data[3]-START_MUS], CHAR_SPACE, 35);
+        StringCopyPadded(gStringVar1, gBGMNames[gTasks[taskId].data[3]-SONGS_START], CHAR_SPACE, 35);
         ConvertIntToDecimalStringN(gStringVar3, gTasks[taskId].data[3], STR_CONV_MODE_LEADING_ZEROS, DEBUG_NUMBER_DIGITS_ITEMS);
         StringExpandPlaceholders(gStringVar4, gDebugText_Sound_MUS_ID);
         AddTextPrinterParameterized(gTasks[taskId].data[2], 1, gStringVar4, 1, 1, 0, NULL);
