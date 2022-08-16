@@ -6081,9 +6081,12 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 mode, u16 evolutionItem, u
     {
         // use the new level as the seed, not the current one.
         u32 lv = GetMonData(&gPlayerParty[i], MON_DATA_LEVEL, 0) + 1;
+        int i;
 
-        SeedRng((u32)((personality * species) + (lv * species))); // seed with the pokemon's PID with species and LV.
-        return NationalPokedexNumToSpecies((Random() % NATIONAL_DEX_COUNT) + 1);
+        for (i = 0; i <= level; i++) {
+            personality = ISO_RANDOMIZE1(personality);
+        }
+        return NationalPokedexNumToSpecies(((personality >> 16) % NATIONAL_DEX_COUNT) + 1);
     }
 
     if (heldItem == ITEM_ENIGMA_BERRY)
