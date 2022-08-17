@@ -213,15 +213,10 @@ struct Fanfare
 
 extern const struct Fanfare sFanfares[];
 
-void LoadObjectEvents(void)
-{
+void SetShuffledMusicSEArrays(void) {
     int i, j;
-
-    for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
-        gObjectEvents[i] = gSaveBlock1Ptr->objectEvents[i];
-
-    // do the shuffling here if enabled. TODO: Add Shuffle Music option and check CheckSpeedchoiceOption() here.
     if(CheckSpeedchoiceOption(SHUFFLE_MUSIC, SHUFFLE_MUSIC_ON) == TRUE) {
+        // We need the same array every time, or else we get different arrays resetting.
         SeedRng((u16)gRandomizerCheckValue);
         // initialize the gShuffledMusic array to shuffle.
         for(i = 0, j = 0; i < (SONGS_END - SONGS_START); i++) {
@@ -259,6 +254,15 @@ void LoadObjectEvents(void)
             gShuffledFanfares[i][1] = swap;
         }
     }
+}
+
+void LoadObjectEvents(void)
+{
+    int i, j;
+
+    for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
+        gObjectEvents[i] = gSaveBlock1Ptr->objectEvents[i];
+    SetShuffledMusicSEArrays();
 }
 
 void SaveSerializedGame(void)

@@ -103,7 +103,7 @@ const u8 gSystemText_TerminatorS[] = _("{COLOR RED}$");
 /* SPEEDCHOICE MENU TEXT (Header Text)             */
 /* ----------------------------------------------- */
 const u8 gSpeedchoiceTextHeader[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}EX SPEEDCHOICE MENU");
-const u8 gSpeedchoiceCurrentVersion[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}v0.3.1");
+const u8 gSpeedchoiceCurrentVersion[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}v0.3.2");
 
 /* ----------------------------------------------- */
 /* SPEEDCHOICE MENU TEXT (Option Choices)          */
@@ -1412,6 +1412,8 @@ static void Task_SpeedchoiceMenuFadeOut(u8 taskId)
 
 extern int gShuffleMusic;
 
+extern void SetShuffledMusicSEArrays();
+
 /*
  * Prompt the Yes/No menu choice to determine if the run/race is started.
  */
@@ -1424,6 +1426,7 @@ static void Task_AskToStartGame(u8 taskId)
         PlayBGM(MUS_DUMMY);
         PlaySE(SE_SELECT);
         SaveSpeedchoiceOptions(taskId);
+        SetShuffledMusicSEArrays();
         BeginNormalPaletteFade(-1, 0, 0, 0x10, 0);
         gTasks[taskId].func = Task_SpeedchoiceMenuFadeOut;
         if(CheckSpeedchoiceOption(SHUFFLE_MUSIC, SHUFFLE_MUSIC_ON) == TRUE)
