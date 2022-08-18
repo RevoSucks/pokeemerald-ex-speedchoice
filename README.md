@@ -1,7 +1,5 @@
 # Pokémon Emerald EX Speedchoice
 
-[![Build Status][travis-badge]][travis]
-
 To set up the repository, see [INSTALL.md](INSTALL.md).
 
 ## See also
