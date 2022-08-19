@@ -103,7 +103,7 @@ const u8 gSystemText_TerminatorS[] = _("{COLOR RED}$");
 /* SPEEDCHOICE MENU TEXT (Header Text)             */
 /* ----------------------------------------------- */
 const u8 gSpeedchoiceTextHeader[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}EX SPEEDCHOICE MENU");
-const u8 gSpeedchoiceCurrentVersion[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}v0.3.2");
+const u8 gSpeedchoiceCurrentVersion[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}v0.4.0");
 
 /* ----------------------------------------------- */
 /* SPEEDCHOICE MENU TEXT (Option Choices)          */
@@ -131,6 +131,8 @@ const u8 gSpeedchoiceTextNone[]   = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}NONE");
 
 const u8 gSpeedchoiceTextTutor[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}TUTOR");
 const u8 gSpeedchoiceTextHM05[]   = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}HM05");
+
+const u8 gSpeedchoiceTextExp[]   = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}EXP");
 
 /* ----------------------------------------------- */
 /* SPEEDCHOICE MENU TEXT (Option Names)            */
@@ -212,7 +214,7 @@ const u8 gSpeedchoiceTooltipFastEggHatch[] = _("Makes eggs hatch quickly.");
 const u8 gSpeedchoiceTooltipGen7XItems[] = _("Stat boost +2 instead of +1.");
 const u8 gSpeedchoiceTooltipEvoEveryLv[] = _("{PKMN} evolve into a random\nbut set species every lv.");
 const u8 gSpeedchoiceTooltipInverseBattles[] = _("Inverse battles mechanic is\nenabled.\pSwitches type effectiveness.");
-const u8 gSpeedchoiceTooltipShuffleMusic[] = _("Randomly shuffles music and \nfanfares between others.");
+const u8 gSpeedchoiceTooltipShuffleMusic[] = _("ON: Randomly shuffles music and \nfanfares between others.\pEXP: In addition, Gen 4 music is shuffled\ninto the pool.");
 const u8 gSpeedchoiceTooltipDebug[] = _("Enables the debug menus for\ntroubleshooting.\pR+Start in the field for the\nField Debug menu.\pSelect in battle for the Battle\nDebug Menu.");
 
 // START GAME
@@ -348,7 +350,7 @@ static const u8 gPresetMeme[CURRENT_OPTIONS_NUM] = {
     GEN_7_X_ITEMS_OFF,      // GEN_7_X_ITEMS
     EVO_EV_ON,              // EVO_EVERY_LEVEL
     INV_BATTLES_ON,         // INVERSE_BATTLES
-    SHUFFLE_MUSIC_ON,       // SHUFFLE_MUSIC
+    SHUFFLE_MUSIC_EXP,      // SHUFFLE_MUSIC
     DEBUG_MENUS_ON          // DEBUG_MENUS
 };
 
@@ -449,6 +451,16 @@ const struct OptionChoiceConfig OptionChoiceConfigKeepNone[MAX_CHOICES] =
     { 120, (u8 *)&gSpeedchoiceTextKeep },
     { 150, (u8 *)&gSpeedchoiceTextBW   },
     { 180, (u8 *)&gSpeedchoiceTextNone },
+    { -1, NULL },
+    { -1, NULL },
+    { -1, NULL }
+};
+
+const struct OptionChoiceConfig OptionChoiceConfigOffOnExp[MAX_CHOICES] = 
+{
+    { 120, (u8 *)&gSpeedchoiceTextOff  },
+    { 150, (u8 *)&gSpeedchoiceTextOn   },
+    { 180, (u8 *)&gSpeedchoiceTextExp  },
     { -1, NULL },
     { -1, NULL },
     { -1, NULL }
@@ -665,10 +677,10 @@ const struct SpeedchoiceOption SpeedchoiceOptions[CURRENT_OPTIONS_NUM + 1] = // 
     // SHUFFLE_MUSIC OPTION
     // ----------------------------------
     { 
-        /* Option Count   */ 2,
+        /* Option Count   */ 3,
         /* Option Type    */ NORMAL,
         /* Option Preset  */ gSpeedchoiceOptionShuffleMusic,
-        /* Option Text    */ OptionChoiceConfigOnOff,
+        /* Option Text    */ OptionChoiceConfigOffOnExp,
         /* Option Tooltip */ gSpeedchoiceTooltipShuffleMusic,
         /* Option Usable  */ TRUE
     },
@@ -1429,7 +1441,7 @@ static void Task_AskToStartGame(u8 taskId)
         SetShuffledMusicSEArrays();
         BeginNormalPaletteFade(-1, 0, 0, 0x10, 0);
         gTasks[taskId].func = Task_SpeedchoiceMenuFadeOut;
-        if(CheckSpeedchoiceOption(SHUFFLE_MUSIC, SHUFFLE_MUSIC_ON) == TRUE)
+        if(CheckSpeedchoiceOption(SHUFFLE_MUSIC, SHUFFLE_MUSIC_OFF) == FALSE)
             gShuffleMusic = TRUE;
         // start the timers here!
         gSaveBlock1Ptr->doneButtonStats.frameCount = 0;

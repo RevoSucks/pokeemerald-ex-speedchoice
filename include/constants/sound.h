@@ -72,6 +72,7 @@
 #define FANFARE_HG_OBTAIN_CASTLE_POINTS  68
 #define FANFARE_HG_CLEAR_MINIGAME        69
 #define FANFARE_HG_PARTNER               70
+#define FANFARE_MISC_CABLE_CAR           71
 
 #define CRY_MODE_NORMAL        0 // Default
 #define CRY_MODE_DOUBLES       1 // Shortened cry for double battles

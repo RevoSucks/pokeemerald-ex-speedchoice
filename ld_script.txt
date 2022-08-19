@@ -715,6 +715,7 @@ SECTIONS {
         data/sound_data.o(.rodata);
         src/rhh_copyright.o(.rodata);
         src/sound_check_menu.o(.rodata);
+        src/load_save.o(.rodata);
     } =0
 
     song_data :

@@ -497,7 +497,7 @@ struct SpeedchoiceSaveOptions
     u8 gen7XItems:1;
     u8 evoEveryLevel:1;
     u8 inverseBattles:1;
-    u8 shuffleMusic:1;
+    u8 shuffleMusic:2;
     u8 debugMenus:1;
 };
 

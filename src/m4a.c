@@ -114,24 +114,30 @@ EWRAM_DATA int gShuffleMusic = FALSE;
 EWRAM_DATA u16 gShuffledMusic[(SONGS_END - SONGS_START + 1) - SFANFARES_COUNT][2] = {0};
 EWRAM_DATA u16 gShuffledFanfares[SFANFARES_COUNT][2] = {0}; // 18 is the number of set entries in sFanfares
 
+extern const u16 gExpansionMusicTracks[];
+extern const u16 gExpansionFanfareTracks[];
+
 void m4aSongNumStart(u16 n)
 {
     // do the rando thing.
-    if(gShuffleMusic == TRUE && ((n >= SONGS_START && n <= SONGS_END) || n == MUS_VS_WILD_NIGHT) && CheckSpeedchoiceOption(SHUFFLE_MUSIC, SHUFFLE_MUSIC_ON) == TRUE) {
-        int i;
+    if(gShuffleMusic == TRUE && ((n >= SONGS_START && n <= SONGS_END) || n == MUS_VS_WILD_NIGHT) && CheckSpeedchoiceOption(SHUFFLE_MUSIC, SHUFFLE_MUSIC_OFF) == FALSE) {
+        int i = 0;
         // first check gShuffleMusic.
-        for(i = 0; i < (SONGS_END - SONGS_START + 1) - SFANFARES_COUNT; i++) {
+        while(gShuffledMusic[i][0] != 0xFFFF) {
             if(gShuffledMusic[i][0] == n) {
                 n = gShuffledMusic[i][1];
                 goto FOUND;
-            }
+            }            
+            i++;
         }
+        i = 0;
         // then check gShuffledFanfares.
-        for(i = 0; i < SFANFARES_COUNT; i++) {
+        while(gShuffledFanfares[i][0] != 0xFFFF) {
             if(gShuffledFanfares[i][0] == n) {
                 n = gShuffledFanfares[i][1];
                 goto FOUND;
-            }
+            }            
+            i++;
         }
         n = MUS_NONE; // no match found.
 FOUND:; // meh. I cant think of a better way to get out of this.

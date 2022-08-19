@@ -3,6 +3,7 @@
 
 	.section .rodata
 
+    @ This value is written to by the randomizer.
     .align 4
 gRandomizerCheckValue::
-    .4byte 0
+    .4byte 0x00000000

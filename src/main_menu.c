@@ -939,6 +939,7 @@ static void Task_HandleMainMenuInput(u8 taskId)
 extern void Task_InitSpeedchoiceMenu(u8);
 
 extern int gShuffleMusic;
+extern void SetShuffledMusicSEArrays();
 
 static void Task_HandleMainMenuAPressed(u8 taskId)
 {
@@ -1073,8 +1074,10 @@ static void Task_HandleMainMenuAPressed(u8 taskId)
                 gPlttBufferFaded[0] = RGB_BLACK;
                 SetMainCallback2(CB2_ContinueSavedGame);
                 TryIncrementButtonStat(DB_RELOAD_COUNT);
-                if(CheckSpeedchoiceOption(SHUFFLE_MUSIC, SHUFFLE_MUSIC_ON) == TRUE)
+                if(CheckSpeedchoiceOption(SHUFFLE_MUSIC, SHUFFLE_MUSIC_OFF) == FALSE) {
+                    SetShuffledMusicSEArrays();
                     gShuffleMusic = TRUE;
+                }
                 DestroyTask(taskId);
                 break;
             case ACTION_OPTION:

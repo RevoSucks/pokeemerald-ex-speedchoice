@@ -333,8 +333,9 @@ enum
 // ----------------------
 enum
 {
+    SHUFFLE_MUSIC_OFF,
     SHUFFLE_MUSIC_ON,
-    SHUFFLE_MUSIC_OFF
+    SHUFFLE_MUSIC_EXP
 };
 
 // ----------------------

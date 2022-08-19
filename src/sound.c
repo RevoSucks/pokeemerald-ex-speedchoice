@@ -113,6 +113,8 @@ const struct Fanfare sFanfares[] = {
     [FANFARE_HG_OBTAIN_CASTLE_POINTS]  = { MUS_HG_OBTAIN_CASTLE_POINTS , 200 },
     [FANFARE_HG_CLEAR_MINIGAME]        = { MUS_HG_WIN_MINIGAME         , 230 },
     [FANFARE_HG_PARTNER]               = { MUS_HG_LETS_GO_TOGETHER     , 180 },
+    // Adding cable car fanfare for rando purposes.
+    [FANFARE_MISC_CABLE_CAR]           = { MUS_CABLE_CAR               , 450 },
 };
 
 #define CRY_VOLUME  120 // was 125 in R/S
@@ -249,12 +251,37 @@ bool8 IsNotWaitingForBGMStop(void)
     return TRUE;
 }
 
+extern EWRAM_DATA u16 gShuffledFanfares[][2];
+
+// take the unrandomized song num fanfare, find the new fanfare, and then
+// get the duration.
+u16 GetNewFanfareDuration(u16 songNum) {
+    int i = 0;
+    // find the entry of the fanfare via song ID in the shuffled array.
+    while (gShuffledFanfares[i][0] != 0xFFFF) {
+        // if there is a match, then take the randomized value at [1] and do
+        // another lookup via sFanfares.
+        if(songNum == gShuffledFanfares[i][0]) {
+            int j;
+            // found a match, look it up in the fanfare array.
+            for(j = 0; j < ARRAY_COUNT(sFanfares); j++) {
+                if(gShuffledFanfares[i][1] == sFanfares[j].songNum) {
+                    return sFanfares[j].duration;
+                }
+            }
+        }
+        i++;
+    }
+    return 100; // not found. uhhh.. default to 100 duration? Reaching this shouldn't be possible.
+}
+
 void PlayFanfareByFanfareNum(u8 fanfareNum)
 {
     u16 songNum;
     m4aMPlayStop(&gMPlayInfo_BGM);
     songNum = sFanfares[fanfareNum].songNum;
-    sFanfareCounter = sFanfares[fanfareNum].duration;
+    sFanfareCounter = GetNewFanfareDuration(songNum);
+    //sFanfareCounter = sFanfares[fanfareNum].duration;
     m4aSongNumStart(songNum);
 }
 
