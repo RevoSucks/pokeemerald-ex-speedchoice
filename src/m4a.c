@@ -111,8 +111,8 @@ void m4aSoundMain(void)
 #include "random.h"
 
 EWRAM_DATA int gShuffleMusic = FALSE;
-EWRAM_DATA u16 gShuffledMusic[(SONGS_END - SONGS_START + 1) - SFANFARES_COUNT][2] = {0};
-EWRAM_DATA u16 gShuffledFanfares[SFANFARES_COUNT][2] = {0}; // 18 is the number of set entries in sFanfares
+EWRAM_DATA u16 gShuffledMusic[(SONGS_END - SONGS_START + 2) - SFANFARES_COUNT][2] = {0};
+EWRAM_DATA u16 gShuffledFanfares[SFANFARES_COUNT+1][2] = {0}; // 18 is the number of set entries in sFanfares
 
 extern const u16 gExpansionMusicTracks[];
 extern const u16 gExpansionFanfareTracks[];
