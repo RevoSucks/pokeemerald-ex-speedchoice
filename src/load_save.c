@@ -188,8 +188,6 @@ void LoadPlayerParty(void)
         gPlayerParty[i] = gSaveBlock1Ptr->playerParty[i];
 }
 
-extern int gShuffleMusic;
-
 void SaveObjectEvents(void)
 {
     int i;
@@ -711,21 +709,21 @@ void SetShuffledMusicSEArrays(void) {
         // do the first shuffle for gShuffledMusic, but count up to musicCount, because we ONLY want to shuffle
         // pre-terminator elements.
         for(i = 0; i < musicCount; i++) {
-            int j = Random() % musicCount; // pick a random element to swap with on the [1] element.
+            int k = Random() % musicCount; // pick a random element to swap with on the [1] element.
 
             // perform the swap.
-            int swap = gShuffledMusic[j][1];
-            gShuffledMusic[j][1] = gShuffledMusic[i][1];
+            int swap = gShuffledMusic[k][1];
+            gShuffledMusic[k][1] = gShuffledMusic[i][1];
             gShuffledMusic[i][1] = swap;
         }
 
         // now for gShuffledFanfares, and ignore the terminator too, so dont add +1.
         for(i = 0; i < fanfareCount; i++) {
-            int j = Random() % fanfareCount;
+            int l = Random() % fanfareCount;
 
             // perform the swap.
-            int swap = gShuffledFanfares[j][1];
-            gShuffledFanfares[j][1] = gShuffledFanfares[i][1];
+            int swap = gShuffledFanfares[l][1];
+            gShuffledFanfares[l][1] = gShuffledFanfares[i][1];
             gShuffledFanfares[i][1] = swap;
         }
     }
