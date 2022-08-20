@@ -113,8 +113,11 @@ const struct Fanfare sFanfares[] = {
     [FANFARE_HG_OBTAIN_CASTLE_POINTS]  = { MUS_HG_OBTAIN_CASTLE_POINTS , 200 },
     [FANFARE_HG_CLEAR_MINIGAME]        = { MUS_HG_WIN_MINIGAME         , 230 },
     [FANFARE_HG_PARTNER]               = { MUS_HG_LETS_GO_TOGETHER     , 180 },
-    // Adding cable car fanfare for rando purposes.
+    // Adding cable car fanfare and FR/LG beta heal music for rando purposes.
     [FANFARE_MISC_CABLE_CAR]           = { MUS_CABLE_CAR               , 450 },
+    [FANFARE_MISC_RG_HEAL]             = { MUS_RG_HEAL                 , 160 },
+    [FANFARE_DP_CAUGHT_INTRO]          = { MUS_DP_CAUGHT_INTRO         , 231 },
+    [FANFARE_DP_DEX_RATING]            = { MUS_DP_DEX_RATING           , 185 },
 };
 
 #define CRY_VOLUME  120 // was 125 in R/S
@@ -281,6 +284,7 @@ void PlayFanfareByFanfareNum(u8 fanfareNum)
     m4aMPlayStop(&gMPlayInfo_BGM);
     songNum = sFanfares[fanfareNum].songNum;
     sFanfareCounter = GetNewFanfareDuration(songNum);
+    sFanfareCounter = (sFanfareCounter < 400) ? sFanfareCounter : 400;
     //sFanfareCounter = sFanfares[fanfareNum].duration;
     m4aSongNumStart(songNum);
 }

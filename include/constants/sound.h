@@ -73,6 +73,9 @@
 #define FANFARE_HG_CLEAR_MINIGAME        69
 #define FANFARE_HG_PARTNER               70
 #define FANFARE_MISC_CABLE_CAR           71
+#define FANFARE_MISC_RG_HEAL             72
+#define FANFARE_DP_CAUGHT_INTRO          73
+#define FANFARE_DP_DEX_RATING            74
 
 #define CRY_MODE_NORMAL        0 // Default
 #define CRY_MODE_DOUBLES       1 // Shortened cry for double battles

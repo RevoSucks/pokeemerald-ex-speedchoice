@@ -6064,6 +6064,11 @@ u8 GetNatureFromPersonality(u32 personality)
     return personality % NUM_NATURES;
 }
 
+EWRAM_DATA u32 gDebugEvoLastLevel = 0; // level used for random evo
+EWRAM_DATA u32 gDebugEvoLastPV1 = 0;   // PV used for random evo, before for loop
+EWRAM_DATA u32 gDebugEvoLastPV2 = 0;   // PV used for random evo, after for loop
+EWRAM_DATA u32 gDebugEvoLastInput = 0; // input to NationalPokedexNumToSpecies
+
 u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 mode, u16 evolutionItem, u16 tradePartnerSpecies)
 {
     int i, j;
@@ -6081,12 +6086,19 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 mode, u16 evolutionItem, u
     if(CheckSpeedchoiceOption(EVO_EVERY_LEVEL, EVO_EV_OFF) == FALSE)
     {
         // use the new level as the seed, not the current one.
-        u32 lv = GetMonData(&gPlayerParty[i], MON_DATA_LEVEL, 0) + 1;
+        u32 lv = GetMonData(mon, MON_DATA_LEVEL, 0) + 1;
         int i;
+        
+        gDebugEvoLastLevel = lv;
+        gDebugEvoLastPV1 = personality;
 
-        for (i = 0; i <= level; i++) {
+        for (i = 0; i <= lv; i++) {
             personality = ISO_RANDOMIZE1(personality);
         }
+        
+        gDebugEvoLastPV2 = personality;
+        gDebugEvoLastInput = ((personality >> 16) % NATIONAL_DEX_COUNT) + 1;
+        
         return NationalPokedexNumToSpecies(((personality >> 16) % NATIONAL_DEX_COUNT) + 1);
     }
 

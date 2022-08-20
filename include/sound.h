@@ -24,7 +24,7 @@ enum {
     FANFARE_CABLE_CAR, // SPEEDCHOICE, this music stops early too
 };
 
-#define SFANFARES_COUNT 72
+#define SFANFARES_COUNT 74
 
 void InitMapMusic(void);
 void MapMusicMain(void);
