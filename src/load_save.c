@@ -54,6 +54,7 @@ struct PokemonStorage *gPokemonStoragePtr;
 // code
 void CheckForFlashMemory(void)
 {
+    
     if (!IdentifyFlash())
     {
         gFlashMemoryPresent = TRUE;

@@ -1118,10 +1118,10 @@ static u8 SetUpCopyrightScreen(void)
         gMain.state++;
         GameCubeMultiBoot_Main(&gMultibootProgramStruct);
         break;
-    // do we skip the pret intro?
+    // do we skip the pret intro? You only need to hold L, or if we just did a soft reset.
     case 138:
-        if(JOY_HELD(L_BUTTON))
-            gMain.state = 365; // jump to the error screen
+        if(JOY_HELD(L_BUTTON) || *(vu8 *)0x3007FFA == 1)
+            gMain.state = 365; // jump to the error check
         else
             gMain.state++;
         break;

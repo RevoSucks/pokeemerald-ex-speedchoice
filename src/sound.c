@@ -278,13 +278,16 @@ u16 GetNewFanfareDuration(u16 songNum) {
     return 100; // not found. uhhh.. default to 100 duration? Reaching this shouldn't be possible.
 }
 
+// Number of frames a fanfare can be before it goes past WaitFanfare
+#define MAX_FANFARE_LENGTH 180
+
 void PlayFanfareByFanfareNum(u8 fanfareNum)
 {
     u16 songNum;
     m4aMPlayStop(&gMPlayInfo_BGM);
     songNum = sFanfares[fanfareNum].songNum;
     sFanfareCounter = GetNewFanfareDuration(songNum);
-    sFanfareCounter = (sFanfareCounter < 400) ? sFanfareCounter : 400;
+    sFanfareCounter = (sFanfareCounter < MAX_FANFARE_LENGTH) ? sFanfareCounter : MAX_FANFARE_LENGTH;
     //sFanfareCounter = sFanfares[fanfareNum].duration;
     m4aSongNumStart(songNum);
 }

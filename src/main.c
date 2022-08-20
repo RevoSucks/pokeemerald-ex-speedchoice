@@ -460,6 +460,22 @@ void ClearTrainerHillVBlankCounter(void)
     gTrainerHillVBlankCounter = NULL;
 }
 
+EWRAM_DATA int gWasSoftReset = 0;
+
+// we just write this like this, because agbcc sucks and i dont want to move it to a new file
+// just to call agbcc_arm.
+asm(".arm\n"
+    "SetSoftResetVariable:\n"
+    "	ldr	r1, =gWasSoftReset\n"
+    "   mov	r0, #0x1\n"
+	"   str	r0, [r1]\n"
+    "   b 0x8000000\n"
+    "SetSoftResetVariableEnd:");
+
+// to get the linker to shut up
+extern const void *SetSoftResetVariable(void);
+extern const void *SetSoftResetVariableEnd(void);
+
 void DoSoftReset(void)
 {
     REG_IME = 0;
@@ -469,7 +485,20 @@ void DoSoftReset(void)
     DmaStop(2);
     DmaStop(3);
     SiiRtcProtect();
-    SoftReset(RESET_ALL);
+    /*
+     * Why are we doing this? If we do a soft reset, set a byte post-reset to indicate we
+     * did a soft reset. This is so we can skip the pret/battle engine on a soft reset.
+     * Writing asm directly via precompiled bytes is a terrible idea, never do this, I'm
+     * doing this for science.
+     */
+    *(vu32 *)0x2000000 = 0xE59F000C; // ldr r0, =0x3007FFA
+    *(vu32 *)0x2000004 = 0xE3A01001; // mov r1, #1
+    *(vu32 *)0x2000008 = 0xE5C01000; // strb r1, [r0]
+    *(vu32 *)0x200000C = 0xE3A00302; // mov r0, #0x8000000
+    *(vu32 *)0x2000010 = 0xE12FFF10; // bx r0
+    *(vu32 *)0x2000014 = 0x03007FFA; // .pool variable, accessed from 1st instruction write above
+    *(vu8 *)0x3007FFA = 1; // now set this address byte to 1 so the GBA knows to jump to RAM instead of ROM.
+    SoftReset(RESET_ALL & ~RESET_EWRAM); // Do not reset EWRAM so the code isnt destroyed
 }
 
 void ClearPokemonCrySongs(void)
