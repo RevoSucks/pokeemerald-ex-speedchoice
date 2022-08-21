@@ -20,6 +20,9 @@ extern u32 TimerPrescalerTest_End(void);
 // Assembler Routines
 // -----------------------------------
 
+#if MODERN
+__attribute__((no_reorder,target("arm")))
+#endif
 static NAKED u32 NESPipelineTest_Internal(void) {
     asm_unified(".arm\n"
                 "mov	r1, lr\n"
@@ -34,6 +37,9 @@ static NAKED u32 NESPipelineTest_Internal(void) {
                 "NESPipelineTest_Internal_End:");
 }
 
+#if MODERN
+__attribute__((no_reorder,target("arm")))
+#endif
 static NAKED u32 TimerPrescalerTest(void) {
     asm_unified(".arm\n"
                 "stmda sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}\n"
@@ -58,6 +64,9 @@ static NAKED u32 TimerPrescalerTest(void) {
 }
 
 // sub_800326C from AGS Aging Cart
+#if MODERN
+__attribute__((no_reorder))
+#endif
 static NAKED u32 PrefetchBufferResult_Func(void) {
     asm_unified(".thumb\n"
                 "push {r4, r5, r6, r7, lr}\n"
@@ -101,10 +110,7 @@ static s32 DoTest(const char * start, const char * end, u32 expectedValue, ...)
     u32 resp;
     va_start(va_args, expectedValue);
 
-    d = (u32 *)buffer;
-    s = (const u32 *)start;
-    while (s < (const u32 *)end)
-        *d++ = *s++;
+    CpuCopy32(start, buffer, (size_t)(end - start));
     resp = ((u32 (*)(va_list))buffer)(va_args);
     return resp == expectedValue;
 }
