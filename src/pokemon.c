@@ -6088,18 +6088,32 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 mode, u16 evolutionItem, u
         // use the new level as the seed, not the current one.
         u32 lv = GetMonData(mon, MON_DATA_LEVEL, 0) + 1;
         int i;
+        u32 newSpecies;
+        int attempts = 3;
         
         gDebugEvoLastLevel = lv;
         gDebugEvoLastPV1 = personality;
 
-        for (i = 0; i <= lv; i++) {
+        for (i = 0; i <= lv+species; i++) {
             personality = ISO_RANDOMIZE1(personality);
         }
         
-        gDebugEvoLastPV2 = personality;
-        gDebugEvoLastInput = ((personality >> 16) % NATIONAL_DEX_COUNT) + 1;
+        newSpecies = NationalPokedexNumToSpecies(((personality >> 16) % NATIONAL_DEX_COUNT) + 1);
         
-        return NationalPokedexNumToSpecies(((personality >> 16) % NATIONAL_DEX_COUNT) + 1);
+        // did we hit the same species? Keep rolling.
+        while(attempts --> 0 && newSpecies == species) {
+            for (i = 0; i <= lv+newSpecies; i++) {
+                personality = ISO_RANDOMIZE1(personality);
+            }
+            newSpecies = NationalPokedexNumToSpecies(((personality >> 16) % NATIONAL_DEX_COUNT) + 1);;
+        }
+        // if you ran out of attempts and got the same species 3 times in a row, go buy
+        // some lottery tickets.
+        
+        gDebugEvoLastPV2 = personality;
+        gDebugEvoLastInput = newSpecies;
+        
+        return newSpecies;
     }
 
     if (heldItem == ITEM_ENIGMA_BERRY)

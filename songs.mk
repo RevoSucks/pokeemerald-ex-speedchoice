@@ -1804,16 +1804,16 @@ $(MID_SUBDIR)/mus_pl_twinleaf_music_box.s: %.s: %.mid
 	$(MID) $< $@ -E -R0 -G191 -V100
 
 $(MID_SUBDIR)/mus_pl_obtain_arcade_points.s: %.s: %.mid
-	$(MID) $< $@ -E -R0 -G191 -V120
+	$(MID) $< $@ -E -R0 -G191 -V120 -P5
 
 $(MID_SUBDIR)/mus_pl_obtain_castle_points.s: %.s: %.mid
-	$(MID) $< $@ -E -R0 -G191 -V105
+	$(MID) $< $@ -E -R0 -G191 -V105 -P5
 
 $(MID_SUBDIR)/mus_pl_obtain_b_points.s: %.s: %.mid
-	$(MID) $< $@ -E -R0 -G191 -V127
+	$(MID) $< $@ -E -R0 -G191 -V127 -P5
 
 $(MID_SUBDIR)/mus_pl_win_minigame.s: %.s: %.mid
-	$(MID) $< $@ -E -R0 -G191 -V100
+	$(MID) $< $@ -E -R0 -G191 -V100 -P5
 
 $(MID_SUBDIR)/mus_hg_intro.s: %.s: %.mid
 	$(MID) $< $@ -E -R0 -G229 -V122
