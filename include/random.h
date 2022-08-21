@@ -19,5 +19,6 @@ u16 Random2(void);
 //Sets the initial seed value of the pseudorandom number generator
 void SeedRng(u16 seed);
 void SeedRng2(u16 seed);
+u16 PRandom(u32 *state);
 
 #endif // GUARD_RANDOM_H

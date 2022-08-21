@@ -31,3 +31,8 @@ u16 Random2(void)
     gRng2Value = ISO_RANDOMIZE1(gRng2Value);
     return gRng2Value >> 16;
 }
+
+u16 PRandom(u32 *state) {
+    *state = ISO_RANDOMIZE1(*state);
+    return *state >> 16;
+}
