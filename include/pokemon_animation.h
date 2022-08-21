@@ -7,33 +7,33 @@ void StartMonSummaryAnimation(struct Sprite *sprite, u8 frontAnimId);
 void LaunchAnimationTaskForBackSprite(struct Sprite *sprite, u8 backAnimSet);
 void SetSpriteCB_MonAnimDummy(struct Sprite *sprite);
 
-// Pokémon back animation sets
-#define BACK_ANIM_NONE                         0
-#define BACK_ANIM_H_VIBRATE                    1
-#define BACK_ANIM_H_SLIDE                      2
-#define BACK_ANIM_H_SPRING                     3
-#define BACK_ANIM_H_SPRING_REPEATED            4
-#define BACK_ANIM_SHRINK_GROW                  5
-#define BACK_ANIM_GROW                         6
-#define BACK_ANIM_CIRCLE_COUNTERCLOCKWISE      7
-#define BACK_ANIM_H_SHAKE                      8
-#define BACK_ANIM_V_SHAKE                      9
-#define BACK_ANIM_V_SHAKE_H_SLIDE              10
-#define BACK_ANIM_V_STRETCH                    11
-#define BACK_ANIM_H_STRETCH                    12
-#define BACK_ANIM_GROW_STUTTER                 13
-#define BACK_ANIM_V_SHAKE_LOW                  14
-#define BACK_ANIM_TRIANGLE_DOWN                15
-#define BACK_ANIM_CONCAVE_ARC_LARGE            16
-#define BACK_ANIM_CONVEX_DOUBLE_ARC            17
-#define BACK_ANIM_CONCAVE_ARC_SMALL            18
-#define BACK_ANIM_DIP_RIGHT_SIDE               19
-#define BACK_ANIM_SHRINK_GROW_VIBRATE          20
-#define BACK_ANIM_JOLT_RIGHT                   21
-#define BACK_ANIM_SHAKE_FLASH_YELLOW           22
-#define BACK_ANIM_SHAKE_GLOW_RED               23
-#define BACK_ANIM_SHAKE_GLOW_GREEN             24
-#define BACK_ANIM_SHAKE_GLOW_BLUE              25
+//// Pokémon back animation sets
+//#define BACK_ANIM_NONE                         0
+//#define BACK_ANIM_H_VIBRATE                    1
+//#define BACK_ANIM_H_SLIDE                      2
+//#define BACK_ANIM_H_SPRING                     3
+//#define BACK_ANIM_H_SPRING_REPEATED            4
+//#define BACK_ANIM_SHRINK_GROW                  5
+//#define BACK_ANIM_GROW                         6
+//#define BACK_ANIM_CIRCLE_COUNTERCLOCKWISE      7
+//#define BACK_ANIM_H_SHAKE                      8
+//#define BACK_ANIM_V_SHAKE                      9
+//#define BACK_ANIM_V_SHAKE_H_SLIDE              10
+//#define BACK_ANIM_V_STRETCH                    11
+//#define BACK_ANIM_H_STRETCH                    12
+//#define BACK_ANIM_GROW_STUTTER                 13
+//#define BACK_ANIM_V_SHAKE_LOW                  14
+//#define BACK_ANIM_TRIANGLE_DOWN                15
+//#define BACK_ANIM_CONCAVE_ARC_LARGE            16
+//#define BACK_ANIM_CONVEX_DOUBLE_ARC            17
+//#define BACK_ANIM_CONCAVE_ARC_SMALL            18
+//#define BACK_ANIM_DIP_RIGHT_SIDE               19
+//#define BACK_ANIM_SHRINK_GROW_VIBRATE          20
+//#define BACK_ANIM_JOLT_RIGHT                   21
+//#define BACK_ANIM_SHAKE_FLASH_YELLOW           22
+//#define BACK_ANIM_SHAKE_GLOW_RED               23
+//#define BACK_ANIM_SHAKE_GLOW_GREEN             24
+//#define BACK_ANIM_SHAKE_GLOW_BLUE              25
 
 // Pokémon animation function ids (for front and back)
 // Each front anim uses 1, and each back anim uses a set of 3

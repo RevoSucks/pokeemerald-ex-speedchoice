@@ -29,7 +29,9 @@ extern u16 sOptionMenuBg_Pal[1];
 extern u16 sOptionMenuText_Pal[16];
 extern u16 sMainMenuTextPal[16];
 
-#define NELEMS ARRAY_COUNT
+#ifndef NELEMS
+#define NELEMS(x) ARRAY_COUNT(x)
+#endif //NELEMS
 
 EWRAM_DATA bool8 sInSubMenu = FALSE;
 EWRAM_DATA bool8 sInBattle = FALSE;

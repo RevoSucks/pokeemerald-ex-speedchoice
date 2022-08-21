@@ -37,7 +37,6 @@ static void Task_AskFossils(u8 taskId)
     s32 i;
     s32 nitems;
     s32 maxShowed;
-    u8 windowId;
     s32 input;
     struct WindowTemplate windowTemplate;
 

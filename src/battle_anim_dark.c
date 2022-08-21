@@ -9,12 +9,8 @@
 #include "util.h"
 #include "constants/rgb.h"
 
-static void sub_81138D4(struct Sprite *);
 static void AnimUnusedBagSteal(struct Sprite *);
 static void AnimUnusedBagSteal_Step(struct Sprite *);
-void AnimBite(struct Sprite *);
-void AnimTearDrop(struct Sprite *);
-void AnimClawSlash(struct Sprite *);
 static void AnimPunishment(struct Sprite *sprite);
 static void AnimTask_AttackerFadeToInvisible_Step(u8);
 static void AnimTask_AttackerFadeFromInvisible_Step(u8);
