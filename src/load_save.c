@@ -663,7 +663,7 @@ void SetShuffledMusicSEArrays(void) {
     if(CheckSpeedchoiceOption(SHUFFLE_MUSIC, SHUFFLE_MUSIC_OFF) == FALSE) {
         // We need the same array every time, or else we get different arrays resetting; use the ROM's
         // check value as set by the randomizer.
-        SeedRng((u16)gRandomizerCheckValue);
+        u32 seed = (u16)gRandomizerCheckValue;
 
         // initialize the gShuffledMusic array to shuffle.
         for(i = 0, j = 0; i < (SONGS_END - SONGS_START); i++) {
@@ -709,7 +709,7 @@ void SetShuffledMusicSEArrays(void) {
         // do the first shuffle for gShuffledMusic, but count up to musicCount, because we ONLY want to shuffle
         // pre-terminator elements.
         for(i = 0; i < musicCount; i++) {
-            int k = Random() % musicCount; // pick a random element to swap with on the [1] element.
+            int k = PRandom(&seed) % musicCount; // pick a random element to swap with on the [1] element.
 
             // perform the swap.
             int swap = gShuffledMusic[k][1];
@@ -719,7 +719,7 @@ void SetShuffledMusicSEArrays(void) {
 
         // now for gShuffledFanfares, and ignore the terminator too, so dont add +1.
         for(i = 0; i < fanfareCount; i++) {
-            int l = Random() % fanfareCount;
+            int l = PRandom(&seed) % fanfareCount;
 
             // perform the swap.
             int swap = gShuffledFanfares[l][1];
