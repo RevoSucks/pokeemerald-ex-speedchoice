@@ -103,14 +103,19 @@ static u16 SetIME(u16 c) {
 
 static s32 DoTest(const char * start, const char * end, u32 expectedValue, ...)
 {
-    u32 * d;
-    const u32 * s;
     u8 buffer[(size_t)(end - start)];
     va_list va_args;
     u32 resp;
     va_start(va_args, expectedValue);
 
-    CpuCopy32(start, buffer, (size_t)(end - start));
+    {
+    u32 * d = (u32 *)buffer;
+    const u32 * s = (const u32 *)((uintptr_t)start & ~1);
+    const u32 * e = (const u32 *)((uintptr_t)end & ~1);
+    while (s < e) {
+        *d++ = *s++;
+    }
+    }
     resp = ((u32 (*)(va_list))buffer)(va_args);
     return resp == expectedValue;
 }
